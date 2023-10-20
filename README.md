@@ -11,12 +11,12 @@ Veranstaltungen erstellen oder daran teilnehmen:
 Mit unserer Plattform kannst man problemlos an einer vielfältigen Auswahl von Veranstaltungen teilnehmen oder eigene Events organisieren. Die benutzerfreundliche Suchfunktion ermöglicht es, nach Events in der Nähe zu suchen und sie nach Kategorien, gesprochenen Sprachen und Orten zu filtern. Events können öffentlich für alle zugänglich sein oder privat mit ausgewählten Teilnehmern stattfinden.
 
 ## Teilnehmende
-Mariam Daliri , 916841 , 
-Naceur Sayedi, 926947 , s85975@bht-berlin.de 
-Georg Sittnick, 935065 , 
-Khatia Zitanishvili , 
-Minh Trinh, 934421 , 
-Christian Dahlenburg, 900164 , 
+*   Mariam Daliri , 916841 , 
+*   Naceur Sayedi, 926947 , s85975@bht-berlin.de 
+*   Georg Sittnick, 935065 , 
+*   Khatia Zitanishvili , 
+*   Minh Trinh, 934421 , 
+*   Christian Dahlenburg, 900164 , 
 
 ## Technologie-Stack
 1. ### Backend
@@ -26,3 +26,7 @@ Christian Dahlenburg, 900164 ,
 *   MongoDB
 *   Mongoose
 *   SocketIO
+2. ### Frontend
+*   React
+*   CSS3 / SASS
+*   HTML5
