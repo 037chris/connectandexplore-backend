@@ -13,7 +13,7 @@ Mit unserer Plattform kannst man problemlos an einer vielfältigen Auswahl von V
 ## Teilnehmende
 *   Mariam Daliri , 916841 , 
 *   Naceur Sayedi, 926947 , s85975@bht-berlin.de 
-*   Georg Sittnick, 935065 , 
+*   Georg Sittnick, 935065, s88268@bht-berlin.de 
 *   Khatia Zitanishvili , 
 *   Minh Trinh, 934421 , 
 *   Christian Dahlenburg, 900164 , 
