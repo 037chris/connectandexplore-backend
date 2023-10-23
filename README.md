@@ -15,7 +15,7 @@ Mit unserer Plattform kannst man problemlos an einer vielfältigen Auswahl von V
 *   Naceur Sayedi, 926947 , s85975@bht-berlin.de 
 *   Georg Sittnick, 935065, s88268@bht-berlin.de 
 *   Khatia Zitanishvili , 
-*   Minh Trinh, 934421 , 
+*   Minh Trinh, 934421, s89187@bht-berlin.de 
 *   Christian Dahlenburg, 900164 , 
 
 ## Technologie-Stack
