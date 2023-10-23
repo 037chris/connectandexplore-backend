@@ -11,7 +11,7 @@ Veranstaltungen erstellen oder daran teilnehmen:
 Mit unserer Plattform kannst man problemlos an einer vielfältigen Auswahl von Veranstaltungen teilnehmen oder eigene Events organisieren. Die benutzerfreundliche Suchfunktion ermöglicht es, nach Events in der Nähe zu suchen und sie nach Kategorien, gesprochenen Sprachen und Orten zu filtern. Events können öffentlich für alle zugänglich sein oder privat mit ausgewählten Teilnehmern stattfinden.
 
 ## Teilnehmende
-*   Mariam Daliri , 916841 , 
+*   Mariam Daliri , 916841 ,s51677@bht-berlin.de
 *   Naceur Sayedi, 926947 , s85975@bht-berlin.de 
 *   Georg Sittnick, 935065, s88268@bht-berlin.de 
 *   Khatia Zitanishvili , 
