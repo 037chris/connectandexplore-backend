@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for Connect & Explore",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "tsc && nodemon dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.bht-berlin.de/s85975/connectandexplore.git"
+  },
+  "keywords": [
+    "Express.js",
+    "MongoDB",
+    "NodeJS"
+  ],
+  "author": "Mariam Daliri, Naceur Sayedi, Georg Sittnick, Khatia Zitanishvili , Minh Trinh, Christian Dahlenburg",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "mongodb-memory-server": "^9.0.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "mongoose": "^7.6.3"
+  }
+}
