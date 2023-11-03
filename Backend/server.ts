@@ -6,7 +6,9 @@ const key = fs.readFileSync('./certificates/key.pem');
 const cert = fs.readFileSync('./certificates/cert.pem');
 import { connect } from './database/db';
 const https = require('https');
-
+import swaggerDocs from "./src/utils/swagger";
+import UserRoute from './src/routes/UserRoute';
+import path from 'path';
 const app: Express = express();
 
 /* Routes */
@@ -20,10 +22,14 @@ app.use(function(req, res, next) {
   });
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 // New route for /api/hello
 app.use('/api/hello', (req, res, next) => {
   res.json({ message: 'Hello, World!' });
 });
+app.use(express.static(__dirname));
+app.use('/api/users', UserRoute);
+swaggerDocs(app, 443);
 app.use((req, res, next) => {
   res.status(404).json("Not Found")
 });
@@ -35,6 +41,7 @@ connect()
     const server = https.createServer({ key, cert }, app);
     server.listen(443, () => {
       console.log('Listening on port 443');
+      
     });
   })
   .catch((err) => {

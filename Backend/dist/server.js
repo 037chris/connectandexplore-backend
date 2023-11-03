@@ -11,6 +11,8 @@ const key = fs.readFileSync('./certificates/key.pem');
 const cert = fs.readFileSync('./certificates/cert.pem');
 const db_1 = require("./database/db");
 const https = require('https');
+const swagger_1 = __importDefault(require("./src/utils/swagger"));
+const UserRoute_1 = __importDefault(require("./src/routes/UserRoute"));
 const app = (0, express_1.default)();
 /* Routes */
 app.use("*", cors());
@@ -21,16 +23,20 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(bodyParser.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 // New route for /api/hello
 app.use('/api/hello', (req, res, next) => {
     res.json({ message: 'Hello, World!' });
 });
+app.use(express_1.default.static(__dirname));
+app.use('/api/users', UserRoute_1.default);
+(0, swagger_1.default)(app, 443);
 app.use((req, res, next) => {
     res.status(404).json("Not Found");
 });
 (0, db_1.connect)()
     .then(() => {
-    console.log('Connected to the database');
+    //console.log('Connected to the database');
     const server = https.createServer({ key, cert }, app);
     server.listen(443, () => {
         console.log('Listening on port 443');
