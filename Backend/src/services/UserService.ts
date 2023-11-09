@@ -15,11 +15,9 @@ export class UserService {
     }
     // Create a new user
     try {
-      console.log(user);
       const newUser = await User.create(user);
       return newUser;
     } catch (error) {
-      console.log(error);
       throw new Error("Registration failed");
     }
   }
@@ -105,7 +103,7 @@ export class UserService {
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
-        `No user with id: ${userResource.id} found, cannot update`,
+        `No user with id: ${userResource.id} found, cannot update`
       );
     }
     if (userResource.name) user.name = userResource.name;
@@ -152,7 +150,7 @@ export class UserService {
    */
   async updateUserWithPw(
     userResource: userResource,
-    oldPw?: string,
+    oldPw?: string
   ): Promise<userResource> {
     if (!userResource.id) {
       throw new Error("User id is missing, cannot update User.");
@@ -160,7 +158,7 @@ export class UserService {
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
-        `No user with id: ${userResource.id} found, cannot update`,
+        `No user with id: ${userResource.id} found, cannot update`
       );
     }
     if (oldPw) {

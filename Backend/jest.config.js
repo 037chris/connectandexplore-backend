@@ -4,4 +4,10 @@ module.exports = {
   testEnvironment: "node",
   collectCoverage: true,
   reporters: ["default", "jest-junit"],
+  testMatch: ["**/*.test.ts"],
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.json",
+    },
+  },
 };
