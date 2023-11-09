@@ -16,7 +16,3 @@ test:
   script:
     - docker run $DOCKER_IMAGE npm install
     - docker run $DOCKER_IMAGE npm test -- --coverage
-  artifacts:
-    reports:
-      junit:
-        - Backend/junit.xml
