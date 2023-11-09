@@ -1,18 +1,10 @@
+image: node:latest
+
 stages:
   - test
 
-variables:
-  DOCKER_IMAGE: node:14
-
-default:
-  tags:
-    - docker
-
-before_script:
-  - docker pull $DOCKER_IMAGE || true
-
-test:
+tests:
   stage: test
   script:
-    - docker run $DOCKER_IMAGE npm install
-    - docker run $DOCKER_IMAGE npm test -- --coverage
+    - npm install
+    - npm test -- --coverage
