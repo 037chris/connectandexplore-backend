@@ -1,7 +1,9 @@
 image: node:latest
 
 before_script:
-  - cd /Backend
+  - pwd
+  - ls
+  - cd Backend
 
 stages:
   - test
