@@ -17,7 +17,78 @@ const UserService_1 = require("../services/UserService");
 const FileUpload_1 = require("../utils/FileUpload");
 const UserRouter = express_1.default.Router();
 const userService = new UserService_1.UserService();
-UserRouter.post('/register', FileUpload_1.upload.single('profilePicture'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+/**
+ * @swagger
+ * /api/users/register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Register a new user with user data and an optional profile picture.
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               name:
+ *                 type: object
+ *                 properties:
+ *                   first:
+ *                     type: string
+ *                   last:
+ *                     type: string
+ *               password:
+ *                 type: string
+ *               isAdministrator:
+ *                 type: boolean
+ *               address:
+ *                 $ref: '#/components/schemas/IAddress'
+ *               profilePicture:
+ *                 type: file
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *               gender:
+ *                 type: string
+ *               socialMediaUrls:
+ *                 type: object
+ *                 properties:
+ *                   facebook:
+ *                     type: string
+ *                   instagram:
+ *                     type: string
+ *             required:
+ *               - email
+ *               - name
+ *               - password
+ *               - birthDate
+ *               - gender
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/IUser'
+ *       409:
+ *         description: User already exists
+ *         content:
+ *           application/json:
+ *             example:
+ *               Error: User already exists
+ *       500:
+ *         description: Registration failed
+ *         content:
+ *           application/json:
+ *             example:
+ *               Error: Registration failed
+ */
+UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
         if (req.file) {
@@ -29,11 +100,11 @@ UserRouter.post('/register', FileUpload_1.upload.single('profilePicture'), (req,
         return res.status(201).json(newUser);
     }
     catch (error) {
-        if (error.message === 'User already exists') {
-            return res.status(409).json({ "Error": 'User already exists' });
+        if (error.message === "User already exists") {
+            return res.status(409).json({ Error: "User already exists" });
         }
         else {
-            return res.status(500).json({ "Error": 'Registration failed' });
+            return res.status(500).json({ Error: "Registration failed" });
         }
     }
 }));
