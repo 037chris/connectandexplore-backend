@@ -81,11 +81,8 @@ UserRouter.post(
   upload.single("profilePicture"),
   async (req, res) => {
     try {
-      console.log(req.body);
       if (req.file) {
-        console.log(req.file.filename);
         req.body.profilePicture = `/uploads/${req.file.filename}`;
-        console.log(req.body);
       }
       const newUser = await userService.registerUser(req.body);
       return res.status(201).json(newUser);
