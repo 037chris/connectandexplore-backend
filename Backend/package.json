@@ -4,8 +4,7 @@
   "description": "Backend for Connect & Explore",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "t": "jest",
+    "test": "jest",
     "build": "npx tsc",
     "start": "tsc && nodemon dist/server.js",
     "format": "prettier --write src"
@@ -26,7 +25,9 @@
     "@types/express": "^4.17.1",
     "@types/jest": "^29.5.8",
     "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
     "mongodb-memory-server": "^9.0.1",
+    "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   },

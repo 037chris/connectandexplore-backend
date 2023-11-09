@@ -13,6 +13,77 @@ import { userResource } from "../Resources";
 const UserRouter = express.Router();
 const userService = new UserService();
 
+/**
+ * @swagger
+ * /api/users/register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Register a new user with user data and an optional profile picture.
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               name:
+ *                 type: object
+ *                 properties:
+ *                   first:
+ *                     type: string
+ *                   last:
+ *                     type: string
+ *               password:
+ *                 type: string
+ *               isAdministrator:
+ *                 type: boolean
+ *               address:
+ *                 $ref: '#/components/schemas/IAddress'
+ *               profilePicture:
+ *                 type: file
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *               gender:
+ *                 type: string
+ *               socialMediaUrls:
+ *                 type: object
+ *                 properties:
+ *                   facebook:
+ *                     type: string
+ *                   instagram:
+ *                     type: string
+ *             required:
+ *               - email
+ *               - name
+ *               - password
+ *               - birthDate
+ *               - gender
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/IUser'
+ *       409:
+ *         description: User already exists
+ *         content:
+ *           application/json:
+ *             example:
+ *               Error: User already exists
+ *       500:
+ *         description: Registration failed
+ *         content:
+ *           application/json:
+ *             example:
+ *               Error: Registration failed
+ */
 UserRouter.post(
   "/register",
   upload.single("profilePicture"),

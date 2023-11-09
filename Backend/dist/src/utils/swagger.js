@@ -22,6 +22,83 @@ const options = {
                     bearerFormat: "JWT",
                 },
             },
+            schemas: {
+                IAddress: {
+                    type: "object",
+                    properties: {
+                        street: {
+                            type: "string",
+                        },
+                        houseNumber: {
+                            type: "string",
+                        },
+                        apartmentNumber: {
+                            type: "string",
+                        },
+                        postalCode: {
+                            type: "string",
+                        },
+                        city: {
+                            type: "string",
+                        },
+                        stateOrRegion: {
+                            type: "string",
+                        },
+                        country: {
+                            type: "string",
+                        },
+                    },
+                },
+                IUser: {
+                    type: "object",
+                    properties: {
+                        email: {
+                            type: "string",
+                        },
+                        name: {
+                            type: "object",
+                            properties: {
+                                first: {
+                                    type: "string",
+                                },
+                                last: {
+                                    type: "string",
+                                },
+                            },
+                        },
+                        password: {
+                            type: "string",
+                        },
+                        isAdministrator: {
+                            type: "boolean",
+                        },
+                        address: {
+                            $ref: "#/components/schemas/IAddress",
+                        },
+                        profilePicture: {
+                            type: "string",
+                        },
+                        birthDate: {
+                            type: "string",
+                            format: "date",
+                        },
+                        gender: {
+                            type: "string",
+                        },
+                        socialMediaUrls: {
+                            type: "object",
+                            properties: {
+                                facebook: {
+                                    type: "string",
+                                },
+                                instagram: {
+                                    type: "string",
+                                },
+                            },
+                        },
+                    },
+                },
+            },
         },
         security: [
             {
@@ -34,7 +111,7 @@ const options = {
 const swaggerSpec = (0, swagger_jsdoc_1.default)(options);
 function swaggerDocs(app, port) {
     // Swagger page
-    app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec));
+    app.use("/swagger/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec));
     // Docs in JSON format
     app.get("/docs.json", (req, res) => {
         res.setHeader("Content-Type", "application/json");

@@ -20,6 +20,83 @@ const options: swaggerJsdoc.Options = {
           bearerFormat: "JWT",
         },
       },
+      schemas: {
+        IAddress: {
+          type: "object",
+          properties: {
+            street: {
+              type: "string",
+            },
+            houseNumber: {
+              type: "string",
+            },
+            apartmentNumber: {
+              type: "string",
+            },
+            postalCode: {
+              type: "string",
+            },
+            city: {
+              type: "string",
+            },
+            stateOrRegion: {
+              type: "string",
+            },
+            country: {
+              type: "string",
+            },
+          },
+        },
+        IUser: {
+          type: "object",
+          properties: {
+            email: {
+              type: "string",
+            },
+            name: {
+              type: "object",
+              properties: {
+                first: {
+                  type: "string",
+                },
+                last: {
+                  type: "string",
+                },
+              },
+            },
+            password: {
+              type: "string",
+            },
+            isAdministrator: {
+              type: "boolean",
+            },
+            address: {
+              $ref: "#/components/schemas/IAddress",
+            },
+            profilePicture: {
+              type: "string",
+            },
+            birthDate: {
+              type: "string",
+              format: "date",
+            },
+            gender: {
+              type: "string",
+            },
+            socialMediaUrls: {
+              type: "object",
+              properties: {
+                facebook: {
+                  type: "string",
+                },
+                instagram: {
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     security: [
       {
@@ -34,7 +111,7 @@ const swaggerSpec = swaggerJsdoc(options);
 
 function swaggerDocs(app: Express, port: number) {
   // Swagger page
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/swagger/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Docs in JSON format
   app.get("/docs.json", (req: Request, res: Response) => {
