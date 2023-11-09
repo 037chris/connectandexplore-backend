@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="10.511">
+  <testsuite name="User Registration" errors="0" failures="0" skipped="0" timestamp="2023-11-09T11:23:37" time="8.875" tests="3">
+    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="1.154">
+    </testcase>
+    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.021">
+    </testcase>
+    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.018">
+    </testcase>
+  </testsuite>
+</testsuites>
