@@ -1,8 +1,8 @@
 image: node:latest
 
 before_script:
-  - apt-get update
-  - apt-get install -y libssl-dev
+  - sudo apt-get update
+  - sudo apt-get install -y libssl-dev
   - cd Backend
 
 stages:
