@@ -1,14 +1,22 @@
-image: node:latest
-
 stages:
   - test
 
-javascript:
+variables:
+  DOCKER_IMAGE: node:14
+
+default:
+  tags:
+    - docker
+
+before_script:
+  - docker pull $DOCKER_IMAGE || true
+
+test:
   stage: test
   script:
-    - npm install
-    - npm test
+    - docker run $DOCKER_IMAGE npm install
+    - docker run $DOCKER_IMAGE npm test -- --coverage
   artifacts:
     reports:
       junit:
-        - junit.xml
+        - Backend/junit.xml
