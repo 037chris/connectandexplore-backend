@@ -3,6 +3,8 @@ stages:
 
 variables:
   DOCKER_IMAGE: node:14
+Tags:
+  - dockerise-me
 
 before_script:
   - docker pull $DOCKER_IMAGE
