@@ -10,7 +10,4 @@ module.exports = {
       tsconfig: "tsconfig.json",
     },
   },
-  jest: {
-    testTimeout: 120000, // Set the timeout in milliseconds
-  },
 };

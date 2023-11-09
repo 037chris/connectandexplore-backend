@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="21.548">
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-09T22:50:32" time="13.019" tests="1">
-    <testcase classname="userModel test create User" name="userModel test create User" time="0.334">
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="10.677">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-09T23:02:17" time="7.466" tests="1">
+    <testcase classname="userModel test create User" name="userModel test create User" time="0.194">
     </testcase>
   </testsuite>
-  <testsuite name="User Registration" errors="0" failures="0" skipped="0" timestamp="2023-11-09T22:50:45" time="8.095" tests="3">
-    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="1.127">
+  <testsuite name="User Registration" errors="0" failures="0" skipped="0" timestamp="2023-11-09T23:02:17" time="9.215" tests="3">
+    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="1.27">
     </testcase>
-    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.049">
+    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.019">
     </testcase>
-    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.045">
+    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.016">
     </testcase>
   </testsuite>
 </testsuites>
