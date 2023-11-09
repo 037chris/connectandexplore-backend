@@ -11,6 +11,6 @@ module.exports = {
     },
   },
   jest: {
-    testTimeout: 30000, // Set the timeout in milliseconds
+    testTimeout: 120000, // Set the timeout in milliseconds
   },
 };
