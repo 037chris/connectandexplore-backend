@@ -44,7 +44,7 @@ export class UserService {
     if (!userID) {
       throw new Error("Can not get user, userID is invalid");
     }
-    const user = await User.findById(userID).exec();
+    const user = await User.findOne({ _id: userID, isActive: true }).exec();
     if (!user) {
       throw new Error(`No user with id: ${userID} exists.`);
     }
@@ -103,7 +103,7 @@ export class UserService {
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
-        `No user with id: ${userResource.id} found, cannot update`
+        `No user with id: ${userResource.id} found, cannot update`,
       );
     }
     if (userResource.name) user.name = userResource.name;
@@ -150,7 +150,7 @@ export class UserService {
    */
   async updateUserWithPw(
     userResource: userResource,
-    oldPw?: string
+    oldPw?: string,
   ): Promise<userResource> {
     if (!userResource.id) {
       throw new Error("User id is missing, cannot update User.");
@@ -158,7 +158,7 @@ export class UserService {
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
-        `No user with id: ${userResource.id} found, cannot update`
+        `No user with id: ${userResource.id} found, cannot update`,
       );
     }
     if (oldPw) {
@@ -198,6 +198,38 @@ export class UserService {
       gender: savedUser.gender,
       socialMediaUrls: savedUser.socialMediaUrls,
     };
+  }
+
+  /**
+   * This function is used to either disable a user account or to delete the account from the database.
+   * If the logged-in user is an admin (role in req.role === "a") and performs the "delete" endpoint request,
+   * inactivateAccount is set to false, and the user is deleted from the database.
+   * Otherwise, the user himself deactivates his account, and inactivateAccount is set to true.
+   * @param userID The ID of the user to be deactivated or deleted.
+   * @param inactivateAccount If true, user.isActive is set to false and the user object remains in the database; otherwise, the admin deletes the user from the database.
+   * @returns true if the user was deleted or inactivated, false if no user was deleted.
+   */
+  async deleteUser(
+    userID: string,
+    inactivateAccount: boolean,
+  ): Promise<boolean> {
+    if (!userID) {
+      throw new Error("invalid userID, can not delete/inactivate account");
+    }
+    const u = await User.findOne({ _id: userID, isActive: true }).exec();
+    if (!u) {
+      throw new Error(
+        "User not found, probably invalid userID or user is already deleted/inactivated",
+      );
+    }
+    if (inactivateAccount) {
+      u.isActive = false;
+      const user = await u.save();
+      return !user.isActive;
+    } else {
+      const res = await User.deleteOne({ _id: userID });
+      return res.deletedCount == 1;
+    }
   }
 }
 

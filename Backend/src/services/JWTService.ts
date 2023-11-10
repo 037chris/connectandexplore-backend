@@ -11,7 +11,7 @@ export async function verifyPasswordAndCreateJWT(
   email: string,
   password: string,
 ): Promise<string | undefined> {
-  const users = await User.find({ email: email }).exec();
+  const users = await User.find({ email: email, isActive: true }).exec();
   if (!users || users.length != 1) {
     return undefined;
   }

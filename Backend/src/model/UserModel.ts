@@ -17,6 +17,7 @@ export interface IUser {
     facebook?: string;
     instagram?: string;
   };
+  isActive: boolean;
 }
 
 export interface IAddress {
@@ -67,6 +68,7 @@ const userSchema = new Schema<IUser, UserModel>({
     facebook: String,
     instagram: String,
   },
+  isActive: { type: Boolean, default: true },
 });
 
 userSchema.pre("save", async function () {
