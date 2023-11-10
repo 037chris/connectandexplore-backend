@@ -200,4 +200,30 @@ UserRouter.put(
     }
   },
 );
+
+UserRouter.delete(
+  "/:userid",
+  requiresAuthentication,
+  param("userid").isMongoId(),
+  async (req, res, next) => {
+    const userid = req.params.userid;
+    try {
+      if (req.role === "a") {
+        const isDeleted: boolean = await userService.deleteUser(userid, false);
+        res.status(204).send(isDeleted);
+      } else {
+        if (req.userId === userid) {
+          const isDeleted: boolean = await userService.deleteUser(userid, true);
+          res.status(204).send(isDeleted);
+        } else {
+          res.send(403);
+          next(new Error("Invalid authorization, can not delete user."));
+        }
+      }
+    } catch (err) {
+      res.send(403);
+      next(new Error("Invalid authorization, can not delete user."));
+    }
+  },
+);
 export default UserRouter;
