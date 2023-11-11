@@ -169,7 +169,7 @@ export class UserService {
       );
     }
     if (oldPw) {
-      const res = user.isCorrectPassword(oldPw);
+      const res = await user.isCorrectPassword(oldPw);
       if (!res) {
         throw new Error("invalid oldPassword, can not update User!");
       }
@@ -227,7 +227,7 @@ export class UserService {
     const u = await User.findOne({ _id: userID }).exec();
     if (!u) {
       throw new Error(
-        "User not found, probably invalid userID or user is already deleted",
+        "User not found, probably invalid userID or user is already deleted"
       );
     }
     if (inactivateAccount) {
