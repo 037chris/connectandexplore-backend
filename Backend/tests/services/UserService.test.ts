@@ -154,7 +154,7 @@ describe("userModel test", () => {
     );
   });
 
-  test("duplicate email check", async () => {
+  test("updateUserWithAdmin duplicate email check", async () => {
     const user = await userService.createUser(u);
     await userService.createUser({ ...u, email: "duplicate@example.com" });
     //Create another user with a different ID but same email for duplicate check
@@ -162,5 +162,68 @@ describe("userModel test", () => {
     await expect(
       userService.updateUserWithAdmin(userWithDuplicateEmail),
     ).rejects.toThrow("Duplicate email");
+  });
+  
+  test("updateUserWithPw update with old password to update password",async () => {
+    const oldPw:string = u.password;
+    const user:userResource = await userService.createUser(u);
+
+    user.name.first = "Jane";
+    user.password = "newPassword123!"
+    const updatedUser:userResource = await userService.updateUserWithPw(user,oldPw);
+    expect(updatedUser.name.first).toBe("Jane");
+    const Jane = await User.findById(user.id).exec();
+    expect(Jane.password).toBeDefined();
+    expect(await Jane.isCorrectPassword("newPassword123!")).toBeTruthy();
+    
+    //Test if user does not update Password on wrong old password.
+    await expect(userService.updateUserWithPw(user,"wrongPassword")).rejects.toThrow("invalid oldPassword, can not update User!");
+  });
+
+  test("updateUserWithPw throws errors on invalid userdata", async () => {
+    const user:userResource = await userService.createUser(u);
+    user.id = undefined;
+    user.name.first = "Jane";
+    await expect(userService.updateUserWithPw(user)).rejects.toThrow("User id is missing, cannot update User.");
+    user.id = NON_EXISTING_ID;
+    await expect(userService.updateUserWithPw(user)).rejects.toThrow(`No user with id: ${NON_EXISTING_ID} found, cannot update`);
+  });
+
+  test("updateUserWithPw duplicate email check", async () => {
+    const user = await userService.createUser(u);
+    await userService.createUser({ ...u, email: "duplicate@example.com" });
+    //Create another user with a different ID but same email for duplicate check
+    const userWithDuplicateEmail = { ...user, email: "duplicate@example.com" };
+    await expect(
+      userService.updateUserWithPw(userWithDuplicateEmail),
+    ).rejects.toThrow("Duplicate email");
+  });
+
+  test("updateUserWithPw can not change isActive status of user", async () => {
+    const user = await userService.createUser(u);
+    user.isActive = false;
+    user.name.first = "Jane";
+    const res = await userService.updateUserWithPw(user);
+    expect(res.isActive).toBeTruthy();
+    expect(res.name.first).toBe("Jane");
+  });
+
+  test("deleteUser deletes user from database (when performed by an admin)", async () => {
+    const user = await userService.createUser(u);
+    const res = await userService.deleteUser(user.id,false);
+    expect(res).toBeTruthy();
+    const noUserFound = await User.findById(user.id);
+    expect(noUserFound).toBeNull();
+
+    await expect(userService.deleteUser(NON_EXISTING_ID,false)).rejects.toThrow("User not found, probably invalid userID or user is already deleted");
+    await expect(userService.deleteUser("",false)).rejects.toThrow("invalid userID, can not delete/inactivate account");
+  });
+
+  test("deleteUser inactivates acc when inactivateAccount = true", async () => {
+    const user = await userService.createUser(u);
+    const res = await userService.deleteUser(user.id,true);
+    expect(res).toBeTruthy();
+    const inactiveUser = await User.findById(user.id);
+    expect(inactiveUser.isActive).toBeFalsy();
   });
 });
