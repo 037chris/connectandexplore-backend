@@ -35,6 +35,7 @@ export class UserService {
         birthDate: user.birthDate,
         gender: user.gender,
         socialMediaUrls: user.socialMediaUrls,
+        isActive: user.isActive,
       })),
     };
     return usersResource;
@@ -58,6 +59,7 @@ export class UserService {
       birthDate: user.birthDate,
       gender: user.gender,
       socialMediaUrls: user.socialMediaUrls,
+      isActive: user.isActive,
     };
   }
 
@@ -72,6 +74,7 @@ export class UserService {
       email: userResource.email,
       isAdministrator: userResource.isAdministrator,
       address: userResource.address,
+      password: userResource.password,
       profilePicture: userResource.profilePicture,
       birthDate: userResource.birthDate,
       gender: userResource.gender,
@@ -88,6 +91,7 @@ export class UserService {
       birthDate: user.birthDate,
       gender: user.gender,
       socialMediaUrls: user.socialMediaUrls,
+      isActive: user.isActive,
     };
   }
 
@@ -127,6 +131,7 @@ export class UserService {
       user.profilePicture = userResource.profilePicture;
     if (userResource.socialMediaUrls)
       user.socialMediaUrls = userResource.socialMediaUrls;
+    if (userResource.isActive) user.isActive = userResource.isActive;
     const savedUser = await user.save();
     return {
       id: savedUser.id,
@@ -137,6 +142,8 @@ export class UserService {
       birthDate: savedUser.birthDate,
       gender: savedUser.gender,
       socialMediaUrls: savedUser.socialMediaUrls,
+      isActive: savedUser.isActive,
+      profilePicture: savedUser.profilePicture,
     };
   }
 
@@ -197,6 +204,7 @@ export class UserService {
       birthDate: savedUser.birthDate,
       gender: savedUser.gender,
       socialMediaUrls: savedUser.socialMediaUrls,
+      isActive: user.isActive,
     };
   }
 
@@ -216,7 +224,7 @@ export class UserService {
     if (!userID) {
       throw new Error("invalid userID, can not delete/inactivate account");
     }
-    const u = await User.findOne({ _id: userID}).exec();
+    const u = await User.findOne({ _id: userID }).exec();
     if (!u) {
       throw new Error(
         "User not found, probably invalid userID or user is already deleted",

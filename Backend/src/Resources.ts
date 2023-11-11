@@ -15,6 +15,7 @@ export type userResource = {
     facebook?: string;
     instagram?: string;
   };
+  isActive: boolean;
 };
 
 export type usersResource = {
