@@ -10,4 +10,6 @@ module.exports = {
       tsconfig: "tsconfig.json",
     },
   },
+  testTimeout: 30000,
+  detectOpenHandles: false,
 };

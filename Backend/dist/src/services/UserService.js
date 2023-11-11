@@ -14,24 +14,244 @@ const UserModel_1 = require("../model/UserModel");
 class UserService {
     registerUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!user || typeof user !== 'object') {
-                throw new Error('Invalid user data');
+            if (!user || typeof user !== "object") {
+                throw new Error("Invalid user data");
             }
             // Check if the user already exists in the database
             const { email } = user;
             const existingUser = yield UserModel_1.User.findOne({ email });
             if (existingUser) {
-                throw new Error('User already exists');
+                throw new Error("User already exists");
             }
             // Create a new user
             try {
-                console.log(user);
                 const newUser = yield UserModel_1.User.create(user);
                 return newUser;
             }
             catch (error) {
-                console.log(error);
-                throw new Error('Registration failed');
+                throw new Error("Registration failed");
+            }
+        });
+    }
+    getUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield UserModel_1.User.find({}).exec();
+            const usersResource = {
+                users: users.map((user) => ({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    isAdministrator: user.isAdministrator,
+                    address: user.address,
+                    profilePicture: user.profilePicture,
+                    birthDate: user.birthDate,
+                    gender: user.gender,
+                    socialMediaUrls: user.socialMediaUrls,
+                    isActive: user.isActive,
+                })),
+            };
+            return usersResource;
+        });
+    }
+    getUser(userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!userID) {
+                throw new Error("Can not get user, userID is invalid");
+            }
+            const user = yield UserModel_1.User.findOne({ _id: userID, isActive: true }).exec();
+            if (!user) {
+                throw new Error(`No user with id: ${userID} exists.`);
+            }
+            return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                isAdministrator: user.isAdministrator,
+                address: user.address,
+                profilePicture: user.profilePicture,
+                birthDate: user.birthDate,
+                gender: user.gender,
+                socialMediaUrls: user.socialMediaUrls,
+                isActive: user.isActive,
+            };
+        });
+    }
+    /**
+     * used to prefill db with standard admin user. Therefore this servicemethod does not need an endpoint.
+     * @param userResource
+     * @returns userResource
+     */
+    createUser(userResource) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield UserModel_1.User.create({
+                name: userResource.name,
+                email: userResource.email,
+                isAdministrator: userResource.isAdministrator,
+                address: userResource.address,
+                password: userResource.password,
+                profilePicture: userResource.profilePicture,
+                birthDate: userResource.birthDate,
+                gender: userResource.gender,
+                socialMediaUrls: userResource.socialMediaUrls,
+            });
+            return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                isAdministrator: user.isAdministrator,
+                address: user.address,
+                profilePicture: user.profilePicture,
+                birthDate: user.birthDate,
+                gender: user.gender,
+                socialMediaUrls: user.socialMediaUrls,
+                isActive: user.isActive,
+            };
+        });
+    }
+    /**
+     * Admin function to update userdata. can update password & isAdministrator.
+     * @param userResource
+     * @returns userResource of updated user.
+     */
+    updateUserWithAdmin(userResource) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!userResource.id) {
+                throw new Error("User id is missing, cannot update User.");
+            }
+            const user = yield UserModel_1.User.findById(userResource.id).exec();
+            if (!user) {
+                throw new Error(`No user with id: ${userResource.id} found, cannot update`);
+            }
+            if (userResource.name)
+                user.name = userResource.name;
+            if (userResource.email) {
+                userResource.email = userResource.email.toLowerCase();
+                if (userResource.email !== user.email) {
+                    const c = yield UserModel_1.User.count({ email: userResource.email }).exec();
+                    if (c > 0) {
+                        throw new Error(`Duplicate email`);
+                    }
+                }
+                user.email = userResource.email;
+            }
+            if (userResource.password)
+                user.password = userResource.password;
+            if (userResource.isAdministrator)
+                user.isAdministrator = userResource.isAdministrator;
+            if (userResource.address)
+                user.address = userResource.address;
+            if (userResource.birthDate)
+                user.birthDate = userResource.birthDate;
+            if (userResource.gender)
+                user.gender = userResource.gender;
+            if (userResource.profilePicture)
+                user.profilePicture = userResource.profilePicture;
+            if (userResource.socialMediaUrls)
+                user.socialMediaUrls = userResource.socialMediaUrls;
+            if (userResource.isActive)
+                user.isActive = userResource.isActive;
+            const savedUser = yield user.save();
+            return {
+                id: savedUser.id,
+                name: savedUser.name,
+                email: savedUser.email,
+                address: savedUser.address,
+                isAdministrator: savedUser.isAdministrator,
+                birthDate: savedUser.birthDate,
+                gender: savedUser.gender,
+                socialMediaUrls: savedUser.socialMediaUrls,
+                isActive: savedUser.isActive,
+                profilePicture: savedUser.profilePicture,
+            };
+        });
+    }
+    /**
+     * only admins can change isAdministrator:
+     * authorization to change isAdministrator is done in userRouter ->
+     * isAdministratorfield = null if user in req is not an admin
+     * @param userResource
+     * @param oldPw
+     * @returns userResource
+     */
+    updateUserWithPw(userResource, oldPw) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!userResource.id) {
+                throw new Error("User id is missing, cannot update User.");
+            }
+            const user = yield UserModel_1.User.findById(userResource.id).exec();
+            if (!user) {
+                throw new Error(`No user with id: ${userResource.id} found, cannot update`);
+            }
+            if (oldPw) {
+                const res = user.isCorrectPassword(oldPw);
+                if (!res) {
+                    throw new Error("invalid oldPassword, can not update User!");
+                }
+                if (userResource.password)
+                    user.password = userResource.password;
+            }
+            if (userResource.name)
+                user.name = userResource.name;
+            if (userResource.email) {
+                userResource.email = userResource.email.toLowerCase();
+                if (userResource.email !== user.email) {
+                    const c = yield UserModel_1.User.count({ email: userResource.email }).exec();
+                    if (c > 0) {
+                        throw new Error(`Duplicate email`);
+                    }
+                }
+                user.email = userResource.email;
+            }
+            if (userResource.address)
+                user.address = userResource.address;
+            if (userResource.birthDate)
+                user.birthDate = userResource.birthDate;
+            if (userResource.gender)
+                user.gender = userResource.gender;
+            if (userResource.profilePicture)
+                user.profilePicture = userResource.profilePicture;
+            if (userResource.socialMediaUrls)
+                user.socialMediaUrls = userResource.socialMediaUrls;
+            const savedUser = yield user.save();
+            return {
+                id: savedUser.id,
+                name: savedUser.name,
+                email: savedUser.email,
+                address: savedUser.address,
+                isAdministrator: savedUser.isAdministrator,
+                birthDate: savedUser.birthDate,
+                gender: savedUser.gender,
+                socialMediaUrls: savedUser.socialMediaUrls,
+                isActive: user.isActive,
+            };
+        });
+    }
+    /**
+     * This function is used to either disable a user account or to delete the account from the database.
+     * If the logged-in user is an admin (role in req.role === "a") and performs the "delete" endpoint request,
+     * inactivateAccount is set to false, and the user is deleted from the database.
+     * Otherwise, the user himself deactivates his account, and inactivateAccount is set to true.
+     * @param userID The ID of the user to be deactivated or deleted.
+     * @param inactivateAccount If true, user.isActive is set to false and the user object remains in the database; otherwise, the admin deletes the user from the database.
+     * @returns true if the user was deleted or inactivated, false if no user was deleted.
+     */
+    deleteUser(userID, inactivateAccount) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!userID) {
+                throw new Error("invalid userID, can not delete/inactivate account");
+            }
+            const u = yield UserModel_1.User.findOne({ _id: userID }).exec();
+            if (!u) {
+                throw new Error("User not found, probably invalid userID or user is already deleted");
+            }
+            if (inactivateAccount) {
+                u.isActive = false;
+                const user = yield u.save();
+                return !user.isActive;
+            }
+            else {
+                const res = yield UserModel_1.User.deleteOne({ _id: userID });
+                return res.deletedCount == 1;
             }
         });
     }

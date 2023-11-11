@@ -9,11 +9,11 @@ const path_1 = __importDefault(require("path"));
 //Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path_1.default.join(__dirname, '/uploads/'));
+        cb(null, path_1.default.join(__dirname, "/uploads/"));
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
-    }
+    },
 });
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === "image/jpg" ||

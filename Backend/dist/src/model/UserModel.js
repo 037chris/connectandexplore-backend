@@ -30,13 +30,13 @@ const addressSchema = new mongoose_1.Schema({
     postalCode: { type: String, required: true },
     city: { type: String, required: true },
     stateOrRegion: String,
-    country: { type: String, required: true }
+    country: { type: String, required: true },
 });
 const userSchema = new mongoose_1.Schema({
     email: { type: String, required: true, unique: true },
     name: {
         first: { type: String, required: true },
-        last: { type: String, required: true }
+        last: { type: String, required: true },
     },
     password: { type: String, required: true },
     isAdministrator: { type: Boolean, default: false },
@@ -47,7 +47,8 @@ const userSchema = new mongoose_1.Schema({
     socialMediaUrls: {
         facebook: String,
         instagram: String,
-    }
+    },
+    isActive: { type: Boolean, default: true },
 });
 userSchema.pre("save", function () {
     return __awaiter(this, void 0, void 0, function* () {
@@ -57,7 +58,15 @@ userSchema.pre("save", function () {
         }
     });
 });
-//updateOne method wäre hier aber dc nachricht zu lang
+userSchema.pre("updateOne", { document: false, query: true }, function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        const update = this.getUpdate();
+        if ((update === null || update === void 0 ? void 0 : update.password) != null) {
+            const hashedPassword = yield bcryptjs_1.default.hash(update.password, 10);
+            update.password = hashedPassword;
+        }
+    });
+});
 userSchema.method("isCorrectPassword", function (password) {
     return __awaiter(this, void 0, void 0, function* () {
         const isPW = yield bcryptjs_1.default.compare(password, this.password);
