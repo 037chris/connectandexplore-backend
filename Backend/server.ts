@@ -11,6 +11,7 @@ import swaggerDocs from "./src/utils/swagger";
 import UserRoute from "./src/routes/UserRoute";
 
 import UsersRouter from './src/routes/UsersRouter';
+import loginRouter from "./src/routes/login";
 const app: Express = express();
 
 /* Routes */
@@ -30,6 +31,8 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 app.use('/api/users', UserRoute);
+app.use('/api', UsersRouter);
+app.use('/api/login',loginRouter);
 swaggerDocs(app, 443);
 app.use((req, res, next) => {
   res.status(404).json("Not Found");

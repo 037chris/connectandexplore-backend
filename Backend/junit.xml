@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="17" failures="0" errors="0" time="17.694">
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T17:10:55" time="14.143" tests="3">
-    <testcase classname="userModel test create User" name="userModel test create User" time="0.493">
+<testsuites name="jest tests" tests="17" failures="0" errors="0" time="15.025">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T16:50:14" time="11.476" tests="3">
+    <testcase classname="userModel test create User" name="userModel test create User" time="0.61">
     </testcase>
-    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.558">
+    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.661">
     </testcase>
-    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.475">
-    </testcase>
-  </testsuite>
-  <testsuite name="User Registration" errors="0" failures="0" skipped="0" timestamp="2023-11-11T17:10:55" time="15.051" tests="3">
-    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="1.445">
-    </testcase>
-    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.014">
-    </testcase>
-    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.013">
+    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.481">
     </testcase>
   </testsuite>
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T17:10:55" time="16.004" tests="11">
-    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.53">
+  <testsuite name="User Registration" errors="0" failures="0" skipped="0" timestamp="2023-11-11T16:50:14" time="12.59" tests="3">
+    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="1.383">
     </testcase>
-    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.431">
+    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.018">
     </testcase>
-    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.415">
+    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.016">
     </testcase>
-    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.384">
+  </testsuite>
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T16:50:14" time="13.5" tests="11">
+    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.756">
     </testcase>
-    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.269">
+    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.48">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.616">
+    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.451">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.115">
+    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.356">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.22">
+    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.252">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.111">
+    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.643">
     </testcase>
-    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.119">
+    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.105">
     </testcase>
-    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.122">
+    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.224">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.105">
+    </testcase>
+    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.118">
+    </testcase>
+    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.116">
     </testcase>
   </testsuite>
 </testsuites>
