@@ -227,7 +227,7 @@ export class UserService {
     const u = await User.findOne({ _id: userID }).exec();
     if (!u) {
       throw new Error(
-        "User not found, probably invalid userID or user is already deleted"
+        "User not found, probably invalid userID or user is already deleted",
       );
     }
     if (inactivateAccount) {

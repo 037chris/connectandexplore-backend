@@ -1,15 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="14.993">
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-10T13:39:11" time="10.118" tests="1">
-    <testcase classname="userModel test create User" name="userModel test create User" time="0.104">
+<testsuites name="jest tests" tests="18" failures="2" errors="0" time="6.513">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T17:15:48" time="4.284" tests="3">
+    <testcase classname="userModel test create User" name="userModel test create User" time="0.223">
+    </testcase>
+    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.248">
+    </testcase>
+    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.168">
     </testcase>
   </testsuite>
-  <testsuite name="User Registration" errors="0" failures="0" skipped="0" timestamp="2023-11-10T13:39:11" time="13.596" tests="3">
-    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="0.58">
+  <testsuite name="userModel test" errors="0" failures="1" skipped="0" timestamp="2023-11-11T17:15:48" time="4.914" tests="1">
+    <testcase classname="userModel test getUsers" name="userModel test getUsers" time="0.383">
+      <failure>Error: Incorrect State for operation: &quot;starting&quot;, allowed States: &quot;[new,stopped]&quot;
+This may be because of using a v6.x way of calling functions, look at the following guide if anything applies:
+https://nodkz.github.io/mongodb-memory-server/docs/guides/migration/migrate7#no-function-other-than-start-create-ensureinstance-will-be-starting-anything
+    at MongoMemoryServer.start (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:284:15)
+    at start (C:\Users\sittn\Projekt\connectandexplore\Backend\database\db.ts:8:16)
+    at Generator.next (&lt;anonymous&gt;)
+    at C:\Users\sittn\Projekt\connectandexplore\Backend\database\db.ts:1257:39
+    at new Promise (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt;.__awaiter (C:\Users\sittn\Projekt\connectandexplore\Backend\database\db.ts:1206:10)
+    at __awaiter (C:\Users\sittn\Projekt\connectandexplore\Backend\database\db.ts:7:35)
+    at C:\Users\sittn\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:64:38
+    at Generator.next (&lt;anonymous&gt;)
+    at C:\Users\sittn\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:8:71
+    at new Promise (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt;.__awaiter (C:\Users\sittn\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:4:12)
+    at Object.&lt;anonymous&gt; (C:\Users\sittn\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:64:24)
+    at Promise.then.completed (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusHook (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:281:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTestsForDescribeBlock (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:95:7)
+    at _runTestsForDescribeBlock (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\sittn\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+      <failure>Error: listen EADDRINUSE: address already in use :::443
+    at Server.setupListenHandle [as _listen2] (node:net:1872:16)
+    at listenInCluster (node:net:1920:12)
+    at Server.listen (node:net:2008:7)
+    at listen (C:\Users\sittn\Projekt\connectandexplore\Backend\server.ts:45:12)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
     </testcase>
-    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.01">
+  </testsuite>
+  <testsuite name="User Registration" errors="0" failures="1" skipped="0" timestamp="2023-11-11T17:15:48" time="4.957" tests="3">
+    <testcase classname="User Registration should register a new user" name="User Registration should register a new user" time="0.515">
+      <failure>Error: listen EADDRINUSE: address already in use :::443
+    at Server.setupListenHandle [as _listen2] (node:net:1872:16)
+    at listenInCluster (node:net:1920:12)
+    at Server.listen (node:net:2008:7)
+    at listen (C:\Users\sittn\Projekt\connectandexplore\Backend\server.ts:45:12)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
     </testcase>
-    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.007">
+    <testcase classname="User Registration user already exist" name="User Registration user already exist" time="0.007">
+    </testcase>
+    <testcase classname="User Registration Cannot register user - required data missed" name="User Registration Cannot register user - required data missed" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T17:15:48" time="5.653" tests="11">
+    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.215">
+    </testcase>
+    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.178">
+    </testcase>
+    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.15">
+    </testcase>
+    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.146">
+    </testcase>
+    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.141">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.332">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.067">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.132">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.069">
+    </testcase>
+    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.07">
+    </testcase>
+    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.068">
     </testcase>
   </testsuite>
 </testsuites>

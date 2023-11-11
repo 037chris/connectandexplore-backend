@@ -32,3 +32,10 @@ export type addressResource = {
   stateOrRegion?: String;
   country: String;
 };
+
+export type LoginResource = {
+  /** The JWT */
+  access_token: string;
+  /** Constant value */
+  token_type: "Bearer";
+};
