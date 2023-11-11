@@ -1,53 +1,54 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyJWT = exports.verifyPasswordAndCreateJWT = void 0;
 const jsonwebtoken_1 = require("jsonwebtoken");
 const UserModel_1 = require("../model/UserModel");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 /**
  * @param email E-Mail-Adresse des Users
  * @param password Das Passwort des Users
  * @returns JWT als String, im JWT ist sub gesetzt mit der Mongo-ID des Users als String sowie role mit "u" oder "a" (User oder Admin);
  *      oder undefined wenn Authentifizierung fehlschlägt.
  */
-function verifyPasswordAndCreateJWT(email, password) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const users = yield UserModel_1.User.find({ email: email, isActive: true }).exec();
-        if (!users || users.length != 1) {
-            return undefined;
-        }
-        const user = users[0];
-        if (!(yield user.isCorrectPassword(password))) {
-            return undefined;
-        }
-        const secret = process.env.JWT_SECRET;
-        if (!secret) {
-            throw new Error("JWT_SECRET not set");
-        }
-        const timeInSec = Math.floor(Date.now() / 1000);
-        const ttl = process.env.JWT_TTL;
-        if (!ttl) {
-            throw new Error("TTL not set");
-        }
-        const exp = timeInSec + parseInt(ttl);
-        const role = user.isAdministrator ? "a" : "u";
-        const payload = {
-            sub: user.id,
-            iat: timeInSec,
-            exp: exp,
-            role: role,
-        };
-        const jwtString = (0, jsonwebtoken_1.sign)(payload, secret, { algorithm: "HS256" });
-        return jwtString;
-    });
+async function verifyPasswordAndCreateJWT(email, password) {
+    console.log("email:");
+    console.log(email);
+    const users = await UserModel_1.User.find({ email: email, isActive: true }).exec();
+    console.log("users:");
+    console.log(users);
+    if (!users || users.length != 1) {
+        return undefined;
+    }
+    const user = users[0];
+    if (!(await user.isCorrectPassword(password))) {
+        return undefined;
+    }
+    const secret = process.env.JWT_SECRET;
+    console.log(secret);
+    if (!secret) {
+        throw new Error("JWT_SECRET not set");
+    }
+    const timeInSec = Math.floor(Date.now() / 1000);
+    const ttl = process.env.JWT_TTL;
+    if (!ttl) {
+        throw new Error("TTL not set");
+    }
+    const exp = timeInSec + parseInt(ttl);
+    const role = user.isAdministrator ? "a" : "u";
+    const payload = {
+        sub: user.id,
+        iat: timeInSec,
+        exp: exp,
+        role: role,
+    };
+    const jwtString = (0, jsonwebtoken_1.sign)(payload, secret, { algorithm: "HS256" });
+    console.log("payload:");
+    console.log(payload);
+    return jwtString;
 }
 exports.verifyPasswordAndCreateJWT = verifyPasswordAndCreateJWT;
 /**

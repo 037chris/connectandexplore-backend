@@ -2,13 +2,13 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-const mongod = new MongoMemoryServer();
+let mongod: any;
 
 export const connect = async () => {
-  await mongod.start();
-  const uri = await mongod.getUri();
+  mongod = await MongoMemoryServer.create();
+  const uri = mongod.getUri();
   await mongoose
-    .connect(uri, {"dbName": "ConnectAndExplore"})
+    .connect(uri, { dbName: "ConnectAndExplore" })
     .then((_result) => console.log("connected...."))
     .catch((err) => console.log(`Cannot connect => ${err}`));
 };

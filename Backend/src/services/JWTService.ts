@@ -1,6 +1,7 @@
 import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { User } from "../model/UserModel";
-
+import dotenv from "dotenv";
+dotenv.config();
 /**
  * @param email E-Mail-Adresse des Users
  * @param password Das Passwort des Users
@@ -9,7 +10,7 @@ import { User } from "../model/UserModel";
  */
 export async function verifyPasswordAndCreateJWT(
   email: string,
-  password: string,
+  password: string
 ): Promise<string | undefined> {
   const users = await User.find({ email: email, isActive: true }).exec();
   if (!users || users.length != 1) {

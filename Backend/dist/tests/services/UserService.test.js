@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../../database/db");
 const UserModel_1 = require("../../src/model/UserModel");
@@ -40,46 +31,46 @@ const u = {
 const userService = new UserService_1.UserService();
 const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
 describe("userModel test", () => {
-    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () { return yield (0, db_1.connect)(); }));
-    afterEach(() => __awaiter(void 0, void 0, void 0, function* () { return yield (0, db_1.clearDatabase)(); }));
-    afterAll(() => __awaiter(void 0, void 0, void 0, function* () { return yield (0, db_1.closeDatabase)(); }));
-    test("createUser function", () => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userService.createUser(u);
+    beforeAll(async () => await (0, db_1.connect)());
+    afterEach(async () => await (0, db_1.clearDatabase)());
+    afterAll(async () => await (0, db_1.closeDatabase)());
+    test("createUser function", async () => {
+        const user = await userService.createUser(u);
         expect(user.id).toBeDefined();
         expect(user.name.first).toBe(u.name.first);
         expect(user.name.last).toBe(u.name.last);
         expect(user.email).toBe(u.email);
         expect(user.password).toBeUndefined();
-        const res = yield UserModel_1.User.findById(user.id);
-        expect(yield res.isCorrectPassword("12abcAB!")).toBeTruthy();
+        const res = await UserModel_1.User.findById(user.id);
+        expect(await res.isCorrectPassword("12abcAB!")).toBeTruthy();
         expect(user.address).toMatchObject(a);
         expect(user.birthDate).toBe(u.birthDate);
         expect(user.gender).toBe(u.gender);
         expect(user.isActive).toBeTruthy();
         expect(user.profilePicture).toBe(u.profilePicture);
         expect(user.socialMediaUrls).toMatchObject(u.socialMediaUrls);
-    }));
-    test("getUser works and returns user without password", () => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userService.createUser(u);
-        yield expect(userService.getUser(undefined)).rejects.toThrow("Can not get user, userID is invalid");
-        yield expect(userService.getUser(NON_EXISTING_ID)).rejects.toThrow(`No user with id: ${NON_EXISTING_ID} exists.`);
-        const res = yield userService.getUser(user.id);
+    });
+    test("getUser works and returns user without password", async () => {
+        const user = await userService.createUser(u);
+        await expect(userService.getUser(undefined)).rejects.toThrow("Can not get user, userID is invalid");
+        await expect(userService.getUser(NON_EXISTING_ID)).rejects.toThrow(`No user with id: ${NON_EXISTING_ID} exists.`);
+        const res = await userService.getUser(user.id);
         expect(user.id).toBeDefined();
         expect(user.name.first).toBe(u.name.first);
         expect(user.name.last).toBe(u.name.last);
         expect(user.email).toBe(u.email);
         expect(user.password).toBeUndefined();
-        const r = yield UserModel_1.User.findById(user.id);
-        expect(yield r.isCorrectPassword("12abcAB!")).toBeTruthy();
+        const r = await UserModel_1.User.findById(user.id);
+        expect(await r.isCorrectPassword("12abcAB!")).toBeTruthy();
         expect(user.address).toMatchObject(a);
         expect(user.birthDate).toBe(u.birthDate);
         expect(user.gender).toBe(u.gender);
         expect(user.isActive).toBeTruthy();
         expect(user.profilePicture).toBe(u.profilePicture);
         expect(user.socialMediaUrls).toMatchObject(u.socialMediaUrls);
-    }));
-    test("get all users also returns inactive users, getUser(userID) throws error at inactive user.", () => __awaiter(void 0, void 0, void 0, function* () {
-        const u1 = yield userService.createUser(u);
+    });
+    test("get all users also returns inactive users, getUser(userID) throws error at inactive user.", async () => {
+        const u1 = await userService.createUser(u);
         const user1 = {
             id: u1.id,
             email: u1.email,
@@ -96,7 +87,7 @@ describe("userModel test", () => {
         u.isActive = false;
         u.email = "Jane@doe.com";
         u.name.first = "Jane";
-        const u2 = yield UserModel_1.User.create(u);
+        const u2 = await UserModel_1.User.create(u);
         const user2 = {
             id: u2.id,
             email: u2.email,
@@ -110,17 +101,17 @@ describe("userModel test", () => {
             gender: u2.gender,
             isActive: u2.isActive,
         };
-        yield expect(userService.getUser(u2.id)).rejects.toThrow(`No user with id: ${u2.id} exists.`);
-        const users = yield userService.getUsers();
+        await expect(userService.getUser(u2.id)).rejects.toThrow(`No user with id: ${u2.id} exists.`);
+        const users = await userService.getUsers();
         expect(users.users.length).toBe(2);
         expect(users.users[0].isActive).toBe(user1.isActive);
         expect(users.users[1].isActive).toBe(user2.isActive);
-    }));
-    test("updateUserWithAdmin user update validations", () => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userService.createUser(u);
+    });
+    test("updateUserWithAdmin user update validations", async () => {
+        const user = await userService.createUser(u);
         const existingUserId = user.id;
         const updatedUser = Object.assign(Object.assign({}, u), { id: existingUserId, email: "newemail@example.com" });
-        const result = yield userService.updateUserWithAdmin(updatedUser);
+        const result = await userService.updateUserWithAdmin(updatedUser);
         expect(result.id).toBeDefined();
         expect(result.name.first).toBe(updatedUser.name.first);
         expect(result.name.last).toBe(updatedUser.name.last);
@@ -134,17 +125,69 @@ describe("userModel test", () => {
         expect(result.socialMediaUrls).toMatchObject(updatedUser.socialMediaUrls);
         //Test for missing userID
         const userWithNoId = Object.assign(Object.assign({}, u), { id: undefined });
-        yield expect(userService.updateUserWithAdmin(userWithNoId)).rejects.toThrow("User id is missing, cannot update User.");
+        await expect(userService.updateUserWithAdmin(userWithNoId)).rejects.toThrow("User id is missing, cannot update User.");
         //Test for non-existing userID
         const nonExistingUser = Object.assign(Object.assign({}, u), { id: NON_EXISTING_ID });
-        yield expect(userService.updateUserWithAdmin(nonExistingUser)).rejects.toThrow(`No user with id: ${NON_EXISTING_ID} found, cannot update`);
-    }));
-    test("duplicate email check", () => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userService.createUser(u);
-        yield userService.createUser(Object.assign(Object.assign({}, u), { email: "duplicate@example.com" }));
+        await expect(userService.updateUserWithAdmin(nonExistingUser)).rejects.toThrow(`No user with id: ${NON_EXISTING_ID} found, cannot update`);
+    });
+    test("updateUserWithAdmin duplicate email check", async () => {
+        const user = await userService.createUser(u);
+        await userService.createUser(Object.assign(Object.assign({}, u), { email: "duplicate@example.com" }));
         //Create another user with a different ID but same email for duplicate check
         const userWithDuplicateEmail = Object.assign(Object.assign({}, user), { email: "duplicate@example.com" });
-        yield expect(userService.updateUserWithAdmin(userWithDuplicateEmail)).rejects.toThrow("Duplicate email");
-    }));
+        await expect(userService.updateUserWithAdmin(userWithDuplicateEmail)).rejects.toThrow("Duplicate email");
+    });
+    test("updateUserWithPw update with old password to update password", async () => {
+        const oldPw = u.password;
+        const user = await userService.createUser(u);
+        user.name.first = "Jane";
+        user.password = "newPassword123!";
+        const updatedUser = await userService.updateUserWithPw(user, oldPw);
+        expect(updatedUser.name.first).toBe("Jane");
+        const Jane = await UserModel_1.User.findById(user.id).exec();
+        expect(Jane.password).toBeDefined();
+        expect(await Jane.isCorrectPassword("newPassword123!")).toBeTruthy();
+        //Test if user does not update Password on wrong old password.
+        await expect(userService.updateUserWithPw(user, "wrongPassword")).rejects.toThrow("invalid oldPassword, can not update User!");
+    });
+    test("updateUserWithPw throws errors on invalid userdata", async () => {
+        const user = await userService.createUser(u);
+        user.id = undefined;
+        user.name.first = "Jane";
+        await expect(userService.updateUserWithPw(user)).rejects.toThrow("User id is missing, cannot update User.");
+        user.id = NON_EXISTING_ID;
+        await expect(userService.updateUserWithPw(user)).rejects.toThrow(`No user with id: ${NON_EXISTING_ID} found, cannot update`);
+    });
+    test("updateUserWithPw duplicate email check", async () => {
+        const user = await userService.createUser(u);
+        await userService.createUser(Object.assign(Object.assign({}, u), { email: "duplicate@example.com" }));
+        //Create another user with a different ID but same email for duplicate check
+        const userWithDuplicateEmail = Object.assign(Object.assign({}, user), { email: "duplicate@example.com" });
+        await expect(userService.updateUserWithPw(userWithDuplicateEmail)).rejects.toThrow("Duplicate email");
+    });
+    test("updateUserWithPw can not change isActive status of user", async () => {
+        const user = await userService.createUser(u);
+        user.isActive = false;
+        user.name.first = "Jane";
+        const res = await userService.updateUserWithPw(user);
+        expect(res.isActive).toBeTruthy();
+        expect(res.name.first).toBe("Jane");
+    });
+    test("deleteUser deletes user from database (when performed by an admin)", async () => {
+        const user = await userService.createUser(u);
+        const res = await userService.deleteUser(user.id, false);
+        expect(res).toBeTruthy();
+        const noUserFound = await UserModel_1.User.findById(user.id);
+        expect(noUserFound).toBeNull();
+        await expect(userService.deleteUser(NON_EXISTING_ID, false)).rejects.toThrow("User not found, probably invalid userID or user is already deleted");
+        await expect(userService.deleteUser("", false)).rejects.toThrow("invalid userID, can not delete/inactivate account");
+    });
+    test("deleteUser inactivates acc when inactivateAccount = true", async () => {
+        const user = await userService.createUser(u);
+        const res = await userService.deleteUser(user.id, true);
+        expect(res).toBeTruthy();
+        const inactiveUser = await UserModel_1.User.findById(user.id);
+        expect(inactiveUser.isActive).toBeFalsy();
+    });
 });
 //# sourceMappingURL=UserService.test.js.map

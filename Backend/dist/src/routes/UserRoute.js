@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -90,12 +81,12 @@ const userService = new UserService_1.UserService();
  *             example:
  *               Error: Registration failed
  */
-UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), async (req, res) => {
     try {
         if (req.file) {
             req.body.profilePicture = `/uploads/${req.file.filename}`;
         }
-        const newUser = yield userService.registerUser(req.body);
+        const newUser = await userService.registerUser(req.body);
         return res.status(201).json(newUser);
     }
     catch (error) {
@@ -106,8 +97,8 @@ UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), (req,
             return res.status(500).json({ Error: "Registration failed" });
         }
     }
-}));
-UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.param)("userid").isMongoId(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+});
+UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.param)("userid").isMongoId(), async (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty) {
         return res.status(400).json({ errors: errors.array() });
@@ -119,14 +110,14 @@ UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_
     }
     else {
         try {
-            const user = yield userService.getUser(userid);
+            const user = await userService.getUser(userid);
         }
         catch (err) {
             res.status(404);
             next(err);
         }
     }
-}));
+});
 UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.body)("email").isEmail().normalizeEmail(), (0, express_validator_1.body)("isAdministrator").isBoolean(), (0, express_validator_1.body)("password").isStrongPassword(), (0, express_validator_1.body)("oldPassword").isStrongPassword(), (0, express_validator_1.body)("name.first")
     .isString()
     .isLength({ min: 3, max: 100 })
@@ -143,7 +134,7 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_
     .isString()
     .withMessage("invalid Appartmentnumber."), (0, express_validator_1.body)("profilePicture").optional().isString(), //??
 (0, express_validator_1.body)("birthDate").isDate(), (0, express_validator_1.body)("gender").isString().notEmpty(), //isString() ist vlt unnötig
-(0, express_validator_1.body)("socialMediaUrls.facebook").isString().notEmpty(), (0, express_validator_1.body)("socialMediaUrls.instagram").isString().notEmpty(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+(0, express_validator_1.body)("socialMediaUrls.facebook").isString().notEmpty(), (0, express_validator_1.body)("socialMediaUrls.instagram").isString().notEmpty(), async (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty) {
         return res.status(400).json({ errors: errors.array() });
@@ -153,7 +144,7 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_
     userResource.id = userid;
     if (req.role === "a") {
         try {
-            const updatedUser = yield userService.updateUserWithAdmin(userResource);
+            const updatedUser = await userService.updateUserWithAdmin(userResource);
             res.status(200).send(updatedUser);
         }
         catch (err) {
@@ -169,7 +160,7 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_
         else {
             try {
                 const oldPw = req.body.oldPassword;
-                const updatedUser = yield userService.updateUserWithPw(userResource, oldPw);
+                const updatedUser = await userService.updateUserWithPw(userResource, oldPw);
                 res.status(200).send(updatedUser);
             }
             catch (err) {
@@ -178,17 +169,17 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_
             }
         }
     }
-}));
-UserRouter.delete("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.param)("userid").isMongoId(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+});
+UserRouter.delete("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.param)("userid").isMongoId(), async (req, res, next) => {
     const userid = req.params.userid;
     try {
         if (req.role === "a") {
-            const isDeleted = yield userService.deleteUser(userid, false);
+            const isDeleted = await userService.deleteUser(userid, false);
             res.status(204).send(isDeleted);
         }
         else {
             if (req.userId === userid) {
-                const isDeleted = yield userService.deleteUser(userid, true);
+                const isDeleted = await userService.deleteUser(userid, true);
                 res.status(204).send(isDeleted);
             }
             else {
@@ -201,6 +192,6 @@ UserRouter.delete("/:userid", authentication_1.requiresAuthentication, (0, expre
         res.send(403);
         next(new Error("Invalid authorization, can not delete user."));
     }
-}));
+});
 exports.default = UserRouter;
 //# sourceMappingURL=UserRoute.js.map

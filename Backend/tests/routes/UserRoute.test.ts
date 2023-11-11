@@ -77,7 +77,7 @@ describe("userRoute test", () => {
     token = janeLoginResource.access_token;
   });
   afterEach(async () => await clearDatabase());
-  afterAll(async () => await closeDatabase());
+  //afterAll(async () => await closeDatabase());
 
   test("getUsers", async () => {
     const req = request(app);
