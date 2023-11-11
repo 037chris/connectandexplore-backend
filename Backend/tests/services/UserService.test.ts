@@ -195,7 +195,7 @@ describe("userModel test", () => {
     //Create another user with a different ID but same email for duplicate check
     const userWithDuplicateEmail = { ...user, email: "duplicate@example.com" };
     await expect(
-      userService.updateUserWithAdmin(userWithDuplicateEmail),
+      userService.updateUserWithPw(userWithDuplicateEmail),
     ).rejects.toThrow("Duplicate email");
   });
 
