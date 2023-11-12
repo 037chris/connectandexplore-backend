@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="15" failures="1" errors="0" time="13.152">
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T20:19:03" time="9.534" tests="3">
-    <testcase classname="userModel test create User" name="userModel test create User" time="0.402">
+<testsuites name="jest tests" tests="15" failures="1" errors="0" time="14.428">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T20:26:42" time="11.001" tests="3">
+    <testcase classname="userModel test create User" name="userModel test create User" time="0.397">
     </testcase>
-    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.467">
+    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.449">
     </testcase>
-    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.352">
+    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.39">
     </testcase>
   </testsuite>
-  <testsuite name="userRoute test" errors="0" failures="1" skipped="0" timestamp="2023-11-11T20:19:03" time="11.679" tests="1">
-    <testcase classname="userRoute test getUsers" name="userRoute test getUsers" time="0.782">
+  <testsuite name="userRoute test" errors="0" failures="1" skipped="0" timestamp="2023-11-11T20:26:42" time="12.793" tests="1">
+    <testcase classname="userRoute test getUsers" name="userRoute test getUsers" time="0.653">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
-Expected: 2023-11-11T20:19:13.402Z
-Received: &quot;2023-11-11T20:19:13.402Z&quot;
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:97:38)
+Expected: &quot;Sat Nov 11 2023 21:26:53 GMT+0100 (Mitteleuropäische Normalzeit)&quot;
+Received: &quot;2023-11-11T20:26:53.150Z&quot;
+    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:97:49)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T20:19:03" time="11.719" tests="11">
-    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.416">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-11T20:26:42" time="12.99" tests="11">
+    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.403">
     </testcase>
-    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.379">
+    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.33">
     </testcase>
-    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.319">
+    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.379">
     </testcase>
-    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.405">
+    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.349">
     </testcase>
-    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.423">
+    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.327">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.634">
+    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.663">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.128">
+    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.114">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.282">
+    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.254">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.146">
+    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.118">
     </testcase>
-    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.152">
+    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.141">
     </testcase>
-    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.129">
+    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.148">
     </testcase>
   </testsuite>
 </testsuites>

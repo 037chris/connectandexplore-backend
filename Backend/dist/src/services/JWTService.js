@@ -15,11 +15,7 @@ dotenv_1.default.config();
  *      oder undefined wenn Authentifizierung fehlschlägt.
  */
 async function verifyPasswordAndCreateJWT(email, password) {
-    console.log("email:");
-    console.log(email);
     const users = await UserModel_1.User.find({ email: email, isActive: true }).exec();
-    console.log("users:");
-    console.log(users);
     if (!users || users.length != 1) {
         return undefined;
     }
@@ -28,7 +24,6 @@ async function verifyPasswordAndCreateJWT(email, password) {
         return undefined;
     }
     const secret = process.env.JWT_SECRET;
-    console.log(secret);
     if (!secret) {
         throw new Error("JWT_SECRET not set");
     }
@@ -46,8 +41,6 @@ async function verifyPasswordAndCreateJWT(email, password) {
         role: role,
     };
     const jwtString = (0, jsonwebtoken_1.sign)(payload, secret, { algorithm: "HS256" });
-    console.log("payload:");
-    console.log(payload);
     return jwtString;
 }
 exports.verifyPasswordAndCreateJWT = verifyPasswordAndCreateJWT;

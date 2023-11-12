@@ -1,6 +1,6 @@
 import { User } from "../model/UserModel";
 import { usersResource, userResource } from "../Resources";
-
+import sanitizedUser from "../utils/Helpers";
 export class UserService {
   async registerUser(user: any) {
     if (!user || typeof user !== "object") {
@@ -107,7 +107,7 @@ export class UserService {
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
-        `No user with id: ${userResource.id} found, cannot update`,
+        `No user with id: ${userResource.id} found, cannot update`
       );
     }
     if (userResource.name) user.name = userResource.name;
@@ -157,7 +157,7 @@ export class UserService {
    */
   async updateUserWithPw(
     userResource: userResource,
-    oldPw?: string,
+    oldPw?: string
   ): Promise<userResource> {
     if (!userResource.id) {
       throw new Error("User id is missing, cannot update User.");
@@ -165,7 +165,7 @@ export class UserService {
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
-        `No user with id: ${userResource.id} found, cannot update`,
+        `No user with id: ${userResource.id} found, cannot update`
       );
     }
     if (oldPw) {
@@ -219,7 +219,7 @@ export class UserService {
    */
   async deleteUser(
     userID: string,
-    inactivateAccount: boolean,
+    inactivateAccount: boolean
   ): Promise<boolean> {
     if (!userID) {
       throw new Error("invalid userID, can not delete/inactivate account");
@@ -227,7 +227,7 @@ export class UserService {
     const u = await User.findOne({ _id: userID }).exec();
     if (!u) {
       throw new Error(
-        "User not found, probably invalid userID or user is already deleted",
+        "User not found, probably invalid userID or user is already deleted"
       );
     }
     if (inactivateAccount) {

@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import {
   body,
   check,
@@ -87,13 +88,59 @@ const userService = new UserService();
 UserRouter.post(
   "/register",
   upload.single("profilePicture"),
+  [
+    body("email").isEmail(),
+    body("name.first")
+      .isString()
+      .isLength({ min: 3, max: 100 })
+      .withMessage("First name is required."),
+    body("name.last")
+      .isString()
+      .isLength({ min: 3, max: 100 })
+      .withMessage("Last name is required."),
+    body("password").isStrongPassword(),
+    body("isAdministrator").optional().isBoolean(),
+    body("address.street")
+      .notEmpty()
+      .withMessage("Street address is required."),
+    body("address.houseNumber")
+      .notEmpty()
+      .withMessage("House number is required."),
+    body("address.postalCode")
+      .notEmpty()
+      .withMessage("Postal code is required."),
+    body("address.city").notEmpty().withMessage("City is required."),
+    body("address.country").notEmpty().withMessage("Country is required."),
+    body("address.stateOrRegion")
+      .optional()
+      .isString()
+      .withMessage("Invalid State or Region."),
+    body("address.apartmentNumber")
+      .optional()
+      .isString()
+      .withMessage("Invalid Apartment number."),
+    body("profilePicture").optional().isString(),
+    body("birthDate").isDate(),
+    body("gender").isString().notEmpty(),
+    body("socialMediaUrls.facebook").optional().isString(),
+    body("socialMediaUrls.instagram").optional().isString(),
+  ],
   async (req, res) => {
     try {
-      if (req.file) {
-        req.body.profilePicture = `/uploads/${req.file.filename}`;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        if (req.file) {
+          // Delete the file
+          fs.unlinkSync(req.file.path);
+        }
+        return res.status(400).json({ errors: errors.array() });
+      } else {
+        if (req.file) {
+          req.body.profilePicture = `/uploads/${req.file.filename}`;
+        }
+        const newUser = await userService.registerUser(req.body);
+        return res.status(201).json(newUser);
       }
-      const newUser = await userService.registerUser(req.body);
-      return res.status(201).json(newUser);
     } catch (error) {
       if (error.message === "User already exists") {
         return res.status(409).json({ Error: "User already exists" });
@@ -101,7 +148,7 @@ UserRouter.post(
         return res.status(500).json({ Error: "Registration failed" });
       }
     }
-  },
+  }
 );
 
 UserRouter.get(
@@ -114,24 +161,25 @@ UserRouter.get(
       return res.status(400).json({ errors: errors.array() });
     }
     const userid = req.params.userid;
-    if (req.role !== "a" || userid !== req.userId) {
+    if (req.role !== "a" && userid !== req.userId) {
       res.status(403);
       next(new Error("Invalid authorization, can not get User."));
     } else {
       try {
         const user: userResource = await userService.getUser(userid);
+        res.status(200).json(user);
       } catch (err) {
         res.status(404);
         next(err);
       }
     }
-  },
+  }
 );
 
 UserRouter.put(
   "/:userid",
   requiresAuthentication,
-  body("email").isEmail().normalizeEmail(),
+  body("email").isEmail(),
   body("isAdministrator").isBoolean(),
   body("password").isStrongPassword(),
   body("oldPassword").isStrongPassword(),
@@ -189,7 +237,7 @@ UserRouter.put(
           const oldPw = req.body.oldPassword;
           const updatedUser = await userService.updateUserWithPw(
             userResource,
-            oldPw,
+            oldPw
           );
           res.status(200).send(updatedUser);
         } catch (err) {
@@ -198,7 +246,7 @@ UserRouter.put(
         }
       }
     }
-  },
+  }
 );
 
 UserRouter.delete(
@@ -224,6 +272,6 @@ UserRouter.delete(
       res.send(403);
       next(new Error("Invalid authorization, can not delete user."));
     }
-  },
+  }
 );
 export default UserRouter;
