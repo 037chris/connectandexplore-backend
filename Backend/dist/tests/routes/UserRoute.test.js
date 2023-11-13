@@ -70,10 +70,9 @@ describe("userRoute test", () => {
         const janeRes = await req.post(`/api/login`).send(janeLoginData);
         const janeLoginResource = janeRes.body;
         token = janeLoginResource.access_token;
-        console.log(token);
     });
     afterEach(async () => await (0, db_1.clearDatabase)());
-    afterAll(async () => await (0, db_1.closeDatabase)());
+    //afterAll(async () => await closeDatabase());
     test("getUsers", async () => {
         const req = (0, supertest_1.default)(server_1.default);
         const response = await req

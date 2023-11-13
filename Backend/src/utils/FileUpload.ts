@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 //Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -7,7 +8,8 @@ const storage = multer.diskStorage({
   },
 
   filename: function (req: any, file: any, cb: any) {
-    cb(null, file.originalname);
+    const uniqueFilename = `${uuidv4()}-${file.originalname}`;
+    cb(null, uniqueFilename);
   },
 });
 const fileFilter = (req: any, file: any, cb: any) => {
@@ -21,4 +23,9 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(new Error("Image uploaded is not of type jpg/jpeg or png"), false);
   }
 };
-export const upload = multer({ storage: storage, fileFilter: fileFilter });
+// file size : 10 MB limit
+export const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 },
+});

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const fs_1 = __importDefault(require("fs"));
 const express_validator_1 = require("express-validator");
 const UserService_1 = require("../services/UserService");
 const FileUpload_1 = require("../utils/FileUpload");
@@ -81,13 +82,59 @@ const userService = new UserService_1.UserService();
  *             example:
  *               Error: Registration failed
  */
-UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), async (req, res) => {
+UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), [
+    (0, express_validator_1.body)("email").isEmail(),
+    (0, express_validator_1.body)("name.first")
+        .isString()
+        .isLength({ min: 3, max: 100 })
+        .withMessage("First name is required."),
+    (0, express_validator_1.body)("name.last")
+        .isString()
+        .isLength({ min: 3, max: 100 })
+        .withMessage("Last name is required."),
+    (0, express_validator_1.body)("password").isStrongPassword(),
+    (0, express_validator_1.body)("isAdministrator").optional().isBoolean(),
+    (0, express_validator_1.body)("address.street")
+        .notEmpty()
+        .withMessage("Street address is required."),
+    (0, express_validator_1.body)("address.houseNumber")
+        .notEmpty()
+        .withMessage("House number is required."),
+    (0, express_validator_1.body)("address.postalCode")
+        .notEmpty()
+        .withMessage("Postal code is required."),
+    (0, express_validator_1.body)("address.city").notEmpty().withMessage("City is required."),
+    (0, express_validator_1.body)("address.country").notEmpty().withMessage("Country is required."),
+    (0, express_validator_1.body)("address.stateOrRegion")
+        .optional()
+        .isString()
+        .withMessage("Invalid State or Region."),
+    (0, express_validator_1.body)("address.apartmentNumber")
+        .optional()
+        .isString()
+        .withMessage("Invalid Apartment number."),
+    (0, express_validator_1.body)("profilePicture").optional().isString(),
+    (0, express_validator_1.body)("birthDate").isDate(),
+    (0, express_validator_1.body)("gender").isString().notEmpty(),
+    (0, express_validator_1.body)("socialMediaUrls.facebook").optional().isString(),
+    (0, express_validator_1.body)("socialMediaUrls.instagram").optional().isString(),
+], async (req, res) => {
     try {
-        if (req.file) {
-            req.body.profilePicture = `/uploads/${req.file.filename}`;
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            if (req.file) {
+                // Delete the file
+                fs_1.default.unlinkSync(req.file.path);
+            }
+            return res.status(400).json({ errors: errors.array() });
         }
-        const newUser = await userService.registerUser(req.body);
-        return res.status(201).json(newUser);
+        else {
+            if (req.file) {
+                req.body.profilePicture = `/uploads/${req.file.filename}`;
+            }
+            const newUser = await userService.registerUser(req.body);
+            return res.status(201).json(newUser);
+        }
     }
     catch (error) {
         if (error.message === "User already exists") {
@@ -104,13 +151,14 @@ UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_
         return res.status(400).json({ errors: errors.array() });
     }
     const userid = req.params.userid;
-    if (req.role !== "a" || userid !== req.userId) {
+    if (req.role !== "a" && userid !== req.userId) {
         res.status(403);
         next(new Error("Invalid authorization, can not get User."));
     }
     else {
         try {
             const user = await userService.getUser(userid);
+            res.status(200).json(user);
         }
         catch (err) {
             res.status(404);
@@ -118,7 +166,7 @@ UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_
         }
     }
 });
-UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.body)("email").isEmail().normalizeEmail(), (0, express_validator_1.body)("isAdministrator").isBoolean(), (0, express_validator_1.body)("password").isStrongPassword(), (0, express_validator_1.body)("oldPassword").isStrongPassword(), (0, express_validator_1.body)("name.first")
+UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.body)("email").isEmail(), (0, express_validator_1.body)("isAdministrator").isBoolean(), (0, express_validator_1.body)("password").isStrongPassword(), (0, express_validator_1.body)("oldPassword").isStrongPassword(), (0, express_validator_1.body)("name.first")
     .isString()
     .isLength({ min: 3, max: 100 })
     .withMessage("First name is required."), (0, express_validator_1.body)("name.last")
