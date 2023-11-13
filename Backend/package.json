@@ -11,7 +11,7 @@
   },
   "jest": {
     "testTimeout": 30000,
-    "detectOpenHandles": false
+    "detectOpenHandles": true
   },
   "repository": {
     "type": "git",

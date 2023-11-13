@@ -3,8 +3,6 @@ import { body, matchedData, validationResult } from "express-validator";
 import { LoginResource } from "../Resources";
 import { verifyPasswordAndCreateJWT } from "../services/JWTService";
 
-// Implementierung wird Teil eines nächsten Aufgabenblattes.
-
 const loginRouter = express.Router();
 
 /**
@@ -24,7 +22,7 @@ loginRouter.post(
     const resource = matchedData(req);
     const jwtstring = await verifyPasswordAndCreateJWT(
       resource.email,
-      resource.password
+      resource.password,
     );
     if (!jwtstring) {
       res.status(401);
@@ -35,7 +33,7 @@ loginRouter.post(
       token_type: "Bearer",
     };
     res.send(result);
-  }
+  },
 );
 
 export default loginRouter;
