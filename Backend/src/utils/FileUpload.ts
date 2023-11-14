@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 //Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
 const storage = multer.diskStorage({
@@ -23,6 +24,16 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(new Error("Image uploaded is not of type jpg/jpeg or png"), false);
   }
 };
+export function deleteProfilePicture(filename: string): void {
+  try {
+    const filePath = path.join(__dirname, filename);
+    fs.unlinkSync(filePath);
+    console.log(`Deleted profile picture: ${filename}`);
+  } catch (error) {
+    console.error(`Error deleting profile picture: ${filename}`, error);
+    throw error;
+  }
+}
 // file size : 10 MB limit
 export const upload = multer({
   storage: storage,

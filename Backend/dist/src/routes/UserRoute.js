@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const fs_1 = __importDefault(require("fs"));
 const express_validator_1 = require("express-validator");
 const UserService_1 = require("../services/UserService");
 const FileUpload_1 = require("../utils/FileUpload");
@@ -124,7 +123,7 @@ UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), [
         if (!errors.isEmpty()) {
             if (req.file) {
                 // Delete the file
-                fs_1.default.unlinkSync(req.file.path);
+                (0, FileUpload_1.deleteProfilePicture)(req.file.path);
             }
             return res.status(400).json({ errors: errors.array() });
         }
@@ -166,28 +165,72 @@ UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_
         }
     }
 });
-UserRouter.put("/:userid", authentication_1.requiresAuthentication, (0, express_validator_1.body)("email").isEmail(), (0, express_validator_1.body)("isAdministrator").isBoolean(), (0, express_validator_1.body)("password").isStrongPassword(), (0, express_validator_1.body)("oldPassword").isStrongPassword(), (0, express_validator_1.body)("name.first")
-    .isString()
-    .isLength({ min: 3, max: 100 })
-    .withMessage("First name is required."), (0, express_validator_1.body)("name.last")
-    .isString()
-    .isLength({ min: 3, max: 100 })
-    .withMessage("Last name is required."), (0, express_validator_1.body)("address.street").notEmpty().withMessage("Street address is required."), (0, express_validator_1.body)("address.houseNumber")
-    .notEmpty()
-    .withMessage("House number is required."), (0, express_validator_1.body)("address.postalCode").notEmpty().withMessage("Postal code is required."), (0, express_validator_1.body)("address.city").notEmpty().withMessage("City is required."), (0, express_validator_1.body)("address.country").notEmpty().withMessage("Country is required."), (0, express_validator_1.body)("address.stateOrRegion")
-    .optional()
-    .isString()
-    .withMessage("invalid State or Region."), (0, express_validator_1.body)("address.appartmentNumber")
-    .optional()
-    .isString()
-    .withMessage("invalid Appartmentnumber."), (0, express_validator_1.body)("profilePicture").optional().isString(), //??
-(0, express_validator_1.body)("birthDate").isDate(), (0, express_validator_1.body)("gender").isString().notEmpty(), //isString() ist vlt unnötig
-(0, express_validator_1.body)("socialMediaUrls.facebook").isString().notEmpty(), (0, express_validator_1.body)("socialMediaUrls.instagram").isString().notEmpty(), async (req, res, next) => {
+UserRouter.put("/:userid", authentication_1.requiresAuthentication, FileUpload_1.upload.single("profilePicture"), [
+    (0, express_validator_1.body)("email").isEmail(),
+    (0, express_validator_1.body)("isAdministrator").isBoolean(),
+    (0, express_validator_1.body)("password").isStrongPassword(),
+    (0, express_validator_1.body)("oldPassword").isStrongPassword(),
+    (0, express_validator_1.body)("name.first")
+        .optional()
+        .isString()
+        .isLength({ min: 3, max: 100 })
+        .withMessage("First name is required."),
+    (0, express_validator_1.body)("name.last")
+        .optional()
+        .isString()
+        .isLength({ min: 3, max: 100 })
+        .withMessage("Last name is required."),
+    (0, express_validator_1.body)("address.street")
+        .notEmpty()
+        .withMessage("Street address is required."),
+    (0, express_validator_1.body)("address.houseNumber")
+        .notEmpty()
+        .withMessage("House number is required."),
+    (0, express_validator_1.body)("address.postalCode")
+        .notEmpty()
+        .withMessage("Postal code is required."),
+    (0, express_validator_1.body)("address.city").notEmpty().withMessage("City is required."),
+    (0, express_validator_1.body)("address.country").notEmpty().withMessage("Country is required."),
+    (0, express_validator_1.body)("address.stateOrRegion")
+        .optional()
+        .isString()
+        .withMessage("invalid State or Region."),
+    (0, express_validator_1.body)("address.appartmentNumber")
+        .optional()
+        .isString()
+        .withMessage("invalid Appartmentnumber."),
+    (0, express_validator_1.body)("profilePicture").optional().isString(),
+    (0, express_validator_1.body)("birthDate").isDate(),
+    (0, express_validator_1.body)("gender").isString().notEmpty(),
+    (0, express_validator_1.body)("socialMediaUrls.facebook").isString().notEmpty(),
+    (0, express_validator_1.body)("socialMediaUrls.instagram").isString().notEmpty(),
+], async (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty) {
+        if (req.file) {
+            // Delete the file
+            (0, FileUpload_1.deleteProfilePicture)(req.file.path);
+        }
         return res.status(400).json({ errors: errors.array() });
     }
     const userid = req.params.userid;
+    if (req.role === "a" || userid === req.userId) {
+        const user = await userService.getUser(userid);
+        try {
+            if (req.file) {
+                req.body.profilePicture = `/uploads/${req.file.filename}`;
+                if (user.profilePicture) {
+                    (0, FileUpload_1.deleteProfilePicture)(user.profilePicture);
+                }
+            }
+        }
+        catch (err) {
+            (0, FileUpload_1.deleteProfilePicture)(req.body.profilePicture);
+            res.status(404).json({
+                Error: "Can not delete Profile picture - no such file or directory",
+            });
+        }
+    }
     const userResource = (0, express_validator_1.matchedData)(req);
     userResource.id = userid;
     if (req.role === "a") {

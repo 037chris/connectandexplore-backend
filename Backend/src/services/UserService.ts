@@ -1,6 +1,5 @@
 import { User } from "../model/UserModel";
 import { usersResource, userResource } from "../Resources";
-import sanitizedUser from "../utils/Helpers";
 export class UserService {
   async registerUser(user: any) {
     if (!user || typeof user !== "object") {
@@ -176,7 +175,8 @@ export class UserService {
       if (userResource.password) user.password = userResource.password;
     }
 
-    if (userResource.name) user.name = userResource.name;
+    if (userResource.name.first) user.name.first = userResource.name.first;
+    if (userResource.name.last) user.name.last = userResource.name.last;
     if (userResource.email) {
       userResource.email = userResource.email.toLowerCase();
       if (userResource.email !== user.email) {
@@ -205,6 +205,7 @@ export class UserService {
       gender: savedUser.gender,
       socialMediaUrls: savedUser.socialMediaUrls,
       isActive: user.isActive,
+      profilePicture: savedUser.profilePicture,
     };
   }
 
