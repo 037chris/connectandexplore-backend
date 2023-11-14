@@ -40,3 +40,27 @@ export type LoginResource = {
   /** Constant value */
   token_type: "Bearer";
 };
+
+export type eventResource = {
+  id?: string;
+  name: string;
+  creator: string;
+  description: string;
+  price: number;
+  date: Date;
+  address: addressResource;
+  thumbnail?: string;
+  category: string[];
+  chat: string;
+  participants: string[];
+};
+
+export type eventsResource = {
+  events: eventResource[];
+};
+
+export type categoryResource = {
+  id?: string;
+  name: string;
+  description: string;
+};

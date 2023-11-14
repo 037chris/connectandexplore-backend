@@ -42,7 +42,7 @@ type UserModel = Model<IUser, {}, IUserMethods>;
 /**
  * Adressen werden später in das UserSchema eingefügt und als teil eines Users in mongoDB gespeichert
  */
-const addressSchema = new Schema({
+export const addressSchema = new Schema({
   street: { type: String, required: true },
   houseNumber: { type: String, required: true },
   apartmentNumber: String,
