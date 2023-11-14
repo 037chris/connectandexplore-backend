@@ -16,6 +16,7 @@ export type userResource = {
     instagram?: string;
   };
   isActive: boolean;
+  oldPassword?: string;
 };
 
 export type usersResource = {

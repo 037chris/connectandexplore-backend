@@ -157,7 +157,7 @@ UserRouter.get(
   param("userid").isMongoId(),
   async (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     const userid = req.params.userid;
@@ -181,10 +181,11 @@ UserRouter.put(
   requiresAuthentication,
   upload.single("profilePicture"),
   [
+    param("userid").isMongoId(),
     body("email").isEmail(),
     body("isAdministrator").isBoolean(),
-    body("password").isStrongPassword(),
-    body("oldPassword").isStrongPassword(),
+    body("password").optional().isStrongPassword(),
+    body("oldPassword").optional().isStrongPassword(),
     body("name.first")
       .isString()
       .isLength({ min: 3, max: 100 })
@@ -213,14 +214,14 @@ UserRouter.put(
       .isString()
       .withMessage("invalid Appartmentnumber."),
     body("profilePicture").optional().isString(), //??
-    body("birthDate").isDate(),
+    body("birthDate").isString(), //throws errors on date when isDate()
     body("gender").isString().notEmpty(), //isString() ist vlt unnötig
     body("socialMediaUrls.facebook").isString().notEmpty(),
     body("socialMediaUrls.instagram").isString().notEmpty(),
   ],
   async (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       if (req.file) {
         // Delete the file
         deleteProfilePicture(req.file.path);
@@ -296,8 +297,8 @@ UserRouter.delete(
         }
       }
     } catch (err) {
-      res.send(403);
-      next(new Error("Invalid authorization, can not delete user."));
+      res.send(404);
+      next(new Error("Probably invalid userid, can not delete user."));
     }
   }
 );

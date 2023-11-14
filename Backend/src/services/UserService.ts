@@ -111,7 +111,7 @@ export class UserService {
     }
     if (userResource.name) user.name = userResource.name;
     if (userResource.email) {
-      userResource.email = userResource.email.toLowerCase();
+      userResource.email = userResource.email;
       if (userResource.email !== user.email) {
         const c = await User.count({ email: userResource.email }).exec();
         if (c > 0) {
@@ -178,7 +178,7 @@ export class UserService {
     if (userResource.name.first) user.name.first = userResource.name.first;
     if (userResource.name.last) user.name.last = userResource.name.last;
     if (userResource.email) {
-      userResource.email = userResource.email.toLowerCase();
+      userResource.email = userResource.email;
       if (userResource.email !== user.email) {
         const c = await User.count({ email: userResource.email }).exec();
         if (c > 0) {
