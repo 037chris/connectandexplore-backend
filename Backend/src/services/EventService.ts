@@ -21,12 +21,39 @@ export class EventService {
   /**
    * Alle erstellten Events abrufen ( Event Manager / Admin )
    */
-  async getAllEvents() {}
+  async getEvents(userID: string): Promise<eventsResource> {
+    if (!userID) {
+      throw new Error("Can not get creator, userID is invalid");
+    }
+    try {
+      const events = await Event.find({ creator: userID }).exec();
+      const eventsResult: eventsResource = {
+        events: events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          creator: event.creator.toString(),
+          description: event.description,
+          price: event.price,
+          date: event.date,
+          address: event.address,
+          thumbnail: event.thumbnail,
+          category: event.category.map((categoryId) => categoryId.toString()),
+          chat: event.chat.toString(),
+          participants: event.participants.map((participantId) =>
+            participantId.toString()
+          ),
+        })),
+      };
+      return eventsResult;
+    } catch (error) {
+      throw new Error("Error retrieving events");
+    }
+  }
 
   /**
    * Alle Events abrufen
    */
-  async getEvents() {}
+  async getAllEvents() {}
 
   /**
    * Events filtern / Event suchen
