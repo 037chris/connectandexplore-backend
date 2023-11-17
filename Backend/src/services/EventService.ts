@@ -82,7 +82,36 @@ export class EventService {
   /**
    * Events filtern / Event suchen
    */
-  async searchEvents() {}
+  async searchEvents(query: string): Promise<eventsResource> {
+    try {
+      const events = await Event.find({
+        $or: [
+          { name: { $regex: query, $options: "i" } },
+          { description: { $regex: query, $options: "i" } },
+        ],
+      }).exec();
+      const eventsResult: eventsResource = {
+        events: events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          creator: event.creator.toString(),
+          description: event.description,
+          price: event.price,
+          date: event.date,
+          address: event.address,
+          thumbnail: event.thumbnail,
+          category: event.category.map((categoryId) => categoryId.toString()),
+          chat: event.chat.toString(),
+          participants: event.participants.map((participantId) =>
+            participantId.toString()
+          ),
+        })),
+      };
+      return eventsResult;
+    } catch (error) {
+      throw new Error("Error searching events");
+    }
+  }
 
   /**
    * Am Event teilnehmen ( Event Teilnehmer )
