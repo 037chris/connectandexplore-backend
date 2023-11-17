@@ -46,14 +46,38 @@ export class EventService {
       };
       return eventsResult;
     } catch (error) {
-      throw new Error("Error retrieving events");
+      throw new Error("Error getting events");
     }
   }
 
   /**
    * Alle Events abrufen
    */
-  async getAllEvents() {}
+  async getAllEvents(): Promise<eventsResource> {
+    try {
+      const events = await Event.find({}).exec();
+      const eventsResult: eventsResource = {
+        events: events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          creator: event.creator.toString(),
+          description: event.description,
+          price: event.price,
+          date: event.date,
+          address: event.address,
+          thumbnail: event.thumbnail,
+          category: event.category.map((categoryId) => categoryId.toString()),
+          chat: event.chat.toString(),
+          participants: event.participants.map((participantId) =>
+            participantId.toString()
+          ),
+        })),
+      };
+      return eventsResult;
+    } catch (error) {
+      throw new Error("Error getting events");
+    }
+  }
 
   /**
    * Events filtern / Event suchen
