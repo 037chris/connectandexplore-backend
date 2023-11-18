@@ -9,6 +9,7 @@ const eventService = new EventService();
 
 EventRouter.post(
   "/create",
+  requiresAuthentication,
   //upload.single("thumbnail"),
   [
     body("name").isString().notEmpty().withMessage("Event name is required."),
@@ -55,9 +56,9 @@ EventRouter.post(
           req.body.thumbnail = `/uploads/${req.file.filename}`;
         } */
         const newEvent = await eventService.createEvent(req.body);
-        return res.status(201).json(newEvent);
+        return res.status(201).send(newEvent);
       }
-    } catch (error) {
+    } catch (err) {
       return res.status(500).json({ Error: "Event creation failed" });
     }
   }

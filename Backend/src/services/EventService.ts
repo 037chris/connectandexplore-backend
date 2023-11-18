@@ -137,7 +137,31 @@ export class EventService {
   /**
    * Alle teilgenommenen Events abrufen ( Event Teilnehmer )
    */
-  async getJoinedEvents() {}
+  async getJoinedEvents(userID: string): Promise<eventsResource> {
+    try {
+      const events = await Event.find({ participants: userID }).exec();
+      const eventsResult: eventsResource = {
+        events: events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          creator: event.creator.toString(),
+          description: event.description,
+          price: event.price,
+          date: event.date,
+          address: event.address,
+          thumbnail: event.thumbnail,
+          category: event.category.map((categoryId) => categoryId.toString()),
+          chat: event.chat.toString(),
+          participants: event.participants.map((participantId) =>
+            participantId.toString()
+          ),
+        })),
+      };
+      return eventsResult;
+    } catch (error) {
+      throw new Error("Error getting events");
+    }
+  }
 
   /**
    * Teilnahme am Event absagen ( Event Teilnehmer )

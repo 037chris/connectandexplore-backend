@@ -36,8 +36,8 @@ app.use(express.static(__dirname));
 app.use("/api/users", UserRoute);
 app.use("/api", UsersRouter);
 app.use("/api/login", loginRouter);
-app.use("api/event", EventRouter);
-app.use("api/events", EventsRouter);
+app.use("/api/event", EventRouter);
+app.use("/api/events", EventsRouter);
 swaggerDocs(app, 443);
 app.use((req, res, next) => {
   res.status(404).json("Not Found");
