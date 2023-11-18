@@ -78,7 +78,27 @@ EventRouter.post(
       } else if (err.message === "User is already participating in the event") {
         return res.status(409).json({ Error: err.message });
       } else {
-        return res.status(500).json({ Error: "Can not join event" });
+        return res.status(500).json({ Error: "Joining event failed" });
+      }
+    }
+  }
+);
+
+EventRouter.delete(
+  "/:eventid/cancel",
+  requiresAuthentication,
+  param("eventid").isMongoId(),
+  async (req, res, next) => {
+    try {
+      const userID = req.userId;
+      const eventID = req.params.eventid;
+      await eventService.cancelEvent(userID, eventID);
+      res.status(204).send();
+    } catch (err) {
+      if (err.message === "User is not participating in the event") {
+        return res.status(409).json({ Error: err.message });
+      } else {
+        return res.status(500).json({ Error: "Canceling event failed" });
       }
     }
   }

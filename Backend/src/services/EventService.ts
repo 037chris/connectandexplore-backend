@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { eventResource, eventsResource } from "../Resources";
 import { Event, IEvent } from "../model/EventModel";
 import { User } from "../model/UserModel";
@@ -121,9 +122,8 @@ export class EventService {
     try {
       const user = await User.findById(userID).exec();
       const event = await Event.findById(eventID).exec();
-      if (!user || !event) {
-        throw new Error("User or event not found");
-      }
+      if (!user) throw new Error(`User with id ${userID} not found`);
+      if (!event) throw new Error(`Event with id ${eventID} not found`);
       if (event.participants.includes(user._id)) {
         throw new Error("User is already participating in the event");
       }
@@ -166,7 +166,23 @@ export class EventService {
   /**
    * Teilnahme am Event absagen ( Event Teilnehmer )
    */
-  async cancelEvent() {}
+  async cancelEvent(userID: string, eventID: string): Promise<void> {
+    try {
+      const event = await Event.findById(eventID);
+      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      const index = event.participants.findIndex((participant) => {
+        const userObjecId = new Types.ObjectId(userID);
+        return participant.equals(userObjecId);
+      });
+      if (index === -1) {
+        throw new Error("User is not participating in the event");
+      }
+      event.participants.splice(index, 1);
+      await event.save();
+    } catch (error) {
+      throw new Error("Error canceling event");
+    }
+  }
 
   /**
    * Alle Teilnehmer vom Event abrufen ( Event Manager / Admin )
