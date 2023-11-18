@@ -1,7 +1,8 @@
 import { Router, Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import { EventService } from "../services/EventService";
 import { upload } from "../utils/FileUpload";
+import { requiresAuthentication } from "./authentication";
 
 const EventRouter = Router();
 const eventService = new EventService();
@@ -58,6 +59,26 @@ EventRouter.post(
       }
     } catch (error) {
       return res.status(500).json({ Error: "Event creation failed" });
+    }
+  }
+);
+
+EventRouter.post(
+  "/:eventid/join",
+  requiresAuthentication,
+  param("eventid").isMongoId(),
+  async (req, res, next) => {
+    try {
+      await eventService.joinEvent(req.userId, req.params.eventid);
+      res.status(200).json({ message: "User joined the event successfully" });
+    } catch (err) {
+      if (err.message === "User or event not found") {
+        return res.status(404).json({ Error: err.message });
+      } else if (err.message === "User is already participating in the event") {
+        return res.status(409).json({ Error: err.message });
+      } else {
+        return res.status(500).json({ Error: "Can not join event" });
+      }
     }
   }
 );

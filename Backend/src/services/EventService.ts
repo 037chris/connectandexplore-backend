@@ -1,5 +1,6 @@
 import { eventResource, eventsResource } from "../Resources";
 import { Event, IEvent } from "../model/EventModel";
+import { User } from "../model/UserModel";
 
 export class EventService {
   /**
@@ -116,7 +117,22 @@ export class EventService {
   /**
    * Am Event teilnehmen ( Event Teilnehmer )
    */
-  async joinEvent() {}
+  async joinEvent(userID: string, eventID: string): Promise<void> {
+    try {
+      const user = await User.findById(userID).exec();
+      const event = await Event.findById(eventID).exec();
+      if (!user || !event) {
+        throw new Error("User or event not found");
+      }
+      if (event.participants.includes(user._id)) {
+        throw new Error("User is already participating in the event");
+      }
+      event.participants.push(user._id);
+      await event.save();
+    } catch (error) {
+      throw new Error("Error joining event");
+    }
+  }
 
   /**
    * Alle teilgenommenen Events abrufen ( Event Teilnehmer )
