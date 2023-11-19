@@ -77,7 +77,7 @@ const options: swaggerJsdoc.Options = {
               type: "string",
             },
             birthDate: {
-              type: "string",
+              type: "date",
               format: "date",
             },
             gender: {
@@ -93,6 +93,9 @@ const options: swaggerJsdoc.Options = {
                   type: "string",
                 },
               },
+            },
+            isActive: {
+              type: "boolean",
             },
           },
         },

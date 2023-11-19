@@ -6,8 +6,64 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const express_validator_1 = require("express-validator");
 const JWTService_1 = require("../services/JWTService");
-// Implementierung wird Teil eines nächsten Aufgabenblattes.
 const loginRouter = express_1.default.Router();
+/**
+ * @swagger
+ * /api/login/:
+ *  "post":
+ *    "summary": "Login user"
+ *    "description": "Endpoint to log in a user"
+ *    "tags": [
+ *      "User"
+ *    ]
+ *    "parameters": []
+ *    "requestBody":
+ *      "content":
+ *        "application/json":
+ *          "schema":
+ *            "type": "object"
+ *            "properties":
+ *              "email":
+ *                "type": "string"
+ *              "password":
+ *                "type": "string"
+ *            "required":
+ *              - "email"
+ *              - "password"
+ *          "example":
+ *            "email": "John@doe.com"
+ *            "password": "12abcAB!"
+ *    "responses":
+ *      "200":
+ *        "description": "OK"
+ *        "content":
+ *          "application/json":
+ *            "schema":
+ *              "type": "object"
+ *              "properties": {}
+ *      "400":
+ *        "description": "Bad Request - Validation Error"
+ *        "content":
+ *          "application/json":
+ *            "schema":
+ *              "type": "object"
+ *              "properties":
+ *                "error":
+ *                  "type": "string"
+ *                  "example": "Validation failed: Please provide a valid email and password."
+ *      "401":
+ *        "description": "Unauthorized - Missing JWT"
+ *        "content":
+ *          "application/json":
+ *            "schema":
+ *              "type": "object"
+ *              "properties":
+ *                "error":
+ *                  "type": "string"
+ *                  "example": "Unauthorized: No JWT token provided."
+ *    "security":
+ *      - "bearerAuth": []
+ */
 /**
  * Diese Funktion bitte noch nicht implementieren, sie steht hier als Platzhalter.
  * Wir benötigen dafür Authentifizierungsinformationen, die wir später in einem JSW speichern.

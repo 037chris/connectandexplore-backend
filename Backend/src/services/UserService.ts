@@ -174,9 +174,8 @@ export class UserService {
       }
       if (userResource.password) user.password = userResource.password;
     }
-
-    if (userResource.name.first) user.name.first = userResource.name.first;
-    if (userResource.name.last) user.name.last = userResource.name.last;
+    if (userResource.name?.first) user.name.first = userResource.name.first;
+    if (userResource.name?.last) user.name.last = userResource.name.last;
     if (userResource.email) {
       userResource.email = userResource.email;
       if (userResource.email !== user.email) {

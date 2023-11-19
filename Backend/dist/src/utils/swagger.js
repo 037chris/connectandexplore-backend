@@ -79,7 +79,7 @@ const options = {
                             type: "string",
                         },
                         birthDate: {
-                            type: "string",
+                            type: "date",
                             format: "date",
                         },
                         gender: {
@@ -95,6 +95,9 @@ const options = {
                                     type: "string",
                                 },
                             },
+                        },
+                        isActive: {
+                            type: "boolean",
                         },
                     },
                 },

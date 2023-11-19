@@ -9,6 +9,7 @@ import {
 } from "express-validator";
 import { UserService } from "../services/UserService";
 import { upload, deleteProfilePicture } from "../utils/FileUpload";
+import { validate } from "../utils/Helpers";
 import { requiresAuthentication } from "./authentication";
 import { userResource } from "../Resources";
 const UserRouter = express.Router();
@@ -29,42 +30,55 @@ const userService = new UserService();
  *           schema:
  *             type: object
  *             properties:
+ *               profilePicture:
+ *                 type: string
+ *                 example: []
+ *                 format: binary
  *               email:
  *                 type: string
- *                 format: email
- *               name:
- *                 type: object
- *                 properties:
- *                   first:
- *                     type: string
- *                   last:
- *                     type: string
+ *                 example: "John@doe.com"
+ *               name[first]:
+ *                 type: string
+ *                 example: "Test"
  *               password:
  *                 type: string
- *               isAdministrator:
- *                 type: boolean
- *               address:
- *                 $ref: '#/components/schemas/IAddress'
- *               profilePicture:
- *                 type: file
+ *                 example: "12abcAB!"
  *               birthDate:
  *                 type: string
- *                 format: date
+ *                 example: "2000-01-01"
  *               gender:
  *                 type: string
- *               socialMediaUrls:
- *                 type: object
- *                 properties:
- *                   facebook:
- *                     type: string
- *                   instagram:
- *                     type: string
+ *                 example: "Male"
+ *               name[last]:
+ *                 type: string
+ *                 example: "User"
+ *               address[street]:
+ *                 type: string
+ *                 example: "123 Test Street"
+ *               address[houseNumber]:
+ *                 type: string
+ *                 example: "1"
+ *               address[postalCode]:
+ *                 type: string
+ *                 example: "12345"
+ *               address[city]:
+ *                 type: string
+ *                 example: "Berlin"
+ *               address[country]:
+ *                 type: string
+ *                 example: "DE"
  *             required:
  *               - email
- *               - name
  *               - password
- *               - birthDate
  *               - gender
+ *               - birthDate
+ *               - name[first]
+ *               - name[last]
+ *               - address[street]
+ *               - address[houseNumber]
+ *               - address[postalCode]
+ *               - address[city]
+ *               - address[country]
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -77,13 +91,13 @@ const userService = new UserService();
  *         content:
  *           application/json:
  *             example:
- *               Error: User already exists
+ *               error: User already exists
  *       500:
  *         description: Registration failed
  *         content:
  *           application/json:
  *             example:
- *               Error: Registration failed
+ *               error: Registration failed
  */
 UserRouter.post(
   "/register",
@@ -150,7 +164,52 @@ UserRouter.post(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/users/{userid}:
+ *   get:
+ *     summary: "Get User"
+ *     deprecated: false
+ *     description: "Retrieve a user by ID"
+ *     tags:
+ *       - "User"
+ *     parameters:
+ *       - name: "userid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the user to retrieve"
+ *     responses:
+ *       "200":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization, cannot get User."
+ *       "404":
+ *         description: "Not Found - Invalid userID"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "No user with this ID exists."
+ *     security:
+ *       - bearerAuth: []
+ */
 UserRouter.get(
   "/:userid",
   requiresAuthentication,
@@ -175,50 +234,102 @@ UserRouter.get(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/users/{userid}:
+ *   put:
+ *     summary: Update user details
+ *     description: Update user details for a specific user.
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - name: "userid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the user to update"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               profilePicture:
+ *                 type: string
+ *                 example: []
+ *                 format: binary
+ *               email:
+ *                 type: string
+ *                 example: "John@doe.com"
+ *               name:
+ *                 type: object
+ *                 properties:
+ *                   first:
+ *                     type: string
+ *                     example: "Test"
+ *                   last:
+ *                     type: string
+ *                     example: "User"
+ *               password:
+ *                 type: string
+ *                 example: "12abcAB!12abcAB!"
+ *               oldPassword:
+ *                 type: string
+ *                 example: "12abcAB!"
+ *               birthDate:
+ *                 type: string
+ *                 example: "2000-01-01"
+ *               gender:
+ *                 type: string
+ *                 example: "Male"
+ *               address[street]:
+ *                 type: string
+ *                 example: "123 Test Street"
+ *               address[houseNumber]:
+ *                 type: string
+ *                 example: "1"
+ *               address[postalCode]:
+ *                 type: string
+ *                 example: "12345"
+ *               address[city]:
+ *                 type: string
+ *                 example: "Berlin"
+ *               address[country]:
+ *                 type: string
+ *                 example: "DE"
+ *     responses:
+ *       200:
+ *         description: User details updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/IUser'
+ *       403:
+ *         description: Invalid authorization
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Invalid authorization, cannot update user
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: User not found
+ *       500:
+ *         description: Update failed
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Update failed
+ */
 UserRouter.put(
   "/:userid",
   requiresAuthentication,
   upload.single("profilePicture"),
-  [
-    param("userid").isMongoId(),
-    body("email").isEmail(),
-    body("isAdministrator").isBoolean(),
-    body("password").optional().isStrongPassword(),
-    body("oldPassword").optional().isStrongPassword(),
-    body("name.first")
-      .isString()
-      .isLength({ min: 3, max: 100 })
-      .withMessage("First name is required."),
-    body("name.last")
-      .isString()
-      .isLength({ min: 3, max: 100 })
-      .withMessage("Last name is required."),
-    body("address.street")
-      .notEmpty()
-      .withMessage("Street address is required."),
-    body("address.houseNumber")
-      .notEmpty()
-      .withMessage("House number is required."),
-    body("address.postalCode")
-      .notEmpty()
-      .withMessage("Postal code is required."),
-    body("address.city").notEmpty().withMessage("City is required."),
-    body("address.country").notEmpty().withMessage("Country is required."),
-    body("address.stateOrRegion")
-      .optional()
-      .isString()
-      .withMessage("invalid State or Region."),
-    body("address.appartmentNumber")
-      .optional()
-      .isString()
-      .withMessage("invalid Appartmentnumber."),
-    body("profilePicture").optional().isString(), //??
-    body("birthDate").isString(), //throws errors on date when isDate()
-    body("gender").isString().notEmpty(), //isString() ist vlt unnötig
-    body("socialMediaUrls.facebook").isString().notEmpty(),
-    body("socialMediaUrls.instagram").isString().notEmpty(),
-  ],
+  [param("userid").isMongoId()],
+  validate,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -245,6 +356,7 @@ UserRouter.put(
         });
       }
     }
+    //req.body.name = JSON.parse(req.body.name);
     const userResource = matchedData(req) as userResource;
     userResource.id = userid;
     if (req.role === "a") {
@@ -262,7 +374,11 @@ UserRouter.put(
         next(new Error("Invalid authorization, can not update user."));
       } else {
         try {
-          const oldPw = req.body.oldPassword;
+          let oldPw!: string;
+          if (req.body.oldPassword) {
+            oldPw = req.body.oldPassword;
+          }
+
           const updatedUser = await userService.updateUserWithPw(
             userResource,
             oldPw
@@ -276,6 +392,52 @@ UserRouter.put(
     }
   }
 );
+/**
+ * @swagger
+ * /api/users/{userid}:
+ *   delete:
+ *     summary: "Delete User"
+ *     deprecated: false
+ *     description: "Delete a user by ID"
+ *     tags:
+ *       - "User"
+ *     parameters:
+ *       - name: "userid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the user to delete"
+ *     responses:
+ *       "204":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization, cannot delete user."
+ *       "404":
+ *         description: "Not Found - Probably invalid userid"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Probably invalid userid, cannot delete user."
+ *     security:
+ *       - bearerAuth: []
+ */
 
 UserRouter.delete(
   "/:userid",
@@ -285,11 +447,32 @@ UserRouter.delete(
     const userid = req.params.userid;
     try {
       if (req.role === "a") {
+        const user: userResource = await userService.getUser(userid);
         const isDeleted: boolean = await userService.deleteUser(userid, false);
+        try {
+          if (user.profilePicture) {
+            deleteProfilePicture(user.profilePicture);
+          }
+        } catch (err) {
+          res.status(404).json({
+            Error: "Can not delete Profile picture - no such file or directory",
+          });
+        }
         res.status(204).send(isDeleted);
       } else {
         if (req.userId === userid) {
+          const user: userResource = await userService.getUser(userid);
           const isDeleted: boolean = await userService.deleteUser(userid, true);
+          try {
+            if (user.profilePicture) {
+              deleteProfilePicture(user.profilePicture);
+            }
+          } catch (err) {
+            res.status(404).json({
+              Error:
+                "Can not delete Profile picture - no such file or directory",
+            });
+          }
           res.status(204).send(isDeleted);
         } else {
           res.send(403);

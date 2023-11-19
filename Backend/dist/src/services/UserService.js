@@ -107,7 +107,7 @@ class UserService {
         if (userResource.name)
             user.name = userResource.name;
         if (userResource.email) {
-            userResource.email = userResource.email.toLowerCase();
+            userResource.email = userResource.email;
             if (userResource.email !== user.email) {
                 const c = await UserModel_1.User.count({ email: userResource.email }).exec();
                 if (c > 0) {
@@ -155,27 +155,40 @@ class UserService {
      * @returns userResource
      */
     async updateUserWithPw(userResource, oldPw) {
+        var _a, _b;
+        console.log("userResource.id: ");
+        console.log(userResource.id);
         if (!userResource.id) {
             throw new Error("User id is missing, cannot update User.");
         }
         const user = await UserModel_1.User.findById(userResource.id).exec();
+        console.log("userResource");
+        console.log(userResource);
         if (!user) {
+            console.log("it is not a user ?");
             throw new Error(`No user with id: ${userResource.id} found, cannot update`);
         }
         if (oldPw) {
+            console.log("old pw: ", oldPw);
             const res = await user.isCorrectPassword(oldPw);
+            console.log(res);
             if (!res) {
                 throw new Error("invalid oldPassword, can not update User!");
             }
             if (userResource.password)
                 user.password = userResource.password;
         }
-        if (userResource.name.first)
+        console.log("still working.. 1");
+        if ((_a = userResource.name) === null || _a === void 0 ? void 0 : _a.first)
             user.name.first = userResource.name.first;
-        if (userResource.name.last)
+        console.log("still working.. user.name.first");
+        if ((_b = userResource.name) === null || _b === void 0 ? void 0 : _b.last)
             user.name.last = userResource.name.last;
+        console.log("still working.. user.name.last");
         if (userResource.email) {
-            userResource.email = userResource.email.toLowerCase();
+            console.log("still working.. userResource.email");
+            userResource.email = userResource.email;
+            console.log("still working.. userResource.email 2");
             if (userResource.email !== user.email) {
                 const c = await UserModel_1.User.count({ email: userResource.email }).exec();
                 if (c > 0) {
@@ -184,17 +197,25 @@ class UserService {
             }
             user.email = userResource.email;
         }
+        console.log("still working.. user.email");
         if (userResource.address)
             user.address = userResource.address;
+        console.log("still working.. user.address");
         if (userResource.birthDate)
             user.birthDate = userResource.birthDate;
+        console.log("still working.. user.birthDate");
         if (userResource.gender)
             user.gender = userResource.gender;
+        console.log("still working.. user.gender");
         if (userResource.profilePicture)
             user.profilePicture = userResource.profilePicture;
+        console.log("still working.. userResource.profilePicture");
         if (userResource.socialMediaUrls)
             user.socialMediaUrls = userResource.socialMediaUrls;
+        console.log("still working..socialMediaUrls");
+        console.log("Updated user in service:", user);
         const savedUser = await user.save();
+        console.log("saved user in db", savedUser);
         return {
             id: savedUser.id,
             name: savedUser.name,
