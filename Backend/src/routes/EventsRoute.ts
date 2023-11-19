@@ -17,7 +17,7 @@ EventsRouter.get(
         const userID = req.params.userid;
         const events: eventsResource = await eventService.getEvents(userID);
         if (events.events.length === 0) {
-          return res.status(404).json({ message: "No events found." });
+          return res.status(200).json({ message: "No events found." });
         }
         res.status(200).send(events);
       } catch (err) {
@@ -35,7 +35,7 @@ EventsRouter.get("/", async (req, res, next) => {
   try {
     const events: eventsResource = await eventService.getAllEvents();
     if (events.events.length === 0) {
-      return res.status(404).json({ message: "No events found." });
+      return res.status(200).json({ message: "No events found." });
     }
     res.status(200).send(events);
   } catch (err) {
@@ -57,7 +57,7 @@ EventsRouter.get(
       const events: eventsResource = await eventService.searchEvents(q);
       if (events.events.length === 0) {
         return res
-          .status(404)
+          .status(200)
           .json({ message: "No events found matching the query." });
       }
       res.status(200).send(events);
@@ -73,7 +73,7 @@ EventsRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
       req.userId
     );
     if (events.events.length === 0) {
-      return res.status(404).json({ message: "No events found." });
+      return res.status(200).json({ message: "No events found." });
     }
     res.status(200).send(events);
   } catch (err) {

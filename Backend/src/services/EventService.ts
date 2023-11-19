@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { eventResource, eventsResource } from "../Resources";
+import { eventResource, eventsResource, usersResource } from "../Resources";
 import { Event, IEvent } from "../model/EventModel";
 import { User } from "../model/UserModel";
 
@@ -122,8 +122,8 @@ export class EventService {
     try {
       const user = await User.findById(userID).exec();
       const event = await Event.findById(eventID).exec();
-      if (!user) throw new Error(`User with id ${userID} not found`);
-      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      if (!user) throw new Error("User not found");
+      if (!event) throw new Error("Event not found");
       if (event.participants.includes(user._id)) {
         throw new Error("User is already participating in the event");
       }
@@ -187,7 +187,33 @@ export class EventService {
   /**
    * Alle Teilnehmer vom Event abrufen ( Event Manager / Admin )
    */
-  async getParticipants() {}
+  async getParticipants(eventID: string): Promise<usersResource> {
+    try {
+      const event = await Event.findById(eventID).exec();
+      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      const participantID = event.participants;
+      const participants = await User.find({
+        _id: { $in: participantID },
+      }).exec();
+      const result: usersResource = {
+        users: participants.map((user) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          isAdministrator: user.isAdministrator,
+          address: user.address,
+          profilePicture: user.profilePicture,
+          birthDate: user.birthDate,
+          gender: user.gender,
+          socialMediaUrls: user.socialMediaUrls,
+          isActive: user.isActive,
+        })),
+      };
+      return result;
+    } catch (error) {
+      throw new Error("Error getting participants");
+    }
+  }
 
   /**
    * Event bearbeiten ( Event Manager / Admin )

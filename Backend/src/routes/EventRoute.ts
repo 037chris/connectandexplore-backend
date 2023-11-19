@@ -73,7 +73,9 @@ EventRouter.post(
       await eventService.joinEvent(req.userId, req.params.eventid);
       res.status(200).json({ message: "User joined the event successfully" });
     } catch (err) {
-      if (err.message === "User or event not found") {
+      if (err.message === "User not found") {
+        return res.status(404).json({ Error: err.message });
+      } else if (err.message === "Event not found") {
         return res.status(404).json({ Error: err.message });
       } else if (err.message === "User is already participating in the event") {
         return res.status(409).json({ Error: err.message });
@@ -100,6 +102,24 @@ EventRouter.delete(
       } else {
         return res.status(500).json({ Error: "Canceling event failed" });
       }
+    }
+  }
+);
+
+EventRouter.get(
+  "/:eventid/participants",
+  requiresAuthentication,
+  param("eventid").isMongoId(),
+  async (req, res, next) => {
+    try {
+      const eventID = req.params.eventid;
+      const participants = await eventService.getParticipants(
+        eventID
+      );
+      res.status(200).send(participants);
+    } catch (err) {
+      res.status(404);
+      next(err);
     }
   }
 );
