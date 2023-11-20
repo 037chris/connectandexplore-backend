@@ -9,6 +9,7 @@ export interface IEvent {
   date: Date;
   address: IAddress;
   thumbnail?: string;
+  hashtags: string[];
   category: Types.ObjectId[];
   chat: Types.ObjectId;
   participants: Types.ObjectId[];
@@ -35,6 +36,7 @@ const eventSchema = new Schema<IEvent>({
   date: { type: Date, required: true },
   address: addressSchema,
   thumbnail: { type: String },
+  hashtags: [{ type: String }],
   category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   chat: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
   participants: [{ type: Schema.Types.ObjectId, ref: "User" }],

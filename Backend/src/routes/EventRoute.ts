@@ -40,6 +40,7 @@ EventRouter.post(
       .isString()
       .withMessage("Invalid Apartment number."),
     body("thumbnail").optional().isString(),
+    body("hashtags").optional().isArray(),
     body("category")
       .isArray()
       .notEmpty()
@@ -113,9 +114,7 @@ EventRouter.get(
   async (req, res, next) => {
     try {
       const eventID = req.params.eventid;
-      const participants = await eventService.getParticipants(
-        eventID
-      );
+      const participants = await eventService.getParticipants(eventID);
       res.status(200).send(participants);
     } catch (err) {
       res.status(404);

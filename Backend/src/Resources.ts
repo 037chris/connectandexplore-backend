@@ -50,6 +50,7 @@ export type eventResource = {
   date: Date;
   address: addressResource;
   thumbnail?: string;
+  hashtags: string[];
   category: string[];
   chat: string;
   participants: string[];

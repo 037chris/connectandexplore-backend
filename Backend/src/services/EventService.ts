@@ -39,6 +39,7 @@ export class EventService {
           date: event.date,
           address: event.address,
           thumbnail: event.thumbnail,
+          hashtags: event.hashtags,
           category: event.category.map((categoryId) => categoryId.toString()),
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
@@ -68,6 +69,7 @@ export class EventService {
           date: event.date,
           address: event.address,
           thumbnail: event.thumbnail,
+          hashtags: event.hashtags,
           category: event.category.map((categoryId) => categoryId.toString()),
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
@@ -90,6 +92,7 @@ export class EventService {
         $or: [
           { name: { $regex: query, $options: "i" } },
           { description: { $regex: query, $options: "i" } },
+          { hashtags: { $in: [query] } }
         ],
       }).exec();
       const eventsResult: eventsResource = {
@@ -102,6 +105,7 @@ export class EventService {
           date: event.date,
           address: event.address,
           thumbnail: event.thumbnail,
+          hashtags: event.hashtags,
           category: event.category.map((categoryId) => categoryId.toString()),
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
@@ -150,6 +154,7 @@ export class EventService {
           date: event.date,
           address: event.address,
           thumbnail: event.thumbnail,
+          hashtags: event.hashtags,
           category: event.category.map((categoryId) => categoryId.toString()),
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
