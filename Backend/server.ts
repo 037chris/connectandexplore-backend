@@ -13,7 +13,6 @@ import UserRoute from "./src/routes/UserRoute";
 
 import UsersRouter from "./src/routes/UsersRouter";
 import loginRouter from "./src/routes/login";
-import { EventRouter } from "./src/routes/EventRoute";
 import EventsRouter from "./src/routes/EventsRoute";
 const app: Express = express();
 
@@ -36,7 +35,6 @@ app.use(express.static(__dirname));
 app.use("/api/users", UserRoute);
 app.use("/api", UsersRouter);
 app.use("/api/login", loginRouter);
-app.use("/api/event", EventRouter);
 app.use("/api/events", EventsRouter);
 swaggerDocs(app, 443);
 app.use((req, res, next) => {
