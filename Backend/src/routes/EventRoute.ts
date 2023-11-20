@@ -4,10 +4,10 @@ import { requiresAuthentication } from "./authentication";
 import { eventsResource } from "../Resources";
 import { body, param, query, validationResult } from "express-validator";
 
-const EventsRouter = express.Router();
+const EventRouter = express.Router();
 const eventService = new EventService();
 
-EventsRouter.post(
+EventRouter.post(
   "/create",
   requiresAuthentication,
   //upload.single("thumbnail"),
@@ -65,7 +65,7 @@ EventsRouter.post(
   }
 );
 
-EventsRouter.post(
+EventRouter.post(
   "/:eventid/join",
   requiresAuthentication,
   param("eventid").isMongoId(),
@@ -87,15 +87,13 @@ EventsRouter.post(
   }
 );
 
-EventsRouter.delete(
+EventRouter.delete(
   "/:eventid/cancel",
   requiresAuthentication,
   param("eventid").isMongoId(),
   async (req, res, next) => {
     try {
-      const userID = req.userId;
-      const eventID = req.params.eventid;
-      await eventService.cancelEvent(userID, eventID);
+      await eventService.cancelEvent(req.userId, req.params.eventid);
       res.status(204).send();
     } catch (err) {
       if (err.message === "User is not participating in the event") {
@@ -107,14 +105,16 @@ EventsRouter.delete(
   }
 );
 
-EventsRouter.get(
+EventRouter.get(
   "/:eventid/participants",
   requiresAuthentication,
   param("eventid").isMongoId(),
   async (req, res, next) => {
     try {
-      const eventID = req.params.eventid;
-      const participants = await eventService.getParticipants(eventID);
+      const participants = await eventService.getParticipants(
+        req.params.eventid,
+        req.userId
+      );
       res.status(200).send(participants);
     } catch (err) {
       res.status(404);
@@ -123,7 +123,29 @@ EventsRouter.get(
   }
 );
 
-EventsRouter.get(
+EventRouter.delete(
+  "/:eventid",
+  requiresAuthentication,
+  param("eventid").isMongoId(),
+  async (req, res, next) => {
+    try {
+      const deleted = await eventService.deleteEvent(
+        req.params.eventid,
+        req.userId
+      );
+      if (deleted) {
+        res.status(204).json({ message: "Event successfully deleted" });
+      } else {
+        res.status(405).json({ error: "Event could not be deleted" });
+      }
+    } catch (err) {
+      res.status(404);
+      next(err);
+    }
+  }
+);
+
+EventRouter.get(
   "/creator/:userid",
   requiresAuthentication,
   param("userid").isMongoId(),
@@ -147,7 +169,7 @@ EventsRouter.get(
   }
 );
 
-EventsRouter.get("/", async (req, res, next) => {
+EventRouter.get("/", async (req, res, next) => {
   try {
     const events: eventsResource = await eventService.getAllEvents();
     if (events.events.length === 0) {
@@ -160,7 +182,7 @@ EventsRouter.get("/", async (req, res, next) => {
   }
 });
 
-EventsRouter.get(
+EventRouter.get(
   "/search",
   [query("query").isString().notEmpty()],
   async (req, res, next) => {
@@ -178,12 +200,13 @@ EventsRouter.get(
       }
       res.status(200).send(events);
     } catch (err) {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(404);
+      next(err);
     }
   }
 );
 
-EventsRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
+EventRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
   try {
     const events: eventsResource = await eventService.getJoinedEvents(
       req.userId
@@ -198,4 +221,4 @@ EventsRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
   }
 });
 
-export default EventsRouter;
+export default EventRouter;

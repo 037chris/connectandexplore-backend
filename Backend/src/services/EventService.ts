@@ -92,7 +92,7 @@ export class EventService {
         $or: [
           { name: { $regex: query, $options: "i" } },
           { description: { $regex: query, $options: "i" } },
-          { hashtags: { $in: [query] } }
+          { hashtags: { $in: [query] } },
         ],
       }).exec();
       const eventsResult: eventsResource = {
@@ -192,13 +192,23 @@ export class EventService {
   /**
    * Alle Teilnehmer vom Event abrufen ( Event Manager / Admin )
    */
-  async getParticipants(eventID: string): Promise<usersResource> {
+  async getParticipants(
+    eventID: string,
+    creatorID: string
+  ): Promise<usersResource> {
     try {
       const event = await Event.findById(eventID).exec();
       if (!event) throw new Error(`Event with id ${eventID} not found`);
-      const participantID = event.participants;
+      const creator = await User.findById(event.creator).exec();
+      if (
+        !creator ||
+        (creator._id.toString() !== creatorID && !creator.isAdministrator)
+      ) {
+        throw new Error("Invalid authorization");
+      }
+      const participantIDs = event.participants;
       const participants = await User.find({
-        _id: { $in: participantID },
+        _id: { $in: participantIDs },
       }).exec();
       const result: usersResource = {
         users: participants.map((user) => ({
@@ -228,7 +238,23 @@ export class EventService {
   /**
    * Event löschen ( Event Manager / Admin )
    */
-  async deleteEvent() {}
+  async deleteEvent(eventID: string, creatorID: string): Promise<boolean> {
+    try {
+      const event = await Event.findById(eventID).exec();
+      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      const creator = await User.findById(event.creator).exec();
+      if (
+        !creator ||
+        (creator._id.toString() !== creatorID && !creator.isAdministrator)
+      ) {
+        throw new Error("Invalid authorization");
+      }
+      const result = await Event.deleteOne({ _id: eventID }).exec();
+      return result.deletedCount == 1;
+    } catch (error) {
+      throw new Error("Error deleting event");
+    }
+  }
 }
 
 export default new EventService();
