@@ -50,10 +50,10 @@ export type eventResource = {
   date: Date;
   address: addressResource;
   thumbnail?: string;
-  hashtags: string[];
+  hashtags?: string[];
   category: string[];
-  chat: string;
-  participants: string[];
+  chat?: string;
+  participants?: string[];
 };
 
 export type eventsResource = {

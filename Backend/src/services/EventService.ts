@@ -1,21 +1,40 @@
 import { Types } from "mongoose";
 import { eventResource, eventsResource, usersResource } from "../Resources";
-import { Event, IEvent } from "../model/EventModel";
+import { Event } from "../model/EventModel";
 import { User } from "../model/UserModel";
 
 export class EventService {
   /**
    * Event erstellen
    */
-  async createEvent(event: any) {
-    if (!event || typeof event !== "object") {
-      throw new Error("Invalid event data");
-    }
+  async createEvent(eventResource: eventResource): Promise<eventResource> {
     try {
-      const newEvent = await Event.create(event);
-      newEvent.save();
-      return newEvent;
-    } catch (error) {
+      const event = await Event.create({
+        name: eventResource.name,
+        creator: eventResource.creator,
+        description: eventResource.description,
+        price: eventResource.price,
+        date: eventResource.date,
+        address: eventResource.address,
+        thumbnail: eventResource.thumbnail,
+        hashtags: eventResource.hashtags,
+        category: eventResource.category,
+        chat: new Types.ObjectId(),
+      });
+      return {
+        id: event.id,
+        name: event.name,
+        creator: event.creator.toString(),
+        description: event.description,
+        price: event.price,
+        date: event.date,
+        address: event.address,
+        thumbnail: event.thumbnail,
+        hashtags: event.hashtags,
+        category: event.category.map((categoryId) => categoryId.toString()),
+        chat: event.chat.toString(),
+      };
+    } catch (err) {
       throw new Error("Event creation failed");
     }
   }
@@ -174,10 +193,9 @@ export class EventService {
   async cancelEvent(userID: string, eventID: string): Promise<void> {
     try {
       const event = await Event.findById(eventID);
-      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      if (!event) throw new Error("Event not found");
       const index = event.participants.findIndex((participant) => {
-        const userObjecId = new Types.ObjectId(userID);
-        return participant.equals(userObjecId);
+        return participant.equals(new Types.ObjectId(userID));
       });
       if (index === -1) {
         throw new Error("User is not participating in the event");
@@ -198,7 +216,7 @@ export class EventService {
   ): Promise<usersResource> {
     try {
       const event = await Event.findById(eventID).exec();
-      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      if (!event) throw new Error("Event not found");
       const creator = await User.findById(event.creator).exec();
       if (
         !creator ||
@@ -233,19 +251,66 @@ export class EventService {
   /**
    * Event bearbeiten ( Event Manager / Admin )
    */
-  async updateEvent() {}
+  async updateEvent(
+    eventID: string,
+    eventResource: eventResource,
+    userID: string
+  ): Promise<eventResource> {
+    const event = await Event.findById(eventID).exec();
+    if (!event) throw new Error("Event not found");
+    const creator = await User.findById(event.creator).exec();
+    const user = await User.findById(userID).exec();
+    if (
+      !creator ||
+      !user ||
+      (creator._id.toString() !== userID && !user.isAdministrator)
+    ) {
+      throw new Error("Invalid authorization");
+    }
+    if (eventResource.name) event.name = eventResource.name;
+    if (eventResource.description)
+      event.description = eventResource.description;
+    if (eventResource.price) event.price = eventResource.price;
+    if (eventResource.date) event.date = eventResource.date;
+    if (eventResource.address) event.address = eventResource.address;
+    if (eventResource.thumbnail) event.thumbnail = eventResource.thumbnail;
+    if (eventResource.hashtags) event.hashtags = eventResource.hashtags;
+    if (eventResource.category)
+      event.category = eventResource.category.map(
+        (categoryId) => new Types.ObjectId(categoryId)
+      );
+    const savedEvent = await event.save();
+    return {
+      id: savedEvent.id,
+      name: savedEvent.name,
+      creator: savedEvent.creator.toString(),
+      description: savedEvent.description,
+      price: savedEvent.price,
+      date: savedEvent.date,
+      address: savedEvent.address,
+      thumbnail: savedEvent.thumbnail,
+      hashtags: savedEvent.hashtags,
+      category: savedEvent.category.map((categoryId) => categoryId.toString()),
+      chat: savedEvent.chat.toString(),
+      participants: savedEvent.participants.map((participantId) =>
+        participantId.toString()
+      ),
+    };
+  }
 
   /**
    * Event löschen ( Event Manager / Admin )
    */
-  async deleteEvent(eventID: string, creatorID: string): Promise<boolean> {
+  async deleteEvent(eventID: string, userID: string): Promise<boolean> {
     try {
       const event = await Event.findById(eventID).exec();
-      if (!event) throw new Error(`Event with id ${eventID} not found`);
+      if (!event) throw new Error("Event not found");
       const creator = await User.findById(event.creator).exec();
+      const user = await User.findById(userID).exec();
       if (
         !creator ||
-        (creator._id.toString() !== creatorID && !creator.isAdministrator)
+        !user ||
+        (creator._id.toString() !== userID && !user.isAdministrator)
       ) {
         throw new Error("Invalid authorization");
       }

@@ -1,8 +1,8 @@
 import express from "express";
 import { EventService } from "../services/EventService";
 import { requiresAuthentication } from "./authentication";
-import { eventsResource } from "../Resources";
-import { body, param, query, validationResult } from "express-validator";
+import { eventResource, eventsResource } from "../Resources";
+import { body, matchedData, param, query, validationResult } from "express-validator";
 
 const EventRouter = express.Router();
 const eventService = new EventService();
@@ -116,6 +116,34 @@ EventRouter.get(
         req.userId
       );
       res.status(200).send(participants);
+    } catch (err) {
+      res.status(404);
+      next(err);
+    }
+  }
+);
+
+EventRouter.put(
+  "/:eventid",
+  requiresAuthentication,
+  //upload.single("thumbnail"),
+  param("eventid").isMongoId(),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      /* if (req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+      } */
+      const eventResource = matchedData(req) as eventResource;
+      const updatedEvent = await eventService.updateEvent(
+        req.params.eventid,
+        eventResource,
+        req.userId
+      );
+      res.status(200).send(updatedEvent);
     } catch (err) {
       res.status(404);
       next(err);
