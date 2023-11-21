@@ -39,6 +39,33 @@ export class EventService {
     }
   }
 
+  async getEvent(eventID: string): Promise<eventResource> {
+    try {
+      const event = await Event.findById(eventID).exec();
+      if (!event) {
+        throw new Error("Event not found");
+      }
+      return {
+        id: event.id,
+        name: event.name,
+        creator: event.creator.toString(),
+        description: event.description,
+        price: event.price,
+        date: event.date,
+        address: event.address,
+        thumbnail: event.thumbnail,
+        hashtags: event.hashtags,
+        category: event.category.map((categoryId) => categoryId.toString()),
+        chat: event.chat.toString(),
+        participants: event.participants.map((participantId) =>
+          participantId.toString()
+        ),
+      };
+    } catch (error) {
+      throw new Error("Error getting event");
+    }
+  }
+
   /**
    * Alle erstellten Events abrufen ( Event Manager / Admin )
    */

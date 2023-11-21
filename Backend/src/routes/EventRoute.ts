@@ -1,8 +1,17 @@
 import express from "express";
 import { EventService } from "../services/EventService";
-import { requiresAuthentication } from "./authentication";
+import {
+  optionalAuthentication,
+  requiresAuthentication,
+} from "./authentication";
 import { eventResource, eventsResource } from "../Resources";
-import { body, matchedData, param, query, validationResult } from "express-validator";
+import {
+  body,
+  matchedData,
+  param,
+  query,
+  validationResult,
+} from "express-validator";
 
 const EventRouter = express.Router();
 const eventService = new EventService();
@@ -123,6 +132,25 @@ EventRouter.get(
   }
 );
 
+EventRouter.get(
+  "/:eventid",
+  optionalAuthentication,
+  param("eventid").isMongoId(),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const event = await eventService.getEvent(req.params.eventid);
+      res.status(200).send(event);
+    } catch (err) {
+      res.status(404);
+      next(err);
+    }
+  }
+);
+
 EventRouter.put(
   "/:eventid",
   requiresAuthentication,
@@ -197,7 +225,7 @@ EventRouter.get(
   }
 );
 
-EventRouter.get("/", async (req, res, next) => {
+EventRouter.get("/", optionalAuthentication, async (req, res, next) => {
   try {
     const events: eventsResource = await eventService.getAllEvents();
     if (events.events.length === 0) {
@@ -212,6 +240,7 @@ EventRouter.get("/", async (req, res, next) => {
 
 EventRouter.get(
   "/search",
+  optionalAuthentication,
   [query("query").isString().notEmpty()],
   async (req, res, next) => {
     const errors = validationResult(req);
