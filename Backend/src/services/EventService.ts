@@ -7,11 +7,11 @@ export class EventService {
   /**
    * Event erstellen
    */
-  async createEvent(eventResource: eventResource): Promise<eventResource> {
+  async createEvent(eventResource: eventResource, creatorID: string): Promise<eventResource> {
     try {
       const event = await Event.create({
         name: eventResource.name,
-        creator: eventResource.creator,
+        creator: creatorID,
         description: eventResource.description,
         price: eventResource.price,
         date: eventResource.date,

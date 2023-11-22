@@ -22,7 +22,7 @@ EventRouter.post(
   //upload.single("thumbnail"),
   [
     body("name").isString().notEmpty().withMessage("Event name is required."),
-    body("creator").isString().notEmpty(),
+    //body("creator").isString().notEmpty(),
     body("price").isNumeric().notEmpty(),
     body("description")
       .isString()
@@ -54,7 +54,7 @@ EventRouter.post(
       .isArray()
       .notEmpty()
       .withMessage("Categories are required."),
-    body("chat").isString().notEmpty(),
+    //body("chat").isString().notEmpty(),
   ],
   async (req, res) => {
     try {
@@ -65,7 +65,7 @@ EventRouter.post(
         /* if (req.file) {
           req.body.thumbnail = `/uploads/${req.file.filename}`;
         } */
-        const newEvent = await eventService.createEvent(req.body);
+        const newEvent = await eventService.createEvent(req.body, req.userId);
         return res.status(201).send(newEvent);
       }
     } catch (err) {
