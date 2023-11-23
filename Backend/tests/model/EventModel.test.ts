@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Event, IEvent } from "../../src/model/EventModel";
+import { Event, ICategory, IEvent } from "../../src/model/EventModel";
 import { clearDatabase, closeDatabase, connect } from "../../database/db";
 import { IAddress } from "../../src/model/UserModel";
 
@@ -9,6 +9,11 @@ const a: IAddress = {
   postalCode: "12345",
   city: "Berlin",
   country: "Germany",
+};
+
+const c: ICategory = {
+  name: "Hobbys",
+  description: "persönliche Interessen, Freizeit",
 };
 
 describe("Event Model Tests", () => {
@@ -24,7 +29,7 @@ describe("Event Model Tests", () => {
       price: 10,
       date: new Date(),
       address: a,
-      category: [new Types.ObjectId()],
+      category: [c],
       chat: new Types.ObjectId(),
       participants: [],
     };
@@ -36,7 +41,7 @@ describe("Event Model Tests", () => {
     expect(createdEvent.price).toBe(eventData.price);
     expect(createdEvent.date).toBe(eventData.date);
     expect(createdEvent.address).toMatchObject(a);
-    expect(createdEvent.category).toStrictEqual(eventData.category);
+    expect(createdEvent.category.map(c => c.name)).toContain("Hobbys");
     expect(createdEvent.chat).toBe(eventData.chat);
     expect(createdEvent.participants).toStrictEqual(eventData.participants);
   });
@@ -64,7 +69,7 @@ describe("Event Model Tests", () => {
       price: -1,
       date: new Date(),
       address: a,
-      category: [new Types.ObjectId()],
+      category: [c],
       chat: new Types.ObjectId(),
       participants: [],
     };

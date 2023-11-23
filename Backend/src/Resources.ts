@@ -44,14 +44,14 @@ export type LoginResource = {
 export type eventResource = {
   id?: string;
   name: string;
-  creator: string;
+  creator?: string;
   description: string;
   price: number;
   date: Date;
   address: addressResource;
   thumbnail?: string;
   hashtags?: string[];
-  category: string[];
+  category?: categoryResource[];
   chat?: string;
   participants?: string[];
 };

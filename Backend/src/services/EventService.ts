@@ -7,11 +7,17 @@ export class EventService {
   /**
    * Event erstellen
    */
-  async createEvent(eventResource: eventResource, creatorID: string): Promise<eventResource> {
+  async createEvent(
+    eventResource: eventResource,
+    creatorID: string
+  ): Promise<eventResource> {
     try {
+      console.log("Before creating event:", eventResource);
+
+      const creator = await User.findById(creatorID);
       const event = await Event.create({
         name: eventResource.name,
-        creator: creatorID,
+        creator: creator.id,
         description: eventResource.description,
         price: eventResource.price,
         date: eventResource.date,
@@ -20,7 +26,11 @@ export class EventService {
         hashtags: eventResource.hashtags,
         category: eventResource.category,
         chat: new Types.ObjectId(),
+        participants: [creatorID],
       });
+
+      console.log("After creating event:", event);
+
       return {
         id: event.id,
         name: event.name,
@@ -31,10 +41,14 @@ export class EventService {
         address: event.address,
         thumbnail: event.thumbnail,
         hashtags: event.hashtags,
-        category: event.category.map((categoryId) => categoryId.toString()),
+        category: event.category,
         chat: event.chat.toString(),
+        participants: event.participants.map((participantId) =>
+          participantId.toString()
+        ),
       };
     } catch (err) {
+      console.error("Error creating event:", err);
       throw new Error("Event creation failed");
     }
   }
@@ -55,7 +69,7 @@ export class EventService {
         address: event.address,
         thumbnail: event.thumbnail,
         hashtags: event.hashtags,
-        category: event.category.map((categoryId) => categoryId.toString()),
+        category: event.category,
         chat: event.chat.toString(),
         participants: event.participants.map((participantId) =>
           participantId.toString()
@@ -86,7 +100,7 @@ export class EventService {
           address: event.address,
           thumbnail: event.thumbnail,
           hashtags: event.hashtags,
-          category: event.category.map((categoryId) => categoryId.toString()),
+          category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
             participantId.toString()
@@ -116,7 +130,7 @@ export class EventService {
           address: event.address,
           thumbnail: event.thumbnail,
           hashtags: event.hashtags,
-          category: event.category.map((categoryId) => categoryId.toString()),
+          category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
             participantId.toString()
@@ -133,6 +147,7 @@ export class EventService {
    * Events filtern / Event suchen
    */
   async searchEvents(query: string): Promise<eventsResource> {
+    if (!query || query.trim().length === 0) return this.getAllEvents();
     try {
       const events = await Event.find({
         $or: [
@@ -152,7 +167,7 @@ export class EventService {
           address: event.address,
           thumbnail: event.thumbnail,
           hashtags: event.hashtags,
-          category: event.category.map((categoryId) => categoryId.toString()),
+          category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
             participantId.toString()
@@ -168,7 +183,7 @@ export class EventService {
   /**
    * Am Event teilnehmen ( Event Teilnehmer )
    */
-  async joinEvent(userID: string, eventID: string): Promise<void> {
+  async joinEvent(userID: string, eventID: string): Promise<boolean> {
     try {
       const user = await User.findById(userID).exec();
       const event = await Event.findById(eventID).exec();
@@ -179,8 +194,9 @@ export class EventService {
       }
       event.participants.push(user._id);
       await event.save();
+      return true;
     } catch (error) {
-      throw new Error("Error joining event");
+      return false;
     }
   }
 
@@ -201,7 +217,7 @@ export class EventService {
           address: event.address,
           thumbnail: event.thumbnail,
           hashtags: event.hashtags,
-          category: event.category.map((categoryId) => categoryId.toString()),
+          category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
             participantId.toString()
@@ -217,7 +233,7 @@ export class EventService {
   /**
    * Teilnahme am Event absagen ( Event Teilnehmer )
    */
-  async cancelEvent(userID: string, eventID: string): Promise<void> {
+  async cancelEvent(userID: string, eventID: string): Promise<boolean> {
     try {
       const event = await Event.findById(eventID);
       if (!event) throw new Error("Event not found");
@@ -229,8 +245,9 @@ export class EventService {
       }
       event.participants.splice(index, 1);
       await event.save();
+      return true;
     } catch (error) {
-      throw new Error("Error canceling event");
+      return false;
     }
   }
 
@@ -302,9 +319,10 @@ export class EventService {
     if (eventResource.address) event.address = eventResource.address;
     if (eventResource.thumbnail) event.thumbnail = eventResource.thumbnail;
     if (eventResource.hashtags) event.hashtags = eventResource.hashtags;
-    if (eventResource.category)
-      event.category = eventResource.category.map(
-        (categoryId) => new Types.ObjectId(categoryId)
+    if (eventResource.category) event.category = eventResource.category;
+    if (eventResource.participants)
+      event.participants = eventResource.participants.map(
+        (participantId) => new Types.ObjectId(participantId)
       );
     const savedEvent = await event.save();
     return {
@@ -317,7 +335,7 @@ export class EventService {
       address: savedEvent.address,
       thumbnail: savedEvent.thumbnail,
       hashtags: savedEvent.hashtags,
-      category: savedEvent.category.map((categoryId) => categoryId.toString()),
+      category: savedEvent.category,
       chat: savedEvent.chat.toString(),
       participants: savedEvent.participants.map((participantId) =>
         participantId.toString()

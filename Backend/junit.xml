@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="2.711">
-  <testsuite name="Event Model Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-22T17:07:45" time="2.626" tests="3">
-    <testcase classname="Event Model Tests create event" name="Event Model Tests create event" time="0.072">
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="4.444">
+  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-23T20:44:49" time="4.348" tests="8">
+    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.179">
     </testcase>
-    <testcase classname="Event Model Tests empty eventdata" name="Event Model Tests empty eventdata" time="0.015">
+    <testcase classname="EventService Tests get event" name="EventService Tests get event" time="0.14">
     </testcase>
-    <testcase classname="Event Model Tests negative price" name="Event Model Tests negative price" time="0.013">
+    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.246">
+    </testcase>
+    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.219">
+    </testcase>
+    <testcase classname="EventService Tests search events by name" name="EventService Tests search events by name" time="0.218">
+    </testcase>
+    <testcase classname="EventService Tests search events by description" name="EventService Tests search events by description" time="0.206">
+    </testcase>
+    <testcase classname="EventService Tests search events by hashtags" name="EventService Tests search events by hashtags" time="0.204">
+    </testcase>
+    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.264">
     </testcase>
   </testsuite>
 </testsuites>
