@@ -9,7 +9,8 @@ export interface IEvent {
   date: Date;
   address: IAddress;
   thumbnail?: string;
-  category: Types.ObjectId[];
+  hashtags?: string[];
+  category: ICategory[];
   chat: Types.ObjectId;
   participants: Types.ObjectId[];
 }
@@ -20,7 +21,7 @@ export interface ICategory {
 }
 
 const categorySchema = new Schema<ICategory>({
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true/* , unique: true */ },
   description: { type: String },
 });
 
@@ -35,9 +36,10 @@ const eventSchema = new Schema<IEvent>({
   date: { type: Date, required: true },
   address: addressSchema,
   thumbnail: { type: String },
-  category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
+  hashtags: [{ type: String }],
+  category: [categorySchema],
   chat: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
-  participants: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  participants: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
 });
 
 /* 
