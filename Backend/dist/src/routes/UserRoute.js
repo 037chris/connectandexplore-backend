@@ -133,7 +133,6 @@ UserRouter.post("/register", FileUpload_1.upload.single("profilePicture"), [
     (0, express_validator_1.body)("socialMediaUrls.instagram").optional().isString(),
 ], async (req, res) => {
     try {
-        console.log(req.body);
         const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
             if (req.file) {
@@ -343,7 +342,7 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, FileUpload_1
             });
         }
     }
-    req.body.name = JSON.parse(req.body.name);
+    //req.body.name = JSON.parse(req.body.name);
     const userResource = (0, express_validator_1.matchedData)(req);
     userResource.id = userid;
     if (req.role === "a") {
@@ -367,11 +366,7 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, FileUpload_1
                 if (req.body.oldPassword) {
                     oldPw = req.body.oldPassword;
                 }
-                console.log("req.body:");
-                console.log(req.body);
                 const updatedUser = await userService.updateUserWithPw(userResource, oldPw);
-                console.log("updatedUser:");
-                console.log(updatedUser);
                 res.status(200).send(updatedUser);
             }
             catch (err) {

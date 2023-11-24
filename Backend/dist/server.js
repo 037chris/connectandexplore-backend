@@ -17,6 +17,8 @@ const swagger_1 = __importDefault(require("./src/utils/swagger"));
 const UserRoute_1 = __importDefault(require("./src/routes/UserRoute"));
 const UsersRouter_1 = __importDefault(require("./src/routes/UsersRouter"));
 const login_1 = __importDefault(require("./src/routes/login"));
+const EventRoute_1 = require("./src/routes/EventRoute");
+const EventsRoute_1 = __importDefault(require("./src/routes/EventsRoute"));
 const app = (0, express_1.default)();
 /* Routes */
 app.use("*", cors());
@@ -32,6 +34,8 @@ app.use(express_1.default.static(__dirname));
 app.use("/api/users", UserRoute_1.default);
 app.use("/api", UsersRouter_1.default);
 app.use("/api/login", login_1.default);
+app.use("/api/event", EventRoute_1.EventRouter);
+app.use("/api/events", EventsRoute_1.default);
 (0, swagger_1.default)(app, 443);
 app.use((req, res, next) => {
     res.status(404).json("Not Found");
