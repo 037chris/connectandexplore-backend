@@ -12,8 +12,6 @@ export class EventService {
     creatorID: string
   ): Promise<eventResource> {
     try {
-      console.log("Before creating event:", eventResource);
-
       const creator = await User.findById(creatorID);
       const event = await Event.create({
         name: eventResource.name,
@@ -28,9 +26,6 @@ export class EventService {
         chat: new Types.ObjectId(),
         participants: [creatorID],
       });
-
-      console.log("After creating event:", event);
-
       return {
         id: event.id,
         name: event.name,
@@ -48,11 +43,13 @@ export class EventService {
         ),
       };
     } catch (err) {
-      console.error("Error creating event:", err);
       throw new Error("Event creation failed");
     }
   }
 
+  /**
+   * Ein bestimmtes Events abrufen
+   */
   async getEvent(eventID: string): Promise<eventResource> {
     try {
       const event = await Event.findById(eventID).exec();
@@ -235,8 +232,10 @@ export class EventService {
    */
   async cancelEvent(userID: string, eventID: string): Promise<boolean> {
     try {
-      const event = await Event.findById(eventID);
+      const event = await Event.findById(eventID).exec();
       if (!event) throw new Error("Event not found");
+      if (event.creator && event.creator.toString() === userID)
+        throw new Error("Can not cancel participation as event manager");
       const index = event.participants.findIndex((participant) => {
         return participant.equals(new Types.ObjectId(userID));
       });
@@ -262,9 +261,11 @@ export class EventService {
       const event = await Event.findById(eventID).exec();
       if (!event) throw new Error("Event not found");
       const creator = await User.findById(event.creator).exec();
+      const user = await User.findById(creatorID);
       if (
         !creator ||
-        (creator._id.toString() !== creatorID && !creator.isAdministrator)
+        !user ||
+        (creator.id !== creatorID && !user.isAdministrator)
       ) {
         throw new Error("Invalid authorization");
       }
