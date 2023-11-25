@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="12" failures="0" errors="0" time="6.224">
-  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-24T20:09:37" time="6.133" tests="12">
-    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.183">
+<testsuites name="jest tests" tests="11" failures="0" errors="0" time="5.853">
+  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-25T18:08:41" time="5.748" tests="11">
+    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.19">
     </testcase>
     <testcase classname="EventService Tests get event" name="EventService Tests get event" time="0.136">
     </testcase>
-    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.188">
+    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.246">
     </testcase>
-    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.186">
+    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.193">
     </testcase>
-    <testcase classname="EventService Tests search events by name" name="EventService Tests search events by name" time="0.198">
+    <testcase classname="EventService Tests search events" name="EventService Tests search events" time="0.211">
     </testcase>
-    <testcase classname="EventService Tests search events by description" name="EventService Tests search events by description" time="0.191">
+    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.256">
     </testcase>
-    <testcase classname="EventService Tests search events by hashtags" name="EventService Tests search events by hashtags" time="0.186">
+    <testcase classname="EventService Tests get joined events" name="EventService Tests get joined events" time="0.334">
     </testcase>
-    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.26">
+    <testcase classname="EventService Tests cancel event" name="EventService Tests cancel event" time="0.341">
     </testcase>
-    <testcase classname="EventService Tests get joined events" name="EventService Tests get joined events" time="0.265">
+    <testcase classname="EventService Tests get participants of event" name="EventService Tests get participants of event" time="0.472">
     </testcase>
-    <testcase classname="EventService Tests cancel event" name="EventService Tests cancel event" time="0.212">
+    <testcase classname="EventService Tests delete event" name="EventService Tests delete event" time="0.341">
     </testcase>
-    <testcase classname="EventService Tests get participants of event" name="EventService Tests get participants of event" time="0.333">
-    </testcase>
-    <testcase classname="EventService Tests delete event" name="EventService Tests delete event" time="0.292">
+    <testcase classname="EventService Tests update event" name="EventService Tests update event" time="0.292">
     </testcase>
   </testsuite>
 </testsuites>

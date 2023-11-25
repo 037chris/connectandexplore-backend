@@ -112,7 +112,6 @@ const e1: eventResource = {
   price: 0,
   date: new Date(),
   address: a,
-  thumbnail: "sampleThumbnail",
   category: [c],
 };
 
@@ -150,7 +149,7 @@ describe("EventService Tests", () => {
     expect(event.category.map((c) => c.name)).toContain("Hobbys");
     expect(event.chat).toBeDefined();
     expect(event.participants.length).toBe(1);
-    // identical event data
+    // identical event data should still work
     const event1 = await eventService.createEvent(e, user.id);
     expect(event1).toBeDefined();
     expect(event1.id).not.toBe(event.id);
@@ -212,13 +211,14 @@ describe("EventService Tests", () => {
     expect(events.events[2].name).toBe("Sample Event 2");
   });
 
-  test("search events by name", async () => {
+  test("search events", async () => {
     const user1 = await User.create(u);
     const user2 = await User.create(u1);
     await eventService.createEvent(e, user1.id);
     await eventService.createEvent(e1, user1.id);
     await eventService.createEvent(e2, user2.id);
     let events: eventsResource;
+    // search events by name
     events = await eventService.searchEvents("sample event");
     expect(events.events.length).toBe(3);
     expect(events.events[0].name).toBe("Sample Event");
@@ -233,14 +233,7 @@ describe("EventService Tests", () => {
     expect(events.events.length).toBe(3);
     events = await eventService.searchEvents(undefined);
     expect(events.events.length).toBe(3);
-  });
-  test("search events by description", async () => {
-    const user1 = await User.create(u);
-    const user2 = await User.create(u1);
-    await eventService.createEvent(e, user1.id);
-    await eventService.createEvent(e1, user1.id);
-    await eventService.createEvent(e2, user2.id);
-    let events: eventsResource;
+    // search events by description
     events = await eventService.searchEvents("this is my");
     expect(events.events.length).toBe(2);
     expect(events.events[0].description).toBe("This is my first event");
@@ -250,14 +243,7 @@ describe("EventService Tests", () => {
     expect(events.events[0].description).toBe("for anyone interested");
     events = await eventService.searchEvents("this is my third event");
     expect(events.events.length).toBe(0);
-  });
-  test("search events by hashtags", async () => {
-    const user1 = await User.create(u);
-    const user2 = await User.create(u1);
-    await eventService.createEvent(e, user1.id);
-    await eventService.createEvent(e1, user1.id);
-    await eventService.createEvent(e2, user2.id);
-    let events: eventsResource;
+    // search events by hashtags
     events = await eventService.searchEvents("sport");
     expect(events.events.length).toBe(1);
     expect(events.events[0].hashtags[0]).toBe("sport");
@@ -324,6 +310,7 @@ describe("EventService Tests", () => {
   test("cancel event", async () => {
     const user1 = await User.create(u);
     const user2 = await User.create(u1);
+    const user3 = await User.create(u2);
     const event1 = await eventService.createEvent(e1, user1.id);
     const event2 = await eventService.createEvent(e2, user2.id);
     let result: eventResource;
@@ -335,11 +322,13 @@ describe("EventService Tests", () => {
     expect(await eventService.cancelEvent(user1.id, id)).toBeFalsy();
     expect(await eventService.cancelEvent(id, event1.id)).toBeFalsy();
     expect(await eventService.cancelEvent(undefined, undefined)).toBeFalsy();
+    // user not participating
+    expect(await eventService.cancelEvent(user3.id, event2.id)).toBeFalsy();
     // successful cancel
     expect(await eventService.cancelEvent(user1.id, event2.id)).toBeTruthy();
     result = await eventService.getEvent(event2.id);
     expect(result.participants).toHaveLength(1);
-    // cancel participation as event manager
+    // cancel participation as event creator should not work
     expect(await eventService.cancelEvent(user1.id, event1.id)).toBeFalsy();
     result = await eventService.getEvent(event1.id);
     expect(result.participants).toHaveLength(1);
@@ -352,6 +341,7 @@ describe("EventService Tests", () => {
     const user2 = await User.create(u2);
     const event = await eventService.createEvent(e, user.id);
     let participants: usersResource;
+    // as event creator
     participants = await eventService.getParticipants(event.id, user.id);
     expect(participants.users).toHaveLength(1);
     expect(participants.users[0].id).toBe(user.id);
@@ -361,14 +351,14 @@ describe("EventService Tests", () => {
     expect(participants.users).toHaveLength(3);
     expect(participants.users[1].id).toBe(user1.id);
     expect(participants.users[2].id).toBe(user2.id);
-    // not event creator but admin
+    // not event creator but admin should work
     participants = await eventService.getParticipants(event.id, user1.id);
     expect(participants.users).toHaveLength(3);
     // invalid authorization
     await expect(
       eventService.getParticipants(event.id, user2.id)
     ).rejects.toThrow();
-    // after cancel participation
+    // participant count decreases after cancel participation
     await eventService.cancelEvent(user1.id, event.id);
     await eventService.cancelEvent(user2.id, event.id);
     participants = await eventService.getParticipants(event.id, user.id);
@@ -382,7 +372,7 @@ describe("EventService Tests", () => {
     const user2 = await User.create(u2);
     let event = await eventService.createEvent(e, user.id);
     expect(event).toBeDefined();
-    let result;
+    let result: boolean;
     result = await eventService.deleteEvent(event.id, user.id);
     expect(result).toBeTruthy();
     await expect(eventService.getEvent(event.id)).rejects.toThrow();
@@ -390,7 +380,7 @@ describe("EventService Tests", () => {
     const id = NON_EXISTING_ID;
     await expect(eventService.deleteEvent(id, undefined)).rejects.toThrow();
     await expect(eventService.deleteEvent(undefined, id)).rejects.toThrow();
-    // not event creator but admin
+    // not event creator but admin should work
     event = await eventService.createEvent(e, user.id);
     expect(event).toBeDefined();
     result = await eventService.deleteEvent(event.id, user1.id);
@@ -403,5 +393,59 @@ describe("EventService Tests", () => {
       eventService.deleteEvent(event.id, user2.id)
     ).rejects.toThrow();
     expect(await eventService.getEvent(event.id)).toBeDefined();
+  });
+
+  test("update event", async () => {
+    const user = await User.create(u);
+    const user1 = await User.create(u1);
+    const user2 = await User.create(u2);
+    const event = await eventService.createEvent(e, user.id);
+    expect(event.name).toBe("Sample Event");
+    await eventService.updateEvent(event.id, e1, user.id);
+    const newevent = await eventService.getEvent(event.id);
+    // event updated correctly
+    expect(newevent).toBeDefined();
+    expect(newevent.id).toBe(event.id);
+    expect(newevent.name).toBe("Sample Event 1");
+    expect(newevent.creator).toBe(event.creator);
+    expect(newevent.description).toBe(e1.description);
+    expect(newevent.price).toBe(e1.price);
+    expect(newevent.date).toStrictEqual(e1.date);
+    expect(newevent.address).toMatchObject(a);
+    expect(newevent.thumbnail).toBe(event.thumbnail);
+    expect(newevent.hashtags).toStrictEqual(event.hashtags);
+    expect(newevent.category.length).toBe(1);
+    expect(newevent.chat).toBe(event.chat);
+    expect(newevent.participants).toStrictEqual(event.participants);
+    // invalid/no data/ids
+    const id = NON_EXISTING_ID;
+    await expect(eventService.updateEvent(id, e1, user.id)).rejects.toThrow();
+    await expect(eventService.updateEvent(event.id, e1, id)).rejects.toThrow();
+    await expect(
+      eventService.updateEvent(event.id, undefined, user.id)
+    ).rejects.toThrow();
+    await expect(
+      eventService.updateEvent(undefined, undefined, undefined)
+    ).rejects.toThrow();
+    // not event creator but admin should work
+    const result = await eventService.updateEvent(event.id, e2, user1.id);
+    // eventresource returned correctly
+    expect(result).toBeDefined();
+    expect(result.id).toBe(event.id);
+    expect(result.name).toBe("Sample Event 2");
+    expect(result.creator).toBe(event.creator);
+    expect(result.description).toBe(e2.description);
+    expect(result.price).toBe(e2.price);
+    expect(result.date).toStrictEqual(e2.date);
+    expect(result.address).toMatchObject(a);
+    expect(result.thumbnail).toBe(event.thumbnail);
+    expect(result.hashtags[0]).toBe("freizeit");
+    expect(result.category.length).toBe(1);
+    expect(result.chat).toBe(event.chat);
+    expect(result.participants).toStrictEqual(event.participants);
+    // invalid authorization
+    await expect(
+      eventService.updateEvent(event.id, e2, user2.id)
+    ).rejects.toThrow();
   });
 });

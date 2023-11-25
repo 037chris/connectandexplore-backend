@@ -48,7 +48,7 @@ export class EventService {
   }
 
   /**
-   * Ein bestimmtes Events abrufen
+   * Ein bestimmtes Event abrufen
    */
   async getEvent(eventID: string): Promise<eventResource> {
     try {
@@ -315,16 +315,20 @@ export class EventService {
     if (eventResource.name) event.name = eventResource.name;
     if (eventResource.description)
       event.description = eventResource.description;
-    if (eventResource.price) event.price = eventResource.price;
+    if (eventResource.price !== undefined) {
+      if (eventResource.price < 0) {
+        throw new Error("Event price cannot be less than 0");
+      } else if (eventResource.price === 0) {
+        event.price = 0;
+      } else {
+        event.price = eventResource.price;
+      }
+    }
     if (eventResource.date) event.date = eventResource.date;
     if (eventResource.address) event.address = eventResource.address;
     if (eventResource.thumbnail) event.thumbnail = eventResource.thumbnail;
     if (eventResource.hashtags) event.hashtags = eventResource.hashtags;
     if (eventResource.category) event.category = eventResource.category;
-    if (eventResource.participants)
-      event.participants = eventResource.participants.map(
-        (participantId) => new Types.ObjectId(participantId)
-      );
     const savedEvent = await event.save();
     return {
       id: savedEvent.id,
