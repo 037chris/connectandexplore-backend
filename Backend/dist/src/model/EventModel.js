@@ -4,7 +4,7 @@ exports.Categoty = exports.Event = void 0;
 const mongoose_1 = require("mongoose");
 const UserModel_1 = require("./UserModel");
 const categorySchema = new mongoose_1.Schema({
-    name: { type: String, required: true, unique: true },
+    name: { type: String, required: true /* , unique: true */ },
     description: { type: String },
 });
 const eventSchema = new mongoose_1.Schema({
@@ -15,9 +15,10 @@ const eventSchema = new mongoose_1.Schema({
     date: { type: Date, required: true },
     address: UserModel_1.addressSchema,
     thumbnail: { type: String },
-    category: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Category" }],
+    hashtags: [{ type: String }],
+    category: [categorySchema],
     chat: { type: mongoose_1.Schema.Types.ObjectId, ref: "Chat", required: true },
-    participants: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User" }],
+    participants: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true }],
 });
 /*
 Zu implementieren?:
