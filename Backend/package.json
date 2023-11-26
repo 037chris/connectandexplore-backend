@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --config jest.config.js",
+    "test-ci": "./node_modules/.bin/jest --detectOpenHandles --forceExit --watchAll=false --reporters='jest-junit'",
     "build": "npx tsc",
     "start": "tsc && nodemon dist/server.js",
     "format": "prettier --write src tests"
