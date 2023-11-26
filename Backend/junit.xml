@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="42" failures="4" errors="0" time="46.037">
-  <testsuite name="userRoute test" errors="0" failures="4" skipped="0" timestamp="2023-11-26T19:11:37" time="24.619" tests="14">
-    <testcase classname="userRoute test getUsers" name="userRoute test getUsers" time="1.067">
+<testsuites name="jest tests" tests="42" failures="4" errors="0" time="37.559">
+  <testsuite name="userRoute test" errors="0" failures="4" skipped="0" timestamp="2023-11-26T19:23:35" time="19.628" tests="14">
+    <testcase classname="userRoute test getUsers" name="userRoute test getUsers" time="1.046">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: 2
@@ -9,21 +9,21 @@ Received: 3
     at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:90:32)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
     </testcase>
-    <testcase classname="userRoute test getUsers fails on request by non-admin" name="userRoute test getUsers fails on request by non-admin" time="0.632">
+    <testcase classname="userRoute test getUsers fails on request by non-admin" name="userRoute test getUsers fails on request by non-admin" time="0.615">
     </testcase>
-    <testcase classname="userRoute test get User request responses with 404 on invalid userID" name="userRoute test get User request responses with 404 on invalid userID" time="0.654">
+    <testcase classname="userRoute test get User request responses with 404 on invalid userID" name="userRoute test get User request responses with 404 on invalid userID" time="0.626">
     </testcase>
-    <testcase classname="userRoute test get User request responses with 400 on undefined userID" name="userRoute test get User request responses with 400 on undefined userID" time="0.557">
+    <testcase classname="userRoute test get User request responses with 400 on undefined userID" name="userRoute test get User request responses with 400 on undefined userID" time="0.623">
     </testcase>
-    <testcase classname="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" name="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" time="0.603">
+    <testcase classname="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" name="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" time="0.612">
     </testcase>
-    <testcase classname="userRoute test put user successfully updates user in db and returns updated user information" name="userRoute test put user successfully updates user in db and returns updated user information" time="1">
+    <testcase classname="userRoute test put user successfully updates user in db and returns updated user information" name="userRoute test put user successfully updates user in db and returns updated user information" time="0.664">
     </testcase>
-    <testcase classname="userRoute test should return error on updating email to duplicate email" name="userRoute test should return error on updating email to duplicate email" time="0.763">
+    <testcase classname="userRoute test should return error on updating email to duplicate email" name="userRoute test should return error on updating email to duplicate email" time="0.59">
     </testcase>
-    <testcase classname="userRoute test should return error on trying to update other users as non-admin" name="userRoute test should return error on trying to update other users as non-admin" time="0.572">
+    <testcase classname="userRoute test should return error on trying to update other users as non-admin" name="userRoute test should return error on trying to update other users as non-admin" time="0.579">
     </testcase>
-    <testcase classname="userRoute test testing for validation errors on put user route" name="userRoute test testing for validation errors on put user route" time="0.606">
+    <testcase classname="userRoute test testing for validation errors on put user route" name="userRoute test testing for validation errors on put user route" time="0.592">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: 400
@@ -31,9 +31,9 @@ Received: 200
     at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\routes\UserRoute.test.ts:207:28)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
     </testcase>
-    <testcase classname="userRoute test put user with invalid old password returns error" name="userRoute test put user with invalid old password returns error" time="0.817">
+    <testcase classname="userRoute test put user with invalid old password returns error" name="userRoute test put user with invalid old password returns error" time="0.805">
     </testcase>
-    <testcase classname="userRoute test should allow an admin to delete any user" name="userRoute test should allow an admin to delete any user" time="0.587">
+    <testcase classname="userRoute test should allow an admin to delete any user" name="userRoute test should allow an admin to delete any user" time="0.602">
       <failure>Error: Cannot set headers after they are sent to the client
     at new NodeError (node:internal/errors:371:5)
     at ServerResponse.setHeader (node:_http_outgoing:576:11)
@@ -50,7 +50,7 @@ Received: 404
     at runMicrotasks (&lt;anonymous&gt;)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
     </testcase>
-    <testcase classname="userRoute test should allow a user to inactivate their own account" name="userRoute test should allow a user to inactivate their own account" time="0.664">
+    <testcase classname="userRoute test should allow a user to inactivate their own account" name="userRoute test should allow a user to inactivate their own account" time="0.637">
       <failure>Error: Cannot set headers after they are sent to the client
     at new NodeError (node:internal/errors:371:5)
     at ServerResponse.setHeader (node:_http_outgoing:576:11)
@@ -67,73 +67,73 @@ Received: 404
     at runMicrotasks (&lt;anonymous&gt;)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
     </testcase>
-    <testcase classname="userRoute test should prevent a non-admin user from deleting another user" name="userRoute test should prevent a non-admin user from deleting another user" time="0.553">
+    <testcase classname="userRoute test should prevent a non-admin user from deleting another user" name="userRoute test should prevent a non-admin user from deleting another user" time="0.599">
     </testcase>
-    <testcase classname="userRoute test should return an error for an invalid user ID" name="userRoute test should return an error for an invalid user ID" time="0.591">
-    </testcase>
-  </testsuite>
-  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:12:02" time="9.877" tests="11">
-    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.395">
-    </testcase>
-    <testcase classname="EventService Tests get event" name="EventService Tests get event" time="0.294">
-    </testcase>
-    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.374">
-    </testcase>
-    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.41">
-    </testcase>
-    <testcase classname="EventService Tests search events" name="EventService Tests search events" time="0.444">
-    </testcase>
-    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.565">
-    </testcase>
-    <testcase classname="EventService Tests get joined events" name="EventService Tests get joined events" time="0.74">
-    </testcase>
-    <testcase classname="EventService Tests cancel event" name="EventService Tests cancel event" time="0.623">
-    </testcase>
-    <testcase classname="EventService Tests get participants of event" name="EventService Tests get participants of event" time="1.153">
-    </testcase>
-    <testcase classname="EventService Tests delete event" name="EventService Tests delete event" time="0.844">
-    </testcase>
-    <testcase classname="EventService Tests update event" name="EventService Tests update event" time="0.646">
+    <testcase classname="userRoute test should return an error for an invalid user ID" name="userRoute test should return an error for an invalid user ID" time="0.552">
     </testcase>
   </testsuite>
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:12:11" time="5.844" tests="11">
-    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.357">
+  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:23:55" time="7.353" tests="11">
+    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.425">
     </testcase>
-    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.316">
+    <testcase classname="EventService Tests get event" name="EventService Tests get event" time="0.315">
     </testcase>
-    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.309">
+    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.383">
     </testcase>
-    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.298">
+    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.386">
     </testcase>
-    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.294">
+    <testcase classname="EventService Tests search events" name="EventService Tests search events" time="0.443">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.639">
+    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.553">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.143">
+    <testcase classname="EventService Tests get joined events" name="EventService Tests get joined events" time="0.549">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.296">
+    <testcase classname="EventService Tests cancel event" name="EventService Tests cancel event" time="0.63">
     </testcase>
-    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.198">
+    <testcase classname="EventService Tests get participants of event" name="EventService Tests get participants of event" time="0.695">
     </testcase>
-    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.191">
+    <testcase classname="EventService Tests delete event" name="EventService Tests delete event" time="0.579">
     </testcase>
-    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.175">
-    </testcase>
-  </testsuite>
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:12:17" time="2.891" tests="3">
-    <testcase classname="userModel test create User" name="userModel test create User" time="0.33">
-    </testcase>
-    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.444">
-    </testcase>
-    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.286">
+    <testcase classname="EventService Tests update event" name="EventService Tests update event" time="0.629">
     </testcase>
   </testsuite>
-  <testsuite name="Event Model Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:12:20" time="1.988" tests="3">
-    <testcase classname="Event Model Tests create event" name="Event Model Tests create event" time="0.117">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:24:02" time="4.882" tests="11">
+    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.364">
     </testcase>
-    <testcase classname="Event Model Tests empty eventdata" name="Event Model Tests empty eventdata" time="0.039">
+    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.313">
     </testcase>
-    <testcase classname="Event Model Tests negative price" name="Event Model Tests negative price" time="0.035">
+    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.289">
+    </testcase>
+    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.312">
+    </testcase>
+    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.302">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.638">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.159">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.302">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.163">
+    </testcase>
+    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.169">
+    </testcase>
+    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.168">
+    </testcase>
+  </testsuite>
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:24:07" time="2.825" tests="3">
+    <testcase classname="userModel test create User" name="userModel test create User" time="0.37">
+    </testcase>
+    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.396">
+    </testcase>
+    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.291">
+    </testcase>
+  </testsuite>
+  <testsuite name="Event Model Tests" errors="0" failures="0" skipped="0" timestamp="2023-11-26T19:24:10" time="2.182" tests="3">
+    <testcase classname="Event Model Tests create event" name="Event Model Tests create event" time="0.151">
+    </testcase>
+    <testcase classname="Event Model Tests empty eventdata" name="Event Model Tests empty eventdata" time="0.041">
+    </testcase>
+    <testcase classname="Event Model Tests negative price" name="Event Model Tests negative price" time="0.062">
     </testcase>
   </testsuite>
 </testsuites>
