@@ -253,13 +253,10 @@ UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_
  *               email:
  *                 type: string
  *                 example: "John@doe.com"
- *               name:
- *                 type: object
- *                 properties:
- *                   first:
+ *               name[first]:
  *                     type: string
  *                     example: "Test"
- *                   last:
+ *               name[last]:
  *                     type: string
  *                     example: "User"
  *               password:
