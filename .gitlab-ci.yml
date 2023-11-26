@@ -13,5 +13,5 @@ tests:
   script:
     - npm install
     - npm test
-  after_script:
     - echo "Tests have completed. Your message here."
+    - exit 0
