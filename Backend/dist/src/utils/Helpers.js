@@ -18,7 +18,9 @@ exports.validate = [
     validateIfPresent("isAdministrator", (0, express_validator_1.body)("isAdministrator").isBoolean()),
     validateIfPresent("password", (0, express_validator_1.body)("password").isStrongPassword()),
     validateIfPresent("oldPassword", (0, express_validator_1.body)("oldPassword").isStrongPassword()),
-    validateIfPresent("address.street", (0, express_validator_1.body)("address.street").notEmpty().withMessage("Street address is required.")),
+    validateIfPresent("address.street", (0, express_validator_1.body)("address.street")
+        .notEmpty()
+        .withMessage("Street address is required.")),
     validateIfPresent("address.houseNumber", (0, express_validator_1.body)("address.houseNumber")
         .notEmpty()
         .withMessage("House number is required.")),

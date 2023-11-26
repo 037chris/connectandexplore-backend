@@ -58,5 +58,5 @@ eventSchema.post('updateOne', async function (result, next) {
 export const Event = model<IEvent, EventModel>("Event", eventSchema);
 export const Categoty = model<ICategory, CategoryModel>(
   "Category",
-  categorySchema
+  categorySchema,
 );

@@ -22,49 +22,51 @@ export const validate = [
   validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
   validateIfPresent(
     "address.street",
-    body("address.street").notEmpty().withMessage("Street address is required.")
+    body("address.street")
+      .notEmpty()
+      .withMessage("Street address is required."),
   ),
   validateIfPresent(
     "address.houseNumber",
     body("address.houseNumber")
       .notEmpty()
-      .withMessage("House number is required.")
+      .withMessage("House number is required."),
   ),
   validateIfPresent(
     "address.postalCode",
     body("address.postalCode")
       .notEmpty()
-      .withMessage("Postal code is required.")
+      .withMessage("Postal code is required."),
   ),
   validateIfPresent(
     "address.city",
-    body("address.city").notEmpty().withMessage("City is required.")
+    body("address.city").notEmpty().withMessage("City is required."),
   ),
   validateIfPresent(
     "address.country",
-    body("address.country").notEmpty().withMessage("Country is required.")
+    body("address.country").notEmpty().withMessage("Country is required."),
   ),
   validateIfPresent(
     "address.stateOrRegion",
     body("address.stateOrRegion")
       .isString()
-      .withMessage("invalid State or Region.")
+      .withMessage("invalid State or Region."),
   ),
   validateIfPresent(
     "address.appartmentNumber",
     body("address.appartmentNumber")
       .isString()
-      .withMessage("invalid Appartmentnumber.")
+      .withMessage("invalid Appartmentnumber."),
   ),
   validateIfPresent("profilePicture", body("profilePicture").isString()),
   validateIfPresent("birthDate", body("birthDate").isString()),
   validateIfPresent("gender", body("gender").isString()),
   validateIfPresent(
     "socialMediaUrls.facebook",
-    body("socialMediaUrls.facebook").isString()
+    body("socialMediaUrls.facebook").isString(),
   ),
   validateIfPresent(
     'socialMediaUrls.instagram"',
-    body("socialMediaUrls.instagram").isString()
+    body("socialMediaUrls.instagram").isString(),
   ),
 ];

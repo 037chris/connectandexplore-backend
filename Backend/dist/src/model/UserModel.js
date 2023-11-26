@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.userRole = void 0;
+exports.User = exports.addressSchema = exports.userRole = void 0;
 const mongoose_1 = require("mongoose");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 var userRole;
@@ -14,7 +14,7 @@ var userRole;
 /**
  * Adressen werden später in das UserSchema eingefügt und als teil eines Users in mongoDB gespeichert
  */
-const addressSchema = new mongoose_1.Schema({
+exports.addressSchema = new mongoose_1.Schema({
     street: { type: String, required: true },
     houseNumber: { type: String, required: true },
     apartmentNumber: String,
@@ -31,7 +31,7 @@ const userSchema = new mongoose_1.Schema({
     },
     password: { type: String, required: true },
     isAdministrator: { type: Boolean, default: false },
-    address: addressSchema,
+    address: exports.addressSchema,
     profilePicture: String,
     birthDate: { type: Date, required: true },
     gender: { type: String, required: true },

@@ -62,7 +62,7 @@ EventRouter.post(
     } catch (err) {
       return res.status(500).json({ Error: "Event creation failed" });
     }
-  }
+  },
 );
 
 EventRouter.post(
@@ -84,7 +84,7 @@ EventRouter.post(
         return res.status(500).json({ Error: "Joining event failed" });
       }
     }
-  }
+  },
 );
 
 EventRouter.delete(
@@ -102,7 +102,7 @@ EventRouter.delete(
         return res.status(500).json({ Error: "Canceling event failed" });
       }
     }
-  }
+  },
 );
 
 EventRouter.get(
@@ -113,14 +113,14 @@ EventRouter.get(
     try {
       const participants = await eventService.getParticipants(
         req.params.eventid,
-        req.userId
+        req.userId,
       );
       res.status(200).send(participants);
     } catch (err) {
       res.status(404);
       next(err);
     }
-  }
+  },
 );
 
 EventRouter.delete(
@@ -131,7 +131,7 @@ EventRouter.delete(
     try {
       const deleted = await eventService.deleteEvent(
         req.params.eventid,
-        req.userId
+        req.userId,
       );
       if (deleted) {
         res.status(204).json({ message: "Event successfully deleted" });
@@ -142,7 +142,7 @@ EventRouter.delete(
       res.status(404);
       next(err);
     }
-  }
+  },
 );
 
 EventRouter.get(
@@ -166,7 +166,7 @@ EventRouter.get(
       res.status(403);
       next(new Error("Invalid authorization"));
     }
-  }
+  },
 );
 
 EventRouter.get("/", async (req, res, next) => {
@@ -203,13 +203,13 @@ EventRouter.get(
       res.status(404);
       next(err);
     }
-  }
+  },
 );
 
 EventRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
   try {
     const events: eventsResource = await eventService.getJoinedEvents(
-      req.userId
+      req.userId,
     );
     if (events.events.length === 0) {
       return res.status(204).json({ message: "No events found." });
