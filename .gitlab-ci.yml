@@ -13,9 +13,6 @@ tests:
   script:
     - npm install
     - npm test
-  artifacts:
-    reports:
-      junit: junit.xml
 
 cache:
   paths:
