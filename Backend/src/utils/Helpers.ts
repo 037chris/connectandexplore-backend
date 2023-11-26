@@ -16,10 +16,12 @@ const validateIfPresent = (field: string, validators: any) => {
 // Validation middleware
 export const validate = [
   validateIfPresent("email", body("email").isEmail()),
-
-  validateIfPresent("isAdministrator", body("isAdministrator").isBoolean()),
+  validateIfPresent("name.first", body("name.first").isString()),
+  validateIfPresent("name.last", body("name.last").isString()),
   validateIfPresent("password", body("password").isStrongPassword()),
-  validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
+  validateIfPresent("isAdministrator", body("isAdministrator").isBoolean()),
+  
+  //validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
   validateIfPresent(
     "address.street",
     body("address.street").notEmpty().withMessage("Street address is required.")
