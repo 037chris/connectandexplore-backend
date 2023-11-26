@@ -10,7 +10,6 @@ class EventService {
      */
     async createEvent(eventResource, creatorID) {
         try {
-            console.log("Before creating event:", eventResource);
             const creator = await UserModel_1.User.findById(creatorID);
             const event = await EventModel_1.Event.create({
                 name: eventResource.name,
@@ -25,7 +24,6 @@ class EventService {
                 chat: new mongoose_1.Types.ObjectId(),
                 participants: [creatorID],
             });
-            console.log("After creating event:", event);
             return {
                 id: event.id,
                 name: event.name,
@@ -42,10 +40,12 @@ class EventService {
             };
         }
         catch (err) {
-            console.error("Error creating event:", err);
             throw new Error("Event creation failed");
         }
     }
+    /**
+     * Ein bestimmtes Event abrufen
+     */
     async getEvent(eventID) {
         try {
             const event = await EventModel_1.Event.findById(eventID).exec();
@@ -221,9 +221,11 @@ class EventService {
      */
     async cancelEvent(userID, eventID) {
         try {
-            const event = await EventModel_1.Event.findById(eventID);
+            const event = await EventModel_1.Event.findById(eventID).exec();
             if (!event)
                 throw new Error("Event not found");
+            if (event.creator && event.creator.toString() === userID)
+                throw new Error("Can not cancel participation as event manager");
             const index = event.participants.findIndex((participant) => {
                 return participant.equals(new mongoose_1.Types.ObjectId(userID));
             });
@@ -247,8 +249,10 @@ class EventService {
             if (!event)
                 throw new Error("Event not found");
             const creator = await UserModel_1.User.findById(event.creator).exec();
+            const user = await UserModel_1.User.findById(creatorID);
             if (!creator ||
-                (creator._id.toString() !== creatorID && !creator.isAdministrator)) {
+                !user ||
+                (creator.id !== creatorID && !user.isAdministrator)) {
                 throw new Error("Invalid authorization");
             }
             const participantIDs = event.participants;
@@ -293,8 +297,17 @@ class EventService {
             event.name = eventResource.name;
         if (eventResource.description)
             event.description = eventResource.description;
-        if (eventResource.price)
-            event.price = eventResource.price;
+        if (eventResource.price !== undefined) {
+            if (eventResource.price < 0) {
+                throw new Error("Event price cannot be less than 0");
+            }
+            else if (eventResource.price === 0) {
+                event.price = 0;
+            }
+            else {
+                event.price = eventResource.price;
+            }
+        }
         if (eventResource.date)
             event.date = eventResource.date;
         if (eventResource.address)
@@ -305,8 +318,6 @@ class EventService {
             event.hashtags = eventResource.hashtags;
         if (eventResource.category)
             event.category = eventResource.category;
-        if (eventResource.participants)
-            event.participants = eventResource.participants.map((participantId) => new mongoose_1.Types.ObjectId(participantId));
         const savedEvent = await event.save();
         return {
             id: savedEvent.id,

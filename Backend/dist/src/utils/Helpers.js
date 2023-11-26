@@ -15,9 +15,11 @@ const validateIfPresent = (field, validators) => {
 // Validation middleware
 exports.validate = [
     validateIfPresent("email", (0, express_validator_1.body)("email").isEmail()),
-    validateIfPresent("isAdministrator", (0, express_validator_1.body)("isAdministrator").isBoolean()),
+    validateIfPresent("name.first", (0, express_validator_1.body)("name.first").isString()),
+    validateIfPresent("name.last", (0, express_validator_1.body)("name.last").isString()),
     validateIfPresent("password", (0, express_validator_1.body)("password").isStrongPassword()),
-    validateIfPresent("oldPassword", (0, express_validator_1.body)("oldPassword").isStrongPassword()),
+    validateIfPresent("isAdministrator", (0, express_validator_1.body)("isAdministrator").isBoolean()),
+    //validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
     validateIfPresent("address.street", (0, express_validator_1.body)("address.street").notEmpty().withMessage("Street address is required.")),
     validateIfPresent("address.houseNumber", (0, express_validator_1.body)("address.houseNumber")
         .notEmpty()

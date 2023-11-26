@@ -90,7 +90,8 @@ EventRouter.delete("/:eventid/cancel", authentication_1.requiresAuthentication, 
         res.status(204).send();
     }
     catch (err) {
-        if (err.message === "User is not participating in the event") {
+        if (err.message === "User is not participating in the event" ||
+            err.message === "Can not cancel participation as event manager") {
             return res.status(409).json({ Error: err.message });
         }
         else {
