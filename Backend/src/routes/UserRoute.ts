@@ -357,7 +357,8 @@ UserRouter.put(
       }
     }
     //req.body.name = JSON.parse(req.body.name);
-    const userResource = matchedData(req) as userResource;
+    const userResource = req.body as userResource;//matchedData(req) as userResource;
+    console.log("route:", userResource);
     userResource.id = userid;
     if (req.role === "a") {
       try {
