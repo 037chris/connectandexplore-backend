@@ -9,10 +9,6 @@
     "start": "tsc && nodemon dist/server.js",
     "format": "prettier --write src tests"
   },
-  "jest": {
-    "testTimeout": 30000,
-    "detectOpenHandles": true
-  },
   "repository": {
     "type": "git",
     "url": "https://gitlab.bht-berlin.de/s85975/connectandexplore.git"

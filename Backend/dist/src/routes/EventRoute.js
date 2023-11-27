@@ -7,11 +7,130 @@ const express_1 = __importDefault(require("express"));
 const EventService_1 = require("../services/EventService");
 const authentication_1 = require("./authentication");
 const express_validator_1 = require("express-validator");
+const FileUpload_1 = require("../utils/FileUpload");
 const EventRouter = express_1.default.Router();
 const eventService = new EventService_1.EventService();
-EventRouter.post("/create", authentication_1.requiresAuthentication, 
-//upload.single("thumbnail"),
-[
+/**
+ * @swagger
+ * paths:
+ *  /api/events/create:
+ *    post:
+ *     summary: Create a new event
+ *     description: Register a new event with event data and an optional event pictures.
+ *     tags:
+ *       - Event
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                  example: "Test Event"
+ *                price:
+ *                  type: number
+ *                  example: 0
+ *                description:
+ *                  type: string
+ *                  example: "Test Event description"
+ *                date:
+ *                  type: string
+ *                  format: date
+ *                  example: "2000-01-01"
+ *                address[street]:
+ *                  type: string
+ *                  example: "123 Test Street"
+ *                address[houseNumber]:
+ *                  type: string
+ *                  example: "1"
+ *                address[apartmentNumber]:
+ *                  type: string
+ *                  example: "123"
+ *                address[postalCode]:
+ *                  type: string
+ *                  example: "12345"
+ *                address[city]:
+ *                  type: string
+ *                  example: "Berlin"
+ *                address[stateOrRegion]:
+ *                  type: string
+ *                  example: "Berlin"
+ *                address[country]:
+ *                  type: string
+ *                  example: "DE"
+ *                thumbnail:
+ *                  type: string
+ *                  example: []
+ *                  format: binary
+ *                hashtags:
+ *                  type: array
+ *                  items:
+ *                    type: string
+ *                  example: ["sport", "freizeit"]
+ *                category:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      name:
+ *                        type: string
+ *                        example: "Hobbys"
+ *                      description:
+ *                        type: string
+ *                        example: "persönliche Interessen, Freizeit"
+ *              required:
+ *                - name
+ *                - price
+ *                - description
+ *                - date
+ *                - name[first]
+ *                - name[last]
+ *                - address[street]
+ *                - address[houseNumber]
+ *                - address[postalCode]
+ *                - address[city]
+ *                - address[country]
+ *                - category
+ *     responses:
+ *       '201':
+ *         description: Event created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/IEvent'
+ *       '400':
+ *         description: Bad request, validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                       param:
+ *                         type: string
+ *                       value:
+ *                         type: string
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Error:
+ *                   type: string
+ */
+EventRouter.post("/create", authentication_1.requiresAuthentication, FileUpload_1.upload.single("thumbnail"), [
     (0, express_validator_1.body)("name").isString().notEmpty().withMessage("Event name is required."),
     //body("creator").isString().notEmpty(),
     (0, express_validator_1.body)("price").isNumeric().notEmpty(),
@@ -178,6 +297,39 @@ EventRouter.get("/creator/:userid", authentication_1.requiresAuthentication, (0,
         next(new Error("Invalid authorization"));
     }
 });
+/**
+ * @swagger
+ * /api/events/:
+ *   get:
+ *     summary: Get all events
+ *     tags:
+ *       - Event
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Returns all events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 events:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/EventsResource'
+ *       '204':
+ *         description: No events found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '404':
+ *         description: Not found
+ */
 EventRouter.get("/", authentication_1.optionalAuthentication, async (req, res, next) => {
     try {
         const events = await eventService.getAllEvents();

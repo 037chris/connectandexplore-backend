@@ -47,6 +47,23 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        ICategory: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+            },
+            description: {
+              type: "string",
+            },
+          },
+        },
+        IChat: {
+          type: "object",
+          properties: {
+            // Define IChat properties
+          },
+        },
         IUser: {
           type: "object",
           properties: {
@@ -96,6 +113,55 @@ const options: swaggerJsdoc.Options = {
             },
             isActive: {
               type: "boolean",
+            },
+          },
+        },
+        IEvent: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+            },
+            creator: {
+              $ref: "#/components/schemas/IUser", // Reference to IUser schema
+            },
+            description: {
+              type: "string",
+            },
+            price: {
+              type: "number",
+              minimum: 0,
+            },
+            date: {
+              type: "string", // Date represented as string in ISO 8601 format
+              format: "date-time",
+            },
+            address: {
+              $ref: "#/components/schemas/IAddress",
+            },
+            thumbnail: {
+              type: "string",
+            },
+            hashtags: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+            },
+            category: {
+              type: "array",
+              items: {
+                $ref: "#/components/schemas/ICategory",
+              },
+            },
+            chat: {
+              $ref: "#/components/schemas/IChat", // Reference to IChat schema
+            },
+            participants: {
+              type: "array",
+              items: {
+                type: "string", // Assuming participants are represented by strings (e.g., ObjectId as strings)
+              },
             },
           },
         },

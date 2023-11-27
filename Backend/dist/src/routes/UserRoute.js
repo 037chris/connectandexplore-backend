@@ -24,57 +24,63 @@ const userService = new UserService_1.UserService();
  *       content:
  *         multipart/form-data:
  *           schema:
- *             type: object
- *             properties:
- *               profilePicture:
- *                 type: string
- *                 example: []
- *                 format: binary
- *               email:
- *                 type: string
- *                 example: "John@doe.com"
- *               name[first]:
- *                 type: string
- *                 example: "Test"
- *               password:
- *                 type: string
- *                 example: "12abcAB!"
- *               birthDate:
- *                 type: string
- *                 example: "2000-01-01"
- *               gender:
- *                 type: string
- *                 example: "Male"
- *               name[last]:
- *                 type: string
- *                 example: "User"
- *               address[street]:
- *                 type: string
- *                 example: "123 Test Street"
- *               address[houseNumber]:
- *                 type: string
- *                 example: "1"
- *               address[postalCode]:
- *                 type: string
- *                 example: "12345"
- *               address[city]:
- *                 type: string
- *                 example: "Berlin"
- *               address[country]:
- *                 type: string
- *                 example: "DE"
- *             required:
- *               - email
- *               - password
- *               - gender
- *               - birthDate
- *               - name[first]
- *               - name[last]
- *               - address[street]
- *               - address[houseNumber]
- *               - address[postalCode]
- *               - address[city]
- *               - address[country]
+ *              type: object
+ *              properties:
+ *                profilePicture:
+ *                  type: string
+ *                  example: []
+ *                  format: binary
+ *                email:
+ *                  type: string
+ *                  example: "John@doe.com"
+ *                name[first]:
+ *                  type: string
+ *                  example: "Test"
+ *                name[last]:
+ *                  type: string
+ *                  example: "User"
+ *                password:
+ *                  type: string
+ *                  example: "12abcAB!"
+ *                birthDate:
+ *                  type: string
+ *                  example: "2000-01-01"
+ *                gender:
+ *                  type: string
+ *                  example: "Male"
+ *                address[street]:
+ *                  type: string
+ *                  example: "123 Test Street"
+ *                address[houseNumber]:
+ *                  type: string
+ *                  example: "1"
+ *                address[apartmentNumber]:
+ *                  type: string
+ *                  example: "123"
+ *                address[postalCode]:
+ *                  type: string
+ *                  example: "12345"
+ *                address[city]:
+ *                  type: string
+ *                  example: "Berlin"
+ *                address[stateOrRegion]:
+ *                  type: string
+ *                  example: "Berlin"
+ *                address[country]:
+ *                  type: string
+ *                  example: "DE"
+ *              required:
+ *                - email
+ *                - password
+ *                - gender
+ *                - birthDate
+ *                - name[first]
+ *                - name[last]
+ *                - address[street]
+ *                - address[houseNumber]
+ *                - address[postalCode]
+ *                - address[city]
+ *                - address[country]
  *     responses:
  *       201:
  *         description: User registered successfully
