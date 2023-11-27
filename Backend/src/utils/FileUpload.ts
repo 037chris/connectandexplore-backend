@@ -34,6 +34,18 @@ export function deleteProfilePicture(filename: string): void {
     throw error;
   }
 }
+
+export function deleteEventThumbnail(filename: string): void {
+  /* try {
+    const filePath = path.join(__dirname, filename);
+    fs.unlinkSync(filePath);
+    console.log(`Deleted event thumbnail: ${filename}`);
+  } catch (error) {
+    console.error(`Error deleting event thumbnail: ${filename}`, error);
+    throw error;
+  } */
+}
+
 // file size : 10 MB limit
 export const upload = multer({
   storage: storage,

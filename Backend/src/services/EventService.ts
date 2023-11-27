@@ -148,9 +148,9 @@ export class EventService {
     try {
       const events = await Event.find({
         $or: [
-          { name: { $regex: query, $options: "i" } },
-          { description: { $regex: query, $options: "i" } },
-          { hashtags: { $in: [query] } },
+          { name: { $regex: new RegExp(query, "i") } },
+          { description: { $regex: new RegExp(query, "i") } },
+          { hashtags: { $in: [new RegExp(query, "i")] } },
         ],
       }).exec();
       const eventsResult: eventsResource = {
@@ -181,14 +181,16 @@ export class EventService {
    * Am Event teilnehmen ( Event Teilnehmer )
    */
   async joinEvent(userID: string, eventID: string): Promise<boolean> {
+    if (!userID) throw new Error(`User ID: ${userID} is invalid.`);
+    if (!eventID) throw new Error(`Event ID: ${eventID} is invalid.`);
+    const user = await User.findById(userID).exec();
+    const event = await Event.findById(eventID).exec();
+    if (!user) throw new Error("User not found");
+    if (!event) throw new Error("Event not found");
+    if (event.participants.includes(user._id)) {
+      throw new Error("User is already participating in the event");
+    }
     try {
-      const user = await User.findById(userID).exec();
-      const event = await Event.findById(eventID).exec();
-      if (!user) throw new Error("User not found");
-      if (!event) throw new Error("Event not found");
-      if (event.participants.includes(user._id)) {
-        throw new Error("User is already participating in the event");
-      }
       event.participants.push(user._id);
       await event.save();
       return true;
@@ -231,17 +233,19 @@ export class EventService {
    * Teilnahme am Event absagen ( Event Teilnehmer )
    */
   async cancelEvent(userID: string, eventID: string): Promise<boolean> {
+    if (!userID) throw new Error(`User ID: ${userID} is invalid.`);
+    if (!eventID) throw new Error(`Event ID: ${eventID} is invalid.`);
+    const event = await Event.findById(eventID).exec();
+    if (!event) throw new Error("Event not found");
+    if (event.creator && event.creator.toString() === userID)
+      throw new Error("Can not cancel participation as event manager");
+    const index = event.participants.findIndex((participant) => {
+      return participant.equals(new Types.ObjectId(userID));
+    });
+    if (index === -1) {
+      throw new Error("User is not participating in the event");
+    }
     try {
-      const event = await Event.findById(eventID).exec();
-      if (!event) throw new Error("Event not found");
-      if (event.creator && event.creator.toString() === userID)
-        throw new Error("Can not cancel participation as event manager");
-      const index = event.participants.findIndex((participant) => {
-        return participant.equals(new Types.ObjectId(userID));
-      });
-      if (index === -1) {
-        throw new Error("User is not participating in the event");
-      }
       event.participants.splice(index, 1);
       await event.save();
       return true;
