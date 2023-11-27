@@ -262,13 +262,10 @@ UserRouter.get(
  *               email:
  *                 type: string
  *                 example: "John@doe.com"
- *               name:
- *                 type: object
- *                 properties:
- *                   first:
+ *               name[first]:
  *                     type: string
  *                     example: "Test"
- *                   last:
+ *               name[last]:
  *                     type: string
  *                     example: "User"
  *               password:
@@ -357,7 +354,8 @@ UserRouter.put(
       }
     }
     //req.body.name = JSON.parse(req.body.name);
-    const userResource = matchedData(req) as userResource;
+    const userResource = req.body as userResource; //matchedData(req) as userResource;
+    console.log("route:", userResource);
     userResource.id = userid;
     if (req.role === "a") {
       try {

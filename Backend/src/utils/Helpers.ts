@@ -5,7 +5,8 @@ import { validationResult, body } from "express-validator";
 const validateIfPresent = (field: string, validators: any) => {
   return (req: Request, res: Response, next: NextFunction) => {
     // Check if the field exists in the request body and has a value
-    if (req.body[field] !== undefined && req.body[field] !== "") {
+    // && req.body[field] !== ""
+    if (req.body[field] !== undefined) {
       return validators(req, res, next);
     }
     // If the field is absent or empty, skip the validation
@@ -16,35 +17,32 @@ const validateIfPresent = (field: string, validators: any) => {
 // Validation middleware
 export const validate = [
   validateIfPresent("email", body("email").isEmail()),
-
-  validateIfPresent("isAdministrator", body("isAdministrator").isBoolean()),
+  validateIfPresent("name.first", body("name.first").isString()),
+  validateIfPresent("name.last", body("name.last").isString()),
   validateIfPresent("password", body("password").isStrongPassword()),
-  validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
-  validateIfPresent(
-    "address.street",
-    body("address.street")
-      .notEmpty()
-      .withMessage("Street address is required."),
-  ),
+  validateIfPresent("isAdministrator", body("isAdministrator").isBoolean()),
+
+  //validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
+  validateIfPresent("address.street", body("address.street").isString()),
   validateIfPresent(
     "address.houseNumber",
     body("address.houseNumber")
-      .notEmpty()
-      .withMessage("House number is required."),
+      .isNumeric()
+      .withMessage("houseNumber is required.")
   ),
   validateIfPresent(
     "address.postalCode",
     body("address.postalCode")
-      .notEmpty()
-      .withMessage("Postal code is required."),
+      .isNumeric()
+      .withMessage("Postal code is required.")
   ),
   validateIfPresent(
     "address.city",
-    body("address.city").notEmpty().withMessage("City is required."),
+    body("address.city").isString().withMessage("City is required.")
   ),
   validateIfPresent(
     "address.country",
-    body("address.country").notEmpty().withMessage("Country is required."),
+    body("address.country").isString().withMessage("Country is required.")
   ),
   validateIfPresent(
     "address.stateOrRegion",

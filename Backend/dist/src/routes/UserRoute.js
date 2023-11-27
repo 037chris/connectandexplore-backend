@@ -253,13 +253,10 @@ UserRouter.get("/:userid", authentication_1.requiresAuthentication, (0, express_
  *               email:
  *                 type: string
  *                 example: "John@doe.com"
- *               name:
- *                 type: object
- *                 properties:
- *                   first:
+ *               name[first]:
  *                     type: string
  *                     example: "Test"
- *                   last:
+ *               name[last]:
  *                     type: string
  *                     example: "User"
  *               password:
@@ -343,7 +340,12 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, FileUpload_1
         }
     }
     //req.body.name = JSON.parse(req.body.name);
+<<<<<<< HEAD
     const userResource = (0, express_validator_1.matchedData)(req);
+=======
+    const userResource = req.body; //matchedData(req) as userResource;
+    console.log("route:", userResource);
+>>>>>>> main
     userResource.id = userid;
     if (req.role === "a") {
         try {

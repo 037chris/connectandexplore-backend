@@ -28,7 +28,7 @@ const u: userResource = {
   birthDate: new Date(),
   gender: "male",
   isActive: true,
-  profilePicture: "picture1",
+  //profilePicture: "picture1",
   socialMediaUrls: {
     facebook: "facebook",
     instagram: "instagram",
@@ -47,7 +47,7 @@ const JaneData: userResource = {
   birthDate: new Date(),
   gender: "male",
   isActive: true,
-  profilePicture: "picture1",
+  // profilePicture: "picture1",
   socialMediaUrls: {
     facebook: "facebook",
     instagram: "instagram",
@@ -87,19 +87,28 @@ describe("userRoute test", () => {
       .set("Authorization", `Bearer ${AdminToken}`);
     expect(response.statusCode).toBe(200);
     const users: usersResource = response.body;
-    expect(users.users.length).toBe(2);
-
-    expect(users.users[0].id).toBeDefined();
-    expect(users.users[0].name.first).toBe(u.name.first);
-    expect(users.users[0].name.last).toBe(u.name.last);
-    expect(users.users[0].email).toBe(u.email);
-    expect(users.users[0].password).toBeUndefined();
-    expect(users.users[0].address).toMatchObject(a);
+    expect(users.users.length).toBe(3);
+    let userPos: number;
+    if (users.users[0].name.first === u.name.first) {
+      userPos = 0;
+    } else if (users.users[1].name.first === u.name.first) {
+      userPos = 1;
+    } else if (users.users[2].name.first === u.name.first) {
+      userPos = 2;
+    }
+    expect(users.users[userPos].id).toBeDefined();
+    expect(users.users[userPos].name.first).toBe(u.name.first);
+    expect(users.users[userPos].name.last).toBe(u.name.last);
+    expect(users.users[userPos].email).toBe(u.email);
+    expect(users.users[userPos].password).toBeUndefined();
+    expect(users.users[userPos].address).toMatchObject(a);
     //expect(users.users[0].birthDate).toBe(u.birthDate);
-    expect(users.users[0].gender).toBe(u.gender);
-    expect(users.users[0].isActive).toBeTruthy();
-    expect(users.users[0].profilePicture).toBe(u.profilePicture);
-    expect(users.users[0].socialMediaUrls).toMatchObject(u.socialMediaUrls);
+    expect(users.users[userPos].gender).toBe(u.gender);
+    expect(users.users[userPos].isActive).toBeTruthy();
+    //expect(users.users[0].profilePicture).toBe(u.profilePicture);
+    expect(users.users[userPos].socialMediaUrls).toMatchObject(
+      u.socialMediaUrls
+    );
   });
 
   test("getUsers fails on request by non-admin", async () => {

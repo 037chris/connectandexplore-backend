@@ -120,6 +120,7 @@ export class UserService {
       }
       user.email = userResource.email;
     }
+    console.log(userResource.address);
     if (userResource.password) user.password = userResource.password;
     if (userResource.isAdministrator)
       user.isAdministrator = userResource.isAdministrator;
@@ -132,6 +133,7 @@ export class UserService {
       user.socialMediaUrls = userResource.socialMediaUrls;
     if (userResource.isActive) user.isActive = userResource.isActive;
     const savedUser = await user.save();
+    console.log(savedUser);
     return {
       id: savedUser.id,
       name: savedUser.name,

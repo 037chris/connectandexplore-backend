@@ -46,16 +46,16 @@ export type LoginResource = {
 export type eventResource = {
   id?: string;
   name: string;
-  creator: string;
+  creator?: string;
   description: string;
   price: number;
   date: Date;
   address: addressResource;
   thumbnail?: string;
-  hashtags: string[];
-  category: string[];
-  chat: string;
-  participants: string[];
+  hashtags?: string[];
+  category?: categoryResource[];
+  chat?: string;
+  participants?: string[];
 };
 
 export type eventsResource = {
