@@ -4,10 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-<<<<<<< HEAD
 //import { req } from "../jest.setup";
-=======
->>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 const db_1 = require("../../database/db");
 const EventService_1 = require("../../src/services/EventService");
 const server_1 = __importDefault(require("../../server"));
@@ -164,14 +161,10 @@ describe("EventRoute Tests", () => {
         uToken = uLoginResource.access_token;
     });
     afterEach(async () => await (0, db_1.clearDatabase)());
-<<<<<<< HEAD
     afterAll(async () => {
         //closeServer(); // Close the server after all tests
         await (0, db_1.closeDatabase)(); // Perform final cleanup after all tests
     });
-=======
-    afterAll(async () => await (0, db_1.closeDatabase)());
->>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
     test("create event route", async () => {
         let res = await req
             .post("/api/events/create")

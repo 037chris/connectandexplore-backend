@@ -4,11 +4,7 @@ exports.Categoty = exports.Event = void 0;
 const mongoose_1 = require("mongoose");
 const UserModel_1 = require("./UserModel");
 const categorySchema = new mongoose_1.Schema({
-<<<<<<< HEAD
-    name: { type: String, required: true, unique: true },
-=======
     name: { type: String, required: true /* , unique: true */ },
->>>>>>> main
     description: { type: String },
 });
 const eventSchema = new mongoose_1.Schema({
@@ -20,15 +16,9 @@ const eventSchema = new mongoose_1.Schema({
     address: UserModel_1.addressSchema,
     thumbnail: { type: String },
     hashtags: [{ type: String }],
-<<<<<<< HEAD
-    category: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Category" }],
-    chat: { type: mongoose_1.Schema.Types.ObjectId, ref: "Chat", required: true },
-    participants: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User" }],
-=======
     category: [categorySchema],
     chat: { type: mongoose_1.Schema.Types.ObjectId, ref: "Chat", required: true },
     participants: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true }],
->>>>>>> main
 });
 /*
 Zu implementieren?:

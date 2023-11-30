@@ -4,7 +4,7 @@
   "description": "Backend for Connect & Explore",
   "main": "server.js",
   "scripts": {
-    "test": "jest --config jest.config.js --forceExit --maxworkers=1",
+    "test": "jest --config jest.config.js --forceExit --maxworkers=25%",
     "build": "npx tsc",
     "start": "tsc && nodemon dist/server.js",
     "format": "prettier --write src tests"

@@ -346,15 +346,7 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, FileUpload_1
         }
     }
     //req.body.name = JSON.parse(req.body.name);
-<<<<<<< HEAD
-    const userResource = (0, express_validator_1.matchedData)(req);
-=======
     const userResource = req.body; //matchedData(req) as userResource;
-<<<<<<< HEAD
-=======
-    console.log("route:", userResource);
->>>>>>> main
->>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
     userResource.id = userid;
     if (req.role === "a") {
         try {
