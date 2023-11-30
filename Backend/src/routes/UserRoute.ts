@@ -168,7 +168,7 @@ UserRouter.post(
         return res.status(500).json({ Error: "Registration failed" });
       }
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -238,7 +238,7 @@ UserRouter.get(
         next(err);
       }
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -384,7 +384,7 @@ UserRouter.put(
 
           const updatedUser = await userService.updateUserWithPw(
             userResource,
-            oldPw
+            oldPw,
           );
           res.status(200).send(updatedUser);
         } catch (err) {
@@ -393,7 +393,7 @@ UserRouter.put(
         }
       }
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -486,6 +486,6 @@ UserRouter.delete(
       res.send(404);
       next(new Error("Probably invalid userid, can not delete user."));
     }
-  }
+  },
 );
 export default UserRouter;

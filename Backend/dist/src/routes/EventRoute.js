@@ -7,7 +7,11 @@ const express_1 = __importDefault(require("express"));
 const EventService_1 = require("../services/EventService");
 const authentication_1 = require("./authentication");
 const express_validator_1 = require("express-validator");
+<<<<<<< HEAD
 const FileUpload_1 = require("../utils/FileUpload");
+=======
+<<<<<<< HEAD
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 const EventRouter = express_1.default.Router();
 const eventService = new EventService_1.EventService();
 /**
@@ -168,14 +172,51 @@ EventRouter.get("/search", authentication_1.optionalAuthentication, [(0, express
  */
 EventRouter.post("/create", authentication_1.requiresAuthentication, FileUpload_1.upload.single("thumbnail"), [
     (0, express_validator_1.body)("name").isString().notEmpty().withMessage("Event name is required."),
+    (0, express_validator_1.body)("creator").isString().notEmpty(),
+=======
+const FileUpload_1 = require("../utils/FileUpload");
+const EventRouter = express_1.default.Router();
+const eventService = new EventService_1.EventService();
+EventRouter.get("/search", authentication_1.optionalAuthentication, [(0, express_validator_1.query)("query").isString().notEmpty()], async (req, res, next) => {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+        const term = req.query.query;
+        const events = await eventService.searchEvents(term);
+        if (events.events.length === 0) {
+            return res
+                .status(204)
+                .json({ message: "No events found matching the query." });
+        }
+        res.status(200).send(events);
+    }
+    catch (err) {
+        res.status(404);
+        next(err);
+    }
+});
+EventRouter.post("/create", authentication_1.requiresAuthentication, FileUpload_1.upload.single("thumbnail"), [
+    (0, express_validator_1.body)("name").isString().notEmpty().withMessage("Event name is required."),
     //body("creator").isString().notEmpty(),
+>>>>>>> main
     (0, express_validator_1.body)("price").isNumeric().notEmpty(),
     (0, express_validator_1.body)("description")
         .isString()
         .notEmpty()
         .withMessage("Description is required."),
+<<<<<<< HEAD
     (0, express_validator_1.body)("date") /* .isDate() */
         .notEmpty(),
+=======
+<<<<<<< HEAD
+    (0, express_validator_1.body)("date").isDate().notEmpty(),
+=======
+    (0, express_validator_1.body)("date") /* .isDate() */
+        .notEmpty(),
+>>>>>>> main
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
     (0, express_validator_1.body)("address.street")
         .notEmpty()
         .withMessage("Street address is required."),
@@ -201,11 +242,16 @@ EventRouter.post("/create", authentication_1.requiresAuthentication, FileUpload_
         .isArray()
         .notEmpty()
         .withMessage("Categories are required."),
+<<<<<<< HEAD
+    (0, express_validator_1.body)("chat").isString().notEmpty(),
+=======
     //body("chat").isString().notEmpty(),
+>>>>>>> main
 ], async (req, res) => {
     try {
         const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
+<<<<<<< HEAD
             if (req.file) {
                 // Delete the file
                 (0, FileUpload_1.deleteEventThumbnail)(req.file.path);
@@ -213,10 +259,29 @@ EventRouter.post("/create", authentication_1.requiresAuthentication, FileUpload_
             return res.status(400).json({ errors: errors.array() });
         }
         else {
+=======
+<<<<<<< HEAD
+            return res.status(400).json({ errors: errors.array() });
+        }
+        else {
+            /* if (req.file) {
+              req.body.thumbnail = `/uploads/${req.file.filename}`;
+            } */
+            const newEvent = await eventService.createEvent(req.body);
+=======
+            if (req.file) {
+                // Delete the file
+                (0, FileUpload_1.deleteEventThumbnail)(req.file.path);
+            }
+            return res.status(400).json({ errors: errors.array() });
+        }
+        else {
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
             if (req.file) {
                 req.body.thumbnail = `/uploads/${req.file.filename}`;
             }
             const newEvent = await eventService.createEvent(req.body, req.userId);
+>>>>>>> main
             return res.status(201).send(newEvent);
         }
     }
@@ -352,8 +417,12 @@ EventRouter.delete("/:eventid/cancel", authentication_1.requiresAuthentication, 
         res.status(204).send();
     }
     catch (err) {
+<<<<<<< HEAD
+        if (err.message === "User is not participating in the event") {
+=======
         if (err.message === "User is not participating in the event" ||
             err.message === "Can not cancel participation as event manager") {
+>>>>>>> main
             return res.status(409).json({ Error: err.message });
         }
         else {
@@ -361,6 +430,7 @@ EventRouter.delete("/:eventid/cancel", authentication_1.requiresAuthentication, 
         }
     }
 });
+<<<<<<< HEAD
 /**
  * @swagger
  * /api/events/joined:
@@ -396,6 +466,10 @@ EventRouter.delete("/:eventid/cancel", authentication_1.requiresAuthentication, 
  *     security:
  *       - bearerAuth: []
  */
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 EventRouter.get("/joined", authentication_1.requiresAuthentication, async (req, res, next) => {
     try {
         const events = await eventService.getJoinedEvents(req.userId);
@@ -409,6 +483,7 @@ EventRouter.get("/joined", authentication_1.requiresAuthentication, async (req, 
         next(err);
     }
 });
+<<<<<<< HEAD
 /**
  * @swagger
  * /api/events/{eventid}/participants:
@@ -439,6 +514,9 @@ EventRouter.get("/joined", authentication_1.requiresAuthentication, async (req, 
  *       500:
  *         description: "Internal server error"
  */
+=======
+>>>>>>> main
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 EventRouter.get("/:eventid/participants", authentication_1.requiresAuthentication, (0, express_validator_1.param)("eventid").isMongoId(), async (req, res, next) => {
     try {
         const participants = await eventService.getParticipants(req.params.eventid, req.userId);
@@ -449,6 +527,7 @@ EventRouter.get("/:eventid/participants", authentication_1.requiresAuthenticatio
         next(err);
     }
 });
+<<<<<<< HEAD
 /**
  * @swagger
  * /api/events/{eventid}:
@@ -480,6 +559,13 @@ EventRouter.get("/:eventid/participants", authentication_1.requiresAuthenticatio
  *       500:
  *         description: "Internal server error"
  */
+=======
+<<<<<<< HEAD
+EventRouter.delete("/:eventid", authentication_1.requiresAuthentication, (0, express_validator_1.param)("eventid").isMongoId(), async (req, res, next) => {
+    try {
+        const deleted = await eventService.deleteEvent(req.params.eventid, req.userId);
+=======
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 EventRouter.get("/:eventid", authentication_1.optionalAuthentication, (0, express_validator_1.param)("eventid").isMongoId(), async (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
@@ -556,6 +642,10 @@ EventRouter.delete("/:eventid", authentication_1.requiresAuthentication, (0, exp
         const deleted = await eventService.deleteEvent(req.params.eventid, req.userId);
         if (event.thumbnail)
             (0, FileUpload_1.deleteEventThumbnail)(event.thumbnail);
+<<<<<<< HEAD
+=======
+>>>>>>> main
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
         if (deleted) {
             res.status(204).json({ message: "Event successfully deleted" });
         }
@@ -631,6 +721,7 @@ EventRouter.get("/creator/:userid", authentication_1.requiresAuthentication, (0,
         next(new Error("Invalid authorization"));
     }
 });
+<<<<<<< HEAD
 /**
  * @swagger
  * /api/events/:
@@ -664,7 +755,13 @@ EventRouter.get("/creator/:userid", authentication_1.requiresAuthentication, (0,
  *       '404':
  *         description: Not found
  */
+=======
+<<<<<<< HEAD
+EventRouter.get("/", async (req, res, next) => {
+=======
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 EventRouter.get("/", authentication_1.optionalAuthentication, async (req, res, next) => {
+>>>>>>> main
     try {
         const events = await eventService.getAllEvents();
         if (events.events.length === 0) {
@@ -677,5 +774,44 @@ EventRouter.get("/", authentication_1.optionalAuthentication, async (req, res, n
         next(err);
     }
 });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+EventRouter.get("/search", [(0, express_validator_1.query)("query").isString().notEmpty()], async (req, res, next) => {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+        const term = req.query.query;
+        const events = await eventService.searchEvents(term);
+        if (events.events.length === 0) {
+            return res
+                .status(204)
+                .json({ message: "No events found matching the query." });
+        }
+        res.status(200).send(events);
+    }
+    catch (err) {
+        res.status(404);
+        next(err);
+    }
+});
+EventRouter.get("/joined", authentication_1.requiresAuthentication, async (req, res, next) => {
+    try {
+        const events = await eventService.getJoinedEvents(req.userId);
+        if (events.events.length === 0) {
+            return res.status(204).json({ message: "No events found." });
+        }
+        res.status(200).send(events);
+    }
+    catch (err) {
+        res.status(404);
+        next(err);
+    }
+});
+=======
+>>>>>>> main
+>>>>>>> f033aa4c98017bfa3ca92460a5a643a8c5baddc6
 exports.default = EventRouter;
 //# sourceMappingURL=EventRoute.js.map

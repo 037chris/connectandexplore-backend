@@ -48,23 +48,23 @@ export const validate = [
     "address.stateOrRegion",
     body("address.stateOrRegion")
       .isString()
-      .withMessage("invalid State or Region.")
+      .withMessage("invalid State or Region."),
   ),
   validateIfPresent(
     "address.appartmentNumber",
     body("address.appartmentNumber")
       .isString()
-      .withMessage("invalid Appartmentnumber.")
+      .withMessage("invalid Appartmentnumber."),
   ),
   validateIfPresent("profilePicture", body("profilePicture").isString()),
   validateIfPresent("birthDate", body("birthDate").isString()),
   validateIfPresent("gender", body("gender").isString()),
   validateIfPresent(
     "socialMediaUrls.facebook",
-    body("socialMediaUrls.facebook").isString()
+    body("socialMediaUrls.facebook").isString(),
   ),
   validateIfPresent(
     'socialMediaUrls.instagram"',
-    body("socialMediaUrls.instagram").isString()
+    body("socialMediaUrls.instagram").isString(),
   ),
 ];

@@ -1,3 +1,5 @@
+import { RatingType } from "./model/RatingModel";
+
 export type userResource = {
   id?: string;
   email: string;
@@ -64,4 +66,55 @@ export type categoryResource = {
   id?: string;
   name: string;
   description: string;
+};
+
+export type CommentsResource = {
+  comments: CommentResource[];
+};
+
+export type CommentResource = {
+  id?: string;
+  title: string;
+  stars: number;
+  content: string;
+  edited: boolean;
+  createdAt?: string;
+  creator: string;
+  creatorName?: {
+    first: string;
+    last: string;
+  };
+  event: string;
+  eventName?: string;
+};
+
+export type RatingsResource = {
+  ratings: RatingResource[];
+};
+
+export type RatingResource = {
+  id?: string;
+  comment: string;
+  creator: string;
+  ratingType: RatingType;
+};
+
+export type CommentWithRatingsResource = {
+  id?: string;
+  title: string;
+  stars: number;
+  content: string;
+  edited: boolean;
+  createdAt?: string;
+  creator: string;
+  creatorName?: {
+    first: string;
+    last: string;
+  };
+  event: string;
+  ratings: RatingsResource;
+};
+
+export type CommentsWithRatingsResource = {
+  comments: CommentWithRatingsResource[];
 };

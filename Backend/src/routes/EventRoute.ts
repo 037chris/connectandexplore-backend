@@ -239,7 +239,7 @@ EventRouter.post(
     } catch (err) {
       return res.status(500).json({ Error: "Event creation failed" });
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -316,7 +316,7 @@ EventRouter.post(
         return res.status(500).json({ Error: "Joining event failed" });
       }
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -382,7 +382,7 @@ EventRouter.delete(
         return res.status(500).json({ Error: "Canceling event failed" });
       }
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -471,14 +471,14 @@ EventRouter.get(
     try {
       const participants = await eventService.getParticipants(
         req.params.eventid,
-        req.userId
+        req.userId,
       );
       res.status(200).send(participants);
     } catch (err) {
       res.status(404);
       next(err);
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -603,7 +603,7 @@ EventRouter.delete(
       const event = await eventService.getEvent(req.params.eventid);
       const deleted = await eventService.deleteEvent(
         req.params.eventid,
-        req.userId
+        req.userId,
       );
       if (event.thumbnail) deleteEventThumbnail(event.thumbnail);
       if (deleted) {
@@ -615,7 +615,7 @@ EventRouter.delete(
       res.status(404);
       next(err);
     }
-  }
+  },
 );
 /**
  * @swagger
@@ -681,7 +681,7 @@ EventRouter.get(
       res.status(403);
       next(new Error("Invalid authorization"));
     }
-  }
+  },
 );
 /**
  * @swagger
