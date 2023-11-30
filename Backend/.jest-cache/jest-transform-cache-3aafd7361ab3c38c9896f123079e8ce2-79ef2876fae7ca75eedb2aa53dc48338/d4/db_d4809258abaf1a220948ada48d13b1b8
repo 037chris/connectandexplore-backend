@@ -1,0 +1,41 @@
+c14bf098e15b68cfc3f0cf58061153c4
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clearDatabase = exports.closeDatabase = exports.connect = void 0;
+// Copyright: This script is taken from: https://codesandbox.io/s/typescript-forked-8vscow?file=/src/db.ts
+const mongoose_1 = __importDefault(require("mongoose"));
+const mongodb_memory_server_1 = require("mongodb-memory-server");
+let mongod;
+const connect = async () => {
+    mongod = await mongodb_memory_server_1.MongoMemoryServer.create();
+    const uri = mongod.getUri();
+    await mongoose_1.default
+        .connect(uri, { dbName: "ConnectAndExplore" })
+        .then((_result) => console.log("connected...."))
+        .catch((err) => console.log(`Cannot connect => ${err}`));
+};
+exports.connect = connect;
+/**
+ * Close db connection
+ */
+const closeDatabase = async () => {
+    await mongoose_1.default.connection.dropDatabase();
+    await mongoose_1.default.connection.close();
+    await mongod.stop();
+};
+exports.closeDatabase = closeDatabase;
+/**
+ * Delete db collections
+ */
+const clearDatabase = async () => {
+    const collections = mongoose_1.default.connection.collections;
+    for (const key in collections) {
+        const collection = collections[key];
+        await collection.deleteMany({});
+    }
+};
+exports.clearDatabase = clearDatabase;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxkYXRhYmFzZVxcZGIudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUEsMEdBQTBHO0FBQzFHLHdEQUFnQztBQUNoQyxpRUFBMEQ7QUFFMUQsSUFBSSxNQUFXLENBQUM7QUFFVCxNQUFNLE9BQU8sR0FBRyxLQUFLLElBQUksRUFBRTtJQUNoQyxNQUFNLEdBQUcsTUFBTSx5Q0FBaUIsQ0FBQyxNQUFNLEVBQUUsQ0FBQztJQUMxQyxNQUFNLEdBQUcsR0FBRyxNQUFNLENBQUMsTUFBTSxFQUFFLENBQUM7SUFDNUIsTUFBTSxrQkFBUTtTQUNYLE9BQU8sQ0FBQyxHQUFHLEVBQUUsRUFBRSxNQUFNLEVBQUUsbUJBQW1CLEVBQUUsQ0FBQztTQUM3QyxJQUFJLENBQUMsQ0FBQyxPQUFPLEVBQUUsRUFBRSxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsZUFBZSxDQUFDLENBQUM7U0FDL0MsS0FBSyxDQUFDLENBQUMsR0FBRyxFQUFFLEVBQUUsQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLHFCQUFxQixHQUFHLEVBQUUsQ0FBQyxDQUFDLENBQUM7QUFDN0QsQ0FBQyxDQUFDO0FBUFcsUUFBQSxPQUFPLFdBT2xCO0FBRUY7O0dBRUc7QUFDSSxNQUFNLGFBQWEsR0FBRyxLQUFLLElBQUksRUFBRTtJQUN0QyxNQUFNLGtCQUFRLENBQUMsVUFBVSxDQUFDLFlBQVksRUFBRSxDQUFDO0lBQ3pDLE1BQU0sa0JBQVEsQ0FBQyxVQUFVLENBQUMsS0FBSyxFQUFFLENBQUM7SUFDbEMsTUFBTSxNQUFNLENBQUMsSUFBSSxFQUFFLENBQUM7QUFDdEIsQ0FBQyxDQUFDO0FBSlcsUUFBQSxhQUFhLGlCQUl4QjtBQUVGOztHQUVHO0FBQ0ksTUFBTSxhQUFhLEdBQUcsS0FBSyxJQUFJLEVBQUU7SUFDdEMsTUFBTSxXQUFXLEdBQUcsa0JBQVEsQ0FBQyxVQUFVLENBQUMsV0FBVyxDQUFDO0lBRXBELEtBQUssTUFBTSxHQUFHLElBQUksV0FBVyxFQUFFO1FBQzdCLE1BQU0sVUFBVSxHQUFHLFdBQVcsQ0FBQyxHQUFHLENBQUMsQ0FBQztRQUNwQyxNQUFNLFVBQVUsQ0FBQyxVQUFVLENBQUMsRUFBRSxDQUFDLENBQUM7S0FDakM7QUFDSCxDQUFDLENBQUM7QUFQVyxRQUFBLGFBQWEsaUJBT3hCIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcbmFjZXVcXE9uZURyaXZlXFxEZXNrdG9wXFxTdHVkaXVtXFw1IFNlbWVzdGVyXFxQcm9qZWt0XFxjb25uZWN0YW5kZXhwbG9yZVxcQmFja2VuZFxcZGF0YWJhc2VcXGRiLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIENvcHlyaWdodDogVGhpcyBzY3JpcHQgaXMgdGFrZW4gZnJvbTogaHR0cHM6Ly9jb2Rlc2FuZGJveC5pby9zL3R5cGVzY3JpcHQtZm9ya2VkLTh2c2Nvdz9maWxlPS9zcmMvZGIudHNcclxuaW1wb3J0IG1vbmdvb3NlIGZyb20gXCJtb25nb29zZVwiO1xyXG5pbXBvcnQgeyBNb25nb01lbW9yeVNlcnZlciB9IGZyb20gXCJtb25nb2RiLW1lbW9yeS1zZXJ2ZXJcIjtcclxuXHJcbmxldCBtb25nb2Q6IGFueTtcclxuXHJcbmV4cG9ydCBjb25zdCBjb25uZWN0ID0gYXN5bmMgKCkgPT4ge1xyXG4gIG1vbmdvZCA9IGF3YWl0IE1vbmdvTWVtb3J5U2VydmVyLmNyZWF0ZSgpO1xyXG4gIGNvbnN0IHVyaSA9IG1vbmdvZC5nZXRVcmkoKTtcclxuICBhd2FpdCBtb25nb29zZVxyXG4gICAgLmNvbm5lY3QodXJpLCB7IGRiTmFtZTogXCJDb25uZWN0QW5kRXhwbG9yZVwiIH0pXHJcbiAgICAudGhlbigoX3Jlc3VsdCkgPT4gY29uc29sZS5sb2coXCJjb25uZWN0ZWQuLi4uXCIpKVxyXG4gICAgLmNhdGNoKChlcnIpID0+IGNvbnNvbGUubG9nKGBDYW5ub3QgY29ubmVjdCA9PiAke2Vycn1gKSk7XHJcbn07XHJcblxyXG4vKipcclxuICogQ2xvc2UgZGIgY29ubmVjdGlvblxyXG4gKi9cclxuZXhwb3J0IGNvbnN0IGNsb3NlRGF0YWJhc2UgPSBhc3luYyAoKSA9PiB7XHJcbiAgYXdhaXQgbW9uZ29vc2UuY29ubmVjdGlvbi5kcm9wRGF0YWJhc2UoKTtcclxuICBhd2FpdCBtb25nb29zZS5jb25uZWN0aW9uLmNsb3NlKCk7XHJcbiAgYXdhaXQgbW9uZ29kLnN0b3AoKTtcclxufTtcclxuXHJcbi8qKlxyXG4gKiBEZWxldGUgZGIgY29sbGVjdGlvbnNcclxuICovXHJcbmV4cG9ydCBjb25zdCBjbGVhckRhdGFiYXNlID0gYXN5bmMgKCkgPT4ge1xyXG4gIGNvbnN0IGNvbGxlY3Rpb25zID0gbW9uZ29vc2UuY29ubmVjdGlvbi5jb2xsZWN0aW9ucztcclxuXHJcbiAgZm9yIChjb25zdCBrZXkgaW4gY29sbGVjdGlvbnMpIHtcclxuICAgIGNvbnN0IGNvbGxlY3Rpb24gPSBjb2xsZWN0aW9uc1trZXldO1xyXG4gICAgYXdhaXQgY29sbGVjdGlvbi5kZWxldGVNYW55KHt9KTtcclxuICB9XHJcbn07XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

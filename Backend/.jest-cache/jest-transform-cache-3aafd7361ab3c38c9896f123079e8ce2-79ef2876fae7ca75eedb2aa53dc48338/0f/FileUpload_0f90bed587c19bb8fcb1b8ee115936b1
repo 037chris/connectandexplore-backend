@@ -1,0 +1,59 @@
+96ba567a83eafe51798c16707d95777c
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.upload = exports.deleteEventThumbnail = exports.deleteProfilePicture = void 0;
+const multer_1 = __importDefault(require("multer"));
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+const uuid_1 = require("uuid");
+//Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path_1.default.join(__dirname, "/uploads/"));
+    },
+    filename: function (req, file, cb) {
+        const uniqueFilename = `${(0, uuid_1.v4)()}-${file.originalname}`;
+        cb(null, uniqueFilename);
+    },
+});
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpg" ||
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "image/png") {
+        cb(null, true);
+    }
+    else {
+        cb(new Error("Image uploaded is not of type jpg/jpeg or png"), false);
+    }
+};
+function deleteProfilePicture(filename) {
+    try {
+        const filePath = path_1.default.join(__dirname, filename);
+        fs_1.default.unlinkSync(filePath);
+    }
+    catch (error) {
+        throw error;
+    }
+}
+exports.deleteProfilePicture = deleteProfilePicture;
+function deleteEventThumbnail(filename) {
+    /* try {
+      const filePath = path.join(__dirname, filename);
+      fs.unlinkSync(filePath);
+      console.log(`Deleted event thumbnail: ${filename}`);
+    } catch (error) {
+      console.error(`Error deleting event thumbnail: ${filename}`, error);
+      throw error;
+    } */
+}
+exports.deleteEventThumbnail = deleteEventThumbnail;
+// file size : 10 MB limit
+exports.upload = (0, multer_1.default)({
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: { fileSize: 10 * 1024 * 1024 },
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHV0aWxzXFxGaWxlVXBsb2FkLnRzIiwibWFwcGluZ3MiOiI7Ozs7OztBQUFBLG9EQUE0QjtBQUM1QixnREFBd0I7QUFDeEIsNENBQW9CO0FBQ3BCLCtCQUFvQztBQUNwQyxtSEFBbUg7QUFDbkgsTUFBTSxPQUFPLEdBQUcsZ0JBQU0sQ0FBQyxXQUFXLENBQUM7SUFDakMsV0FBVyxFQUFFLFVBQVUsR0FBRyxFQUFFLElBQUksRUFBRSxFQUFFO1FBQ2xDLEVBQUUsQ0FBQyxJQUFJLEVBQUUsY0FBSSxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUUsV0FBVyxDQUFDLENBQUMsQ0FBQztJQUM5QyxDQUFDO0lBRUQsUUFBUSxFQUFFLFVBQVUsR0FBUSxFQUFFLElBQVMsRUFBRSxFQUFPO1FBQzlDLE1BQU0sY0FBYyxHQUFHLEdBQUcsSUFBQSxTQUFNLEdBQUUsSUFBSSxJQUFJLENBQUMsWUFBWSxFQUFFLENBQUM7UUFDMUQsRUFBRSxDQUFDLElBQUksRUFBRSxjQUFjLENBQUMsQ0FBQztJQUMzQixDQUFDO0NBQ0YsQ0FBQyxDQUFDO0FBQ0gsTUFBTSxVQUFVLEdBQUcsQ0FBQyxHQUFRLEVBQUUsSUFBUyxFQUFFLEVBQU8sRUFBRSxFQUFFO0lBQ2xELElBQ0UsSUFBSSxDQUFDLFFBQVEsS0FBSyxXQUFXO1FBQzdCLElBQUksQ0FBQyxRQUFRLEtBQUssWUFBWTtRQUM5QixJQUFJLENBQUMsUUFBUSxLQUFLLFdBQVcsRUFDN0IsQ0FBQztRQUNELEVBQUUsQ0FBQyxJQUFJLEVBQUUsSUFBSSxDQUFDLENBQUM7SUFDakIsQ0FBQztTQUFNLENBQUM7UUFDTixFQUFFLENBQUMsSUFBSSxLQUFLLENBQUMsK0NBQStDLENBQUMsRUFBRSxLQUFLLENBQUMsQ0FBQztJQUN4RSxDQUFDO0FBQ0gsQ0FBQyxDQUFDO0FBQ0YsU0FBZ0Isb0JBQW9CLENBQUMsUUFBZ0I7SUFDbkQsSUFBSSxDQUFDO1FBQ0gsTUFBTSxRQUFRLEdBQUcsY0FBSSxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUUsUUFBUSxDQUFDLENBQUM7UUFDaEQsWUFBRSxDQUFDLFVBQVUsQ0FBQyxRQUFRLENBQUMsQ0FBQztJQUMxQixDQUFDO0lBQUMsT0FBTyxLQUFLLEVBQUUsQ0FBQztRQUNmLE1BQU0sS0FBSyxDQUFDO0lBQ2QsQ0FBQztBQUNILENBQUM7QUFQRCxvREFPQztBQUVELFNBQWdCLG9CQUFvQixDQUFDLFFBQWdCO0lBQ25EOzs7Ozs7O1FBT0k7QUFDTixDQUFDO0FBVEQsb0RBU0M7QUFFRCwwQkFBMEI7QUFDYixRQUFBLE1BQU0sR0FBRyxJQUFBLGdCQUFNLEVBQUM7SUFDM0IsT0FBTyxFQUFFLE9BQU87SUFDaEIsVUFBVSxFQUFFLFVBQVU7SUFDdEIsTUFBTSxFQUFFLEVBQUUsUUFBUSxFQUFFLEVBQUUsR0FBRyxJQUFJLEdBQUcsSUFBSSxFQUFFO0NBQ3ZDLENBQUMsQ0FBQyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJDOlxcVXNlcnNcXG5hY2V1XFxPbmVEcml2ZVxcRGVza3RvcFxcU3R1ZGl1bVxcNSBTZW1lc3RlclxcUHJvamVrdFxcY29ubmVjdGFuZGV4cGxvcmVcXEJhY2tlbmRcXHNyY1xcdXRpbHNcXEZpbGVVcGxvYWQudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IG11bHRlciBmcm9tIFwibXVsdGVyXCI7XHJcbmltcG9ydCBwYXRoIGZyb20gXCJwYXRoXCI7XHJcbmltcG9ydCBmcyBmcm9tIFwiZnNcIjtcclxuaW1wb3J0IHsgdjQgYXMgdXVpZHY0IH0gZnJvbSBcInV1aWRcIjtcclxuLy9Db3B5cmlnaHQgb2Ygc2NyaXB0OiBodHRwczovL21lZGl1bS5jb20vQGJ2aXZla3NpbmdoOTYvdXBsb2FkaW5nLWltYWdlcy1maWxlcy13aXRoLW11bHRlci1pbi1ub2RlLWpzLWY5NDJlOTMxOTYwMFxyXG5jb25zdCBzdG9yYWdlID0gbXVsdGVyLmRpc2tTdG9yYWdlKHtcclxuICBkZXN0aW5hdGlvbjogZnVuY3Rpb24gKHJlcSwgZmlsZSwgY2IpIHtcclxuICAgIGNiKG51bGwsIHBhdGguam9pbihfX2Rpcm5hbWUsIFwiL3VwbG9hZHMvXCIpKTtcclxuICB9LFxyXG5cclxuICBmaWxlbmFtZTogZnVuY3Rpb24gKHJlcTogYW55LCBmaWxlOiBhbnksIGNiOiBhbnkpIHtcclxuICAgIGNvbnN0IHVuaXF1ZUZpbGVuYW1lID0gYCR7dXVpZHY0KCl9LSR7ZmlsZS5vcmlnaW5hbG5hbWV9YDtcclxuICAgIGNiKG51bGwsIHVuaXF1ZUZpbGVuYW1lKTtcclxuICB9LFxyXG59KTtcclxuY29uc3QgZmlsZUZpbHRlciA9IChyZXE6IGFueSwgZmlsZTogYW55LCBjYjogYW55KSA9PiB7XHJcbiAgaWYgKFxyXG4gICAgZmlsZS5taW1ldHlwZSA9PT0gXCJpbWFnZS9qcGdcIiB8fFxyXG4gICAgZmlsZS5taW1ldHlwZSA9PT0gXCJpbWFnZS9qcGVnXCIgfHxcclxuICAgIGZpbGUubWltZXR5cGUgPT09IFwiaW1hZ2UvcG5nXCJcclxuICApIHtcclxuICAgIGNiKG51bGwsIHRydWUpO1xyXG4gIH0gZWxzZSB7XHJcbiAgICBjYihuZXcgRXJyb3IoXCJJbWFnZSB1cGxvYWRlZCBpcyBub3Qgb2YgdHlwZSBqcGcvanBlZyBvciBwbmdcIiksIGZhbHNlKTtcclxuICB9XHJcbn07XHJcbmV4cG9ydCBmdW5jdGlvbiBkZWxldGVQcm9maWxlUGljdHVyZShmaWxlbmFtZTogc3RyaW5nKTogdm9pZCB7XHJcbiAgdHJ5IHtcclxuICAgIGNvbnN0IGZpbGVQYXRoID0gcGF0aC5qb2luKF9fZGlybmFtZSwgZmlsZW5hbWUpO1xyXG4gICAgZnMudW5saW5rU3luYyhmaWxlUGF0aCk7XHJcbiAgfSBjYXRjaCAoZXJyb3IpIHtcclxuICAgIHRocm93IGVycm9yO1xyXG4gIH1cclxufVxyXG5cclxuZXhwb3J0IGZ1bmN0aW9uIGRlbGV0ZUV2ZW50VGh1bWJuYWlsKGZpbGVuYW1lOiBzdHJpbmcpOiB2b2lkIHtcclxuICAvKiB0cnkge1xyXG4gICAgY29uc3QgZmlsZVBhdGggPSBwYXRoLmpvaW4oX19kaXJuYW1lLCBmaWxlbmFtZSk7XHJcbiAgICBmcy51bmxpbmtTeW5jKGZpbGVQYXRoKTtcclxuICAgIGNvbnNvbGUubG9nKGBEZWxldGVkIGV2ZW50IHRodW1ibmFpbDogJHtmaWxlbmFtZX1gKTtcclxuICB9IGNhdGNoIChlcnJvcikge1xyXG4gICAgY29uc29sZS5lcnJvcihgRXJyb3IgZGVsZXRpbmcgZXZlbnQgdGh1bWJuYWlsOiAke2ZpbGVuYW1lfWAsIGVycm9yKTtcclxuICAgIHRocm93IGVycm9yO1xyXG4gIH0gKi9cclxufVxyXG5cclxuLy8gZmlsZSBzaXplIDogMTAgTUIgbGltaXRcclxuZXhwb3J0IGNvbnN0IHVwbG9hZCA9IG11bHRlcih7XHJcbiAgc3RvcmFnZTogc3RvcmFnZSxcclxuICBmaWxlRmlsdGVyOiBmaWxlRmlsdGVyLFxyXG4gIGxpbWl0czogeyBmaWxlU2l6ZTogMTAgKiAxMDI0ICogMTAyNCB9LFxyXG59KTtcclxuIl0sInZlcnNpb24iOjN9

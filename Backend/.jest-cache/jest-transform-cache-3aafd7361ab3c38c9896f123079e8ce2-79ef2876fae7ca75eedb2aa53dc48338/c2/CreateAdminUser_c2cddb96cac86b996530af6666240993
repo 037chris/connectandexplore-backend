@@ -1,0 +1,38 @@
+36feb143304a6f25916d02d1edfd4ab8
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const UserModel_1 = require("../model/UserModel");
+const createAdminUser = async () => {
+    const a = {
+        street: "Street",
+        houseNumber: "1",
+        postalCode: "12345",
+        city: "Berlin",
+        country: "Germany",
+    };
+    let u = {
+        email: "admin.team@connectandexplore.com",
+        name: {
+            first: "admin",
+            last: "team",
+        },
+        password: "k.9MSn#JJh+§3F3a",
+        isAdministrator: true,
+        address: a,
+        birthDate: new Date(),
+        gender: "male",
+        isActive: true,
+        socialMediaUrls: {
+            facebook: "facebook.com",
+            instagram: "instagram.com",
+        },
+    };
+    try {
+        const user = await UserModel_1.User.create(u);
+    }
+    catch (error) {
+        console.error("Error creating admin user:", error);
+    }
+};
+exports.default = createAdminUser;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHV0aWxzXFxDcmVhdGVBZG1pblVzZXIudHMiLCJtYXBwaW5ncyI6Ijs7QUFBQSxrREFBMkQ7QUFFM0QsTUFBTSxlQUFlLEdBQUcsS0FBSyxJQUFJLEVBQUU7SUFDakMsTUFBTSxDQUFDLEdBQWE7UUFDbEIsTUFBTSxFQUFFLFFBQVE7UUFDaEIsV0FBVyxFQUFFLEdBQUc7UUFDaEIsVUFBVSxFQUFFLE9BQU87UUFDbkIsSUFBSSxFQUFFLFFBQVE7UUFDZCxPQUFPLEVBQUUsU0FBUztLQUNuQixDQUFDO0lBRUYsSUFBSSxDQUFDLEdBQVU7UUFDYixLQUFLLEVBQUUsa0NBQWtDO1FBQ3pDLElBQUksRUFBRTtZQUNKLEtBQUssRUFBRSxPQUFPO1lBQ2QsSUFBSSxFQUFFLE1BQU07U0FDYjtRQUNELFFBQVEsRUFBRSxrQkFBa0I7UUFDNUIsZUFBZSxFQUFFLElBQUk7UUFDckIsT0FBTyxFQUFFLENBQUM7UUFDVixTQUFTLEVBQUUsSUFBSSxJQUFJLEVBQUU7UUFDckIsTUFBTSxFQUFFLE1BQU07UUFDZCxRQUFRLEVBQUUsSUFBSTtRQUNkLGVBQWUsRUFBRTtZQUNmLFFBQVEsRUFBRSxjQUFjO1lBQ3hCLFNBQVMsRUFBRSxlQUFlO1NBQzNCO0tBQ0YsQ0FBQztJQUVGLElBQUksQ0FBQztRQUNILE1BQU0sSUFBSSxHQUFHLE1BQU0sZ0JBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDLENBQUM7SUFDcEMsQ0FBQztJQUFDLE9BQU8sS0FBSyxFQUFFLENBQUM7UUFDZixPQUFPLENBQUMsS0FBSyxDQUFDLDRCQUE0QixFQUFFLEtBQUssQ0FBQyxDQUFDO0lBQ3JELENBQUM7QUFDSCxDQUFDLENBQUM7QUFDRixrQkFBZSxlQUFlLENBQUMiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHV0aWxzXFxDcmVhdGVBZG1pblVzZXIudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgVXNlciwgSUFkZHJlc3MsIElVc2VyIH0gZnJvbSBcIi4uL21vZGVsL1VzZXJNb2RlbFwiO1xyXG5cclxuY29uc3QgY3JlYXRlQWRtaW5Vc2VyID0gYXN5bmMgKCkgPT4ge1xyXG4gIGNvbnN0IGE6IElBZGRyZXNzID0ge1xyXG4gICAgc3RyZWV0OiBcIlN0cmVldFwiLFxyXG4gICAgaG91c2VOdW1iZXI6IFwiMVwiLFxyXG4gICAgcG9zdGFsQ29kZTogXCIxMjM0NVwiLFxyXG4gICAgY2l0eTogXCJCZXJsaW5cIixcclxuICAgIGNvdW50cnk6IFwiR2VybWFueVwiLFxyXG4gIH07XHJcblxyXG4gIGxldCB1OiBJVXNlciA9IHtcclxuICAgIGVtYWlsOiBcImFkbWluLnRlYW1AY29ubmVjdGFuZGV4cGxvcmUuY29tXCIsXHJcbiAgICBuYW1lOiB7XHJcbiAgICAgIGZpcnN0OiBcImFkbWluXCIsXHJcbiAgICAgIGxhc3Q6IFwidGVhbVwiLFxyXG4gICAgfSxcclxuICAgIHBhc3N3b3JkOiBcImsuOU1TbiNKSmgrwqczRjNhXCIsXHJcbiAgICBpc0FkbWluaXN0cmF0b3I6IHRydWUsXHJcbiAgICBhZGRyZXNzOiBhLFxyXG4gICAgYmlydGhEYXRlOiBuZXcgRGF0ZSgpLFxyXG4gICAgZ2VuZGVyOiBcIm1hbGVcIixcclxuICAgIGlzQWN0aXZlOiB0cnVlLFxyXG4gICAgc29jaWFsTWVkaWFVcmxzOiB7XHJcbiAgICAgIGZhY2Vib29rOiBcImZhY2Vib29rLmNvbVwiLFxyXG4gICAgICBpbnN0YWdyYW06IFwiaW5zdGFncmFtLmNvbVwiLFxyXG4gICAgfSxcclxuICB9O1xyXG5cclxuICB0cnkge1xyXG4gICAgY29uc3QgdXNlciA9IGF3YWl0IFVzZXIuY3JlYXRlKHUpO1xyXG4gIH0gY2F0Y2ggKGVycm9yKSB7XHJcbiAgICBjb25zb2xlLmVycm9yKFwiRXJyb3IgY3JlYXRpbmcgYWRtaW4gdXNlcjpcIiwgZXJyb3IpO1xyXG4gIH1cclxufTtcclxuZXhwb3J0IGRlZmF1bHQgY3JlYXRlQWRtaW5Vc2VyO1xyXG4iXSwidmVyc2lvbiI6M30=

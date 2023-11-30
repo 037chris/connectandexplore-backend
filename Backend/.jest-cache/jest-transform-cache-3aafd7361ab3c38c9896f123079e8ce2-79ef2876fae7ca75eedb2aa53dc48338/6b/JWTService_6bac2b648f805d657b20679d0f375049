@@ -1,0 +1,80 @@
+0f9a9ac2b5162636d7a52868ded8241a
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.verifyJWT = exports.verifyPasswordAndCreateJWT = void 0;
+const jsonwebtoken_1 = require("jsonwebtoken");
+const UserModel_1 = require("../model/UserModel");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+/**
+ * @param email E-Mail-Adresse des Users
+ * @param password Das Passwort des Users
+ * @returns JWT als String, im JWT ist sub gesetzt mit der Mongo-ID des Users als String sowie role mit "u" oder "a" (User oder Admin);
+ *      oder undefined wenn Authentifizierung fehlschlägt.
+ */
+async function verifyPasswordAndCreateJWT(email, password) {
+    const users = await UserModel_1.User.find({ email: email, isActive: true }).exec();
+    if (!users || users.length != 1) {
+        return undefined;
+    }
+    const user = users[0];
+    if (!(await user.isCorrectPassword(password))) {
+        return undefined;
+    }
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error("JWT_SECRET not set");
+    }
+    const timeInSec = Math.floor(Date.now() / 1000);
+    const ttl = process.env.JWT_TTL;
+    if (!ttl) {
+        throw new Error("TTL not set");
+    }
+    const exp = timeInSec + parseInt(ttl);
+    const role = user.isAdministrator ? "a" : "u";
+    const payload = {
+        sub: user.id,
+        iat: timeInSec,
+        exp: exp,
+        role: role,
+    };
+    const jwtString = (0, jsonwebtoken_1.sign)(payload, secret, { algorithm: "HS256" });
+    return jwtString;
+}
+exports.verifyPasswordAndCreateJWT = verifyPasswordAndCreateJWT;
+/**
+ * Gibt user id (Mongo-ID) und ein Kürzel der Rolle zurück, falls Verifizierung erfolgreich, sonst wird ein Error geworfen.
+ *
+ * Die zur Prüfung der Signatur notwendige Passphrase wird aus der Umgebungsvariable `JWT_SECRET` gelesen,
+ * falls diese nicht gesetzt ist, wird ein Fehler geworfen.
+ *
+ * @param jwtString das JWT
+ * @return user id des Users (Mongo ID als String) und Rolle (u oder a) des Benutzers;
+ *      niemals undefined (bei Fehler wird ein Error geworfen)
+ */
+function verifyJWT(jwtString) {
+    var _a;
+    if (!jwtString) {
+        throw new Error("No JWT-string");
+    }
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error("JWT_SECRET not set");
+    }
+    try {
+        const payload = (0, jsonwebtoken_1.verify)(jwtString, secret);
+        if (typeof payload === "object" && "sub" in payload && payload.sub) {
+            const result = { userId: (_a = payload.sub) === null || _a === void 0 ? void 0 : _a.toString(), role: payload.role };
+            return result;
+        }
+    }
+    catch (err) {
+        throw new Error("verify_error");
+    }
+    throw new Error("invalid_token");
+}
+exports.verifyJWT = verifyJWT;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHNlcnZpY2VzXFxKV1RTZXJ2aWNlLnRzIiwibWFwcGluZ3MiOiI7Ozs7OztBQUFBLCtDQUF3RDtBQUN4RCxrREFBMEM7QUFDMUMsb0RBQTRCO0FBQzVCLGdCQUFNLENBQUMsTUFBTSxFQUFFLENBQUM7QUFDaEI7Ozs7O0dBS0c7QUFDSSxLQUFLLFVBQVUsMEJBQTBCLENBQzlDLEtBQWEsRUFDYixRQUFnQjtJQUVoQixNQUFNLEtBQUssR0FBRyxNQUFNLGdCQUFJLENBQUMsSUFBSSxDQUFDLEVBQUUsS0FBSyxFQUFFLEtBQUssRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUMsQ0FBQyxJQUFJLEVBQUUsQ0FBQztJQUN2RSxJQUFJLENBQUMsS0FBSyxJQUFJLEtBQUssQ0FBQyxNQUFNLElBQUksQ0FBQyxFQUFFO1FBQy9CLE9BQU8sU0FBUyxDQUFDO0tBQ2xCO0lBQ0QsTUFBTSxJQUFJLEdBQUcsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDO0lBQ3RCLElBQUksQ0FBQyxDQUFDLE1BQU0sSUFBSSxDQUFDLGlCQUFpQixDQUFDLFFBQVEsQ0FBQyxDQUFDLEVBQUU7UUFDN0MsT0FBTyxTQUFTLENBQUM7S0FDbEI7SUFFRCxNQUFNLE1BQU0sR0FBRyxPQUFPLENBQUMsR0FBRyxDQUFDLFVBQVUsQ0FBQztJQUN0QyxJQUFJLENBQUMsTUFBTSxFQUFFO1FBQ1gsTUFBTSxJQUFJLEtBQUssQ0FBQyxvQkFBb0IsQ0FBQyxDQUFDO0tBQ3ZDO0lBQ0QsTUFBTSxTQUFTLEdBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsR0FBRyxFQUFFLEdBQUcsSUFBSSxDQUFDLENBQUM7SUFFaEQsTUFBTSxHQUFHLEdBQUcsT0FBTyxDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUM7SUFDaEMsSUFBSSxDQUFDLEdBQUcsRUFBRTtRQUNSLE1BQU0sSUFBSSxLQUFLLENBQUMsYUFBYSxDQUFDLENBQUM7S0FDaEM7SUFFRCxNQUFNLEdBQUcsR0FBRyxTQUFTLEdBQUcsUUFBUSxDQUFDLEdBQUcsQ0FBQyxDQUFDO0lBQ3RDLE1BQU0sSUFBSSxHQUFHLElBQUksQ0FBQyxlQUFlLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDO0lBRTlDLE1BQU0sT0FBTyxHQUFlO1FBQzFCLEdBQUcsRUFBRSxJQUFJLENBQUMsRUFBRTtRQUNaLEdBQUcsRUFBRSxTQUFTO1FBQ2QsR0FBRyxFQUFFLEdBQUc7UUFDUixJQUFJLEVBQUUsSUFBSTtLQUNYLENBQUM7SUFDRixNQUFNLFNBQVMsR0FBRyxJQUFBLG1CQUFJLEVBQUMsT0FBTyxFQUFFLE1BQU0sRUFBRSxFQUFFLFNBQVMsRUFBRSxPQUFPLEVBQUUsQ0FBQyxDQUFDO0lBQ2hFLE9BQU8sU0FBUyxDQUFDO0FBQ25CLENBQUM7QUFuQ0QsZ0VBbUNDO0FBRUQ7Ozs7Ozs7OztHQVNHO0FBQ0gsU0FBZ0IsU0FBUyxDQUFDLFNBQTZCOztJQUlyRCxJQUFJLENBQUMsU0FBUyxFQUFFO1FBQ2QsTUFBTSxJQUFJLEtBQUssQ0FBQyxlQUFlLENBQUMsQ0FBQztLQUNsQztJQUNELE1BQU0sTUFBTSxHQUFHLE9BQU8sQ0FBQyxHQUFHLENBQUMsVUFBVSxDQUFDO0lBQ3RDLElBQUksQ0FBQyxNQUFNLEVBQUU7UUFDWCxNQUFNLElBQUksS0FBSyxDQUFDLG9CQUFvQixDQUFDLENBQUM7S0FDdkM7SUFDRCxJQUFJO1FBQ0YsTUFBTSxPQUFPLEdBQUcsSUFBQSxxQkFBTSxFQUFDLFNBQVMsRUFBRSxNQUFNLENBQUMsQ0FBQztRQUMxQyxJQUFJLE9BQU8sT0FBTyxLQUFLLFFBQVEsSUFBSSxLQUFLLElBQUksT0FBTyxJQUFJLE9BQU8sQ0FBQyxHQUFHLEVBQUU7WUFDbEUsTUFBTSxNQUFNLEdBQUcsRUFBRSxNQUFNLEVBQUUsTUFBQSxPQUFPLENBQUMsR0FBRywwQ0FBRSxRQUFRLEVBQUcsRUFBRSxJQUFJLEVBQUUsT0FBTyxDQUFDLElBQUksRUFBRSxDQUFDO1lBQ3hFLE9BQU8sTUFBTSxDQUFDO1NBQ2Y7S0FDRjtJQUFDLE9BQU8sR0FBRyxFQUFFO1FBQ1osTUFBTSxJQUFJLEtBQUssQ0FBQyxjQUFjLENBQUMsQ0FBQztLQUNqQztJQUNELE1BQU0sSUFBSSxLQUFLLENBQUMsZUFBZSxDQUFDLENBQUM7QUFDbkMsQ0FBQztBQXJCRCw4QkFxQkMiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHNlcnZpY2VzXFxKV1RTZXJ2aWNlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEp3dFBheWxvYWQsIHNpZ24sIHZlcmlmeSB9IGZyb20gXCJqc29ud2VidG9rZW5cIjtcclxuaW1wb3J0IHsgVXNlciB9IGZyb20gXCIuLi9tb2RlbC9Vc2VyTW9kZWxcIjtcclxuaW1wb3J0IGRvdGVudiBmcm9tIFwiZG90ZW52XCI7XHJcbmRvdGVudi5jb25maWcoKTtcclxuLyoqXHJcbiAqIEBwYXJhbSBlbWFpbCBFLU1haWwtQWRyZXNzZSBkZXMgVXNlcnNcclxuICogQHBhcmFtIHBhc3N3b3JkIERhcyBQYXNzd29ydCBkZXMgVXNlcnNcclxuICogQHJldHVybnMgSldUIGFscyBTdHJpbmcsIGltIEpXVCBpc3Qgc3ViIGdlc2V0enQgbWl0IGRlciBNb25nby1JRCBkZXMgVXNlcnMgYWxzIFN0cmluZyBzb3dpZSByb2xlIG1pdCBcInVcIiBvZGVyIFwiYVwiIChVc2VyIG9kZXIgQWRtaW4pO1xyXG4gKiAgICAgIG9kZXIgdW5kZWZpbmVkIHdlbm4gQXV0aGVudGlmaXppZXJ1bmcgZmVobHNjaGzDpGd0LlxyXG4gKi9cclxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHZlcmlmeVBhc3N3b3JkQW5kQ3JlYXRlSldUKFxyXG4gIGVtYWlsOiBzdHJpbmcsXHJcbiAgcGFzc3dvcmQ6IHN0cmluZyxcclxuKTogUHJvbWlzZTxzdHJpbmcgfCB1bmRlZmluZWQ+IHtcclxuICBjb25zdCB1c2VycyA9IGF3YWl0IFVzZXIuZmluZCh7IGVtYWlsOiBlbWFpbCwgaXNBY3RpdmU6IHRydWUgfSkuZXhlYygpO1xyXG4gIGlmICghdXNlcnMgfHwgdXNlcnMubGVuZ3RoICE9IDEpIHtcclxuICAgIHJldHVybiB1bmRlZmluZWQ7XHJcbiAgfVxyXG4gIGNvbnN0IHVzZXIgPSB1c2Vyc1swXTtcclxuICBpZiAoIShhd2FpdCB1c2VyLmlzQ29ycmVjdFBhc3N3b3JkKHBhc3N3b3JkKSkpIHtcclxuICAgIHJldHVybiB1bmRlZmluZWQ7XHJcbiAgfVxyXG5cclxuICBjb25zdCBzZWNyZXQgPSBwcm9jZXNzLmVudi5KV1RfU0VDUkVUO1xyXG4gIGlmICghc2VjcmV0KSB7XHJcbiAgICB0aHJvdyBuZXcgRXJyb3IoXCJKV1RfU0VDUkVUIG5vdCBzZXRcIik7XHJcbiAgfVxyXG4gIGNvbnN0IHRpbWVJblNlYyA9IE1hdGguZmxvb3IoRGF0ZS5ub3coKSAvIDEwMDApO1xyXG5cclxuICBjb25zdCB0dGwgPSBwcm9jZXNzLmVudi5KV1RfVFRMO1xyXG4gIGlmICghdHRsKSB7XHJcbiAgICB0aHJvdyBuZXcgRXJyb3IoXCJUVEwgbm90IHNldFwiKTtcclxuICB9XHJcblxyXG4gIGNvbnN0IGV4cCA9IHRpbWVJblNlYyArIHBhcnNlSW50KHR0bCk7XHJcbiAgY29uc3Qgcm9sZSA9IHVzZXIuaXNBZG1pbmlzdHJhdG9yID8gXCJhXCIgOiBcInVcIjtcclxuXHJcbiAgY29uc3QgcGF5bG9hZDogSnd0UGF5bG9hZCA9IHtcclxuICAgIHN1YjogdXNlci5pZCxcclxuICAgIGlhdDogdGltZUluU2VjLFxyXG4gICAgZXhwOiBleHAsXHJcbiAgICByb2xlOiByb2xlLFxyXG4gIH07XHJcbiAgY29uc3Qgand0U3RyaW5nID0gc2lnbihwYXlsb2FkLCBzZWNyZXQsIHsgYWxnb3JpdGhtOiBcIkhTMjU2XCIgfSk7XHJcbiAgcmV0dXJuIGp3dFN0cmluZztcclxufVxyXG5cclxuLyoqXHJcbiAqIEdpYnQgdXNlciBpZCAoTW9uZ28tSUQpIHVuZCBlaW4gS8O8cnplbCBkZXIgUm9sbGUgenVyw7xjaywgZmFsbHMgVmVyaWZpemllcnVuZyBlcmZvbGdyZWljaCwgc29uc3Qgd2lyZCBlaW4gRXJyb3IgZ2V3b3JmZW4uXHJcbiAqXHJcbiAqIERpZSB6dXIgUHLDvGZ1bmcgZGVyIFNpZ25hdHVyIG5vdHdlbmRpZ2UgUGFzc3BocmFzZSB3aXJkIGF1cyBkZXIgVW1nZWJ1bmdzdmFyaWFibGUgYEpXVF9TRUNSRVRgIGdlbGVzZW4sXHJcbiAqIGZhbGxzIGRpZXNlIG5pY2h0IGdlc2V0enQgaXN0LCB3aXJkIGVpbiBGZWhsZXIgZ2V3b3JmZW4uXHJcbiAqXHJcbiAqIEBwYXJhbSBqd3RTdHJpbmcgZGFzIEpXVFxyXG4gKiBAcmV0dXJuIHVzZXIgaWQgZGVzIFVzZXJzIChNb25nbyBJRCBhbHMgU3RyaW5nKSB1bmQgUm9sbGUgKHUgb2RlciBhKSBkZXMgQmVudXR6ZXJzO1xyXG4gKiAgICAgIG5pZW1hbHMgdW5kZWZpbmVkIChiZWkgRmVobGVyIHdpcmQgZWluIEVycm9yIGdld29yZmVuKVxyXG4gKi9cclxuZXhwb3J0IGZ1bmN0aW9uIHZlcmlmeUpXVChqd3RTdHJpbmc6IHN0cmluZyB8IHVuZGVmaW5lZCk6IHtcclxuICB1c2VySWQ6IHN0cmluZztcclxuICByb2xlOiBcInVcIiB8IFwiYVwiO1xyXG59IHtcclxuICBpZiAoIWp3dFN0cmluZykge1xyXG4gICAgdGhyb3cgbmV3IEVycm9yKFwiTm8gSldULXN0cmluZ1wiKTtcclxuICB9XHJcbiAgY29uc3Qgc2VjcmV0ID0gcHJvY2Vzcy5lbnYuSldUX1NFQ1JFVDtcclxuICBpZiAoIXNlY3JldCkge1xyXG4gICAgdGhyb3cgbmV3IEVycm9yKFwiSldUX1NFQ1JFVCBub3Qgc2V0XCIpO1xyXG4gIH1cclxuICB0cnkge1xyXG4gICAgY29uc3QgcGF5bG9hZCA9IHZlcmlmeShqd3RTdHJpbmcsIHNlY3JldCk7XHJcbiAgICBpZiAodHlwZW9mIHBheWxvYWQgPT09IFwib2JqZWN0XCIgJiYgXCJzdWJcIiBpbiBwYXlsb2FkICYmIHBheWxvYWQuc3ViKSB7XHJcbiAgICAgIGNvbnN0IHJlc3VsdCA9IHsgdXNlcklkOiBwYXlsb2FkLnN1Yj8udG9TdHJpbmcoKSEsIHJvbGU6IHBheWxvYWQucm9sZSB9O1xyXG4gICAgICByZXR1cm4gcmVzdWx0O1xyXG4gICAgfVxyXG4gIH0gY2F0Y2ggKGVycikge1xyXG4gICAgdGhyb3cgbmV3IEVycm9yKFwidmVyaWZ5X2Vycm9yXCIpO1xyXG4gIH1cclxuICB0aHJvdyBuZXcgRXJyb3IoXCJpbnZhbGlkX3Rva2VuXCIpO1xyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

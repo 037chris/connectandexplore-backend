@@ -11,5 +11,8 @@ module.exports = {
     },
   },
   detectOpenHandles: true,
-  //setupFilesAfterEnv: ["./tests/jest.setup.ts"],
+  setupFilesAfterEnv: ["./tests/jest.setup.ts"],
+  verbose: true,
+  cacheDirectory: ".jest-cache",
+  collectCoverage: false,
 };

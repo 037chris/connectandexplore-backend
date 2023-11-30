@@ -7,16 +7,14 @@ const cert = fs.readFileSync("./certificates/cert.pem");
 import { connect } from "./database/db";
 import createAdminUser from "./src/utils/CreateAdminUser";
 import https from "https";
-let server: https.Server | null = null;
 const http = require("http");
 import swaggerDocs from "./src/utils/swagger";
 import UserRoute from "./src/routes/UserRoute";
-
 import UsersRouter from "./src/routes/UsersRouter";
 import loginRouter from "./src/routes/login";
 import EventRouter from "./src/routes/EventRoute";
 const app: Express = express();
-
+const port = process.env.PORT || 443;
 /* Routes */
 app.use("*", cors());
 
@@ -37,7 +35,7 @@ app.use("/api/users", UserRoute);
 app.use("/api", UsersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/events", EventRouter);
-swaggerDocs(app, 443);
+swaggerDocs(app, +port);
 app.use((req, res, next) => {
   res.status(404).json("Not Found");
 });
@@ -47,7 +45,7 @@ connect()
     // Create admin user after connecting to the database
     await createAdminUser();
     let server = https.createServer({ key, cert }, app);
-    server.listen(443, () => {
+    server.listen(port, () => {
       console.log("Listening on port 443");
     });
   })

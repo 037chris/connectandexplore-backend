@@ -1,0 +1,69 @@
+9da74e9ec3e23657ca201a1f7cb79067
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const UserService_1 = require("../services/UserService");
+const authentication_1 = require("./authentication");
+const UsersRouter = express_1.default.Router();
+const userService = new UserService_1.UserService();
+/**
+ * @swagger
+ * /api/users/:
+ *   get:
+ *     summary: "Get Users"
+ *     deprecated: false
+ *     description: "Retrieve all users"
+ *     tags:
+ *       - "User"
+ *     responses:
+ *       "200":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization."
+ *       "404":
+ *         description: "Not Found - Users not found"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Users not found."
+ *     security:
+ *       - bearerAuth: []
+ */
+UsersRouter.get("/users", authentication_1.requiresAuthentication, async (req, res, next) => {
+    if (req.role !== "a") {
+        res.status(403);
+        next(new Error("Invalid authorization"));
+    }
+    else {
+        try {
+            const users = await userService.getUsers();
+            res.status(200).send(users);
+        }
+        catch (err) {
+            res.status(404);
+            next(err);
+        }
+    }
+});
+exports.default = UsersRouter;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHJvdXRlc1xcVXNlcnNSb3V0ZXIudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQSxzREFBOEI7QUFDOUIseURBQXNEO0FBQ3RELHFEQUEwRDtBQUcxRCxNQUFNLFdBQVcsR0FBRyxpQkFBTyxDQUFDLE1BQU0sRUFBRSxDQUFDO0FBQ3JDLE1BQU0sV0FBVyxHQUFHLElBQUkseUJBQVcsRUFBRSxDQUFDO0FBQ3RDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7R0F1Q0c7QUFDSCxXQUFXLENBQUMsR0FBRyxDQUFDLFFBQVEsRUFBRSx1Q0FBc0IsRUFBRSxLQUFLLEVBQUUsR0FBRyxFQUFFLEdBQUcsRUFBRSxJQUFJLEVBQUUsRUFBRTtJQUN6RSxJQUFJLEdBQUcsQ0FBQyxJQUFJLEtBQUssR0FBRyxFQUFFLENBQUM7UUFDckIsR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQztRQUNoQixJQUFJLENBQUMsSUFBSSxLQUFLLENBQUMsdUJBQXVCLENBQUMsQ0FBQyxDQUFDO0lBQzNDLENBQUM7U0FBTSxDQUFDO1FBQ04sSUFBSSxDQUFDO1lBQ0gsTUFBTSxLQUFLLEdBQWtCLE1BQU0sV0FBVyxDQUFDLFFBQVEsRUFBRSxDQUFDO1lBQzFELEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQzlCLENBQUM7UUFBQyxPQUFPLEdBQUcsRUFBRSxDQUFDO1lBQ2IsR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQztZQUNoQixJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7UUFDWixDQUFDO0lBQ0gsQ0FBQztBQUNILENBQUMsQ0FBQyxDQUFDO0FBRUgsa0JBQWUsV0FBVyxDQUFDIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcbmFjZXVcXE9uZURyaXZlXFxEZXNrdG9wXFxTdHVkaXVtXFw1IFNlbWVzdGVyXFxQcm9qZWt0XFxjb25uZWN0YW5kZXhwbG9yZVxcQmFja2VuZFxcc3JjXFxyb3V0ZXNcXFVzZXJzUm91dGVyLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBleHByZXNzIGZyb20gXCJleHByZXNzXCI7XHJcbmltcG9ydCB7IFVzZXJTZXJ2aWNlIH0gZnJvbSBcIi4uL3NlcnZpY2VzL1VzZXJTZXJ2aWNlXCI7XHJcbmltcG9ydCB7IHJlcXVpcmVzQXV0aGVudGljYXRpb24gfSBmcm9tIFwiLi9hdXRoZW50aWNhdGlvblwiO1xyXG5pbXBvcnQgeyB1c2Vyc1Jlc291cmNlIH0gZnJvbSBcIi4uL1Jlc291cmNlc1wiO1xyXG5cclxuY29uc3QgVXNlcnNSb3V0ZXIgPSBleHByZXNzLlJvdXRlcigpO1xyXG5jb25zdCB1c2VyU2VydmljZSA9IG5ldyBVc2VyU2VydmljZSgpO1xyXG4vKipcclxuICogQHN3YWdnZXJcclxuICogL2FwaS91c2Vycy86XHJcbiAqICAgZ2V0OlxyXG4gKiAgICAgc3VtbWFyeTogXCJHZXQgVXNlcnNcIlxyXG4gKiAgICAgZGVwcmVjYXRlZDogZmFsc2VcclxuICogICAgIGRlc2NyaXB0aW9uOiBcIlJldHJpZXZlIGFsbCB1c2Vyc1wiXHJcbiAqICAgICB0YWdzOlxyXG4gKiAgICAgICAtIFwiVXNlclwiXHJcbiAqICAgICByZXNwb25zZXM6XHJcbiAqICAgICAgIFwiMjAwXCI6XHJcbiAqICAgICAgICAgZGVzY3JpcHRpb246IFwiT0tcIlxyXG4gKiAgICAgICAgIGNvbnRlbnQ6XHJcbiAqICAgICAgICAgICBhcHBsaWNhdGlvbi9qc29uOlxyXG4gKiAgICAgICAgICAgICBzY2hlbWE6XHJcbiAqICAgICAgICAgICAgICAgdHlwZTogXCJvYmplY3RcIlxyXG4gKiAgICAgICAgICAgICAgIHByb3BlcnRpZXM6IHt9XHJcbiAqICAgICAgIFwiNDAzXCI6XHJcbiAqICAgICAgICAgZGVzY3JpcHRpb246IFwiRm9yYmlkZGVuIC0gSW52YWxpZCBhdXRob3JpemF0aW9uXCJcclxuICogICAgICAgICBjb250ZW50OlxyXG4gKiAgICAgICAgICAgYXBwbGljYXRpb24vanNvbjpcclxuICogICAgICAgICAgICAgc2NoZW1hOlxyXG4gKiAgICAgICAgICAgICAgIHR5cGU6IFwib2JqZWN0XCJcclxuICogICAgICAgICAgICAgICBwcm9wZXJ0aWVzOlxyXG4gKiAgICAgICAgICAgICAgICAgZXJyb3I6XHJcbiAqICAgICAgICAgICAgICAgICAgIHR5cGU6IFwic3RyaW5nXCJcclxuICogICAgICAgICAgICAgICAgICAgZXhhbXBsZTogXCJJbnZhbGlkIGF1dGhvcml6YXRpb24uXCJcclxuICogICAgICAgXCI0MDRcIjpcclxuICogICAgICAgICBkZXNjcmlwdGlvbjogXCJOb3QgRm91bmQgLSBVc2VycyBub3QgZm91bmRcIlxyXG4gKiAgICAgICAgIGNvbnRlbnQ6XHJcbiAqICAgICAgICAgICBhcHBsaWNhdGlvbi9qc29uOlxyXG4gKiAgICAgICAgICAgICBzY2hlbWE6XHJcbiAqICAgICAgICAgICAgICAgdHlwZTogXCJvYmplY3RcIlxyXG4gKiAgICAgICAgICAgICAgIHByb3BlcnRpZXM6XHJcbiAqICAgICAgICAgICAgICAgICBlcnJvcjpcclxuICogICAgICAgICAgICAgICAgICAgdHlwZTogXCJzdHJpbmdcIlxyXG4gKiAgICAgICAgICAgICAgICAgICBleGFtcGxlOiBcIlVzZXJzIG5vdCBmb3VuZC5cIlxyXG4gKiAgICAgc2VjdXJpdHk6XHJcbiAqICAgICAgIC0gYmVhcmVyQXV0aDogW11cclxuICovXHJcblVzZXJzUm91dGVyLmdldChcIi91c2Vyc1wiLCByZXF1aXJlc0F1dGhlbnRpY2F0aW9uLCBhc3luYyAocmVxLCByZXMsIG5leHQpID0+IHtcclxuICBpZiAocmVxLnJvbGUgIT09IFwiYVwiKSB7XHJcbiAgICByZXMuc3RhdHVzKDQwMyk7XHJcbiAgICBuZXh0KG5ldyBFcnJvcihcIkludmFsaWQgYXV0aG9yaXphdGlvblwiKSk7XHJcbiAgfSBlbHNlIHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGNvbnN0IHVzZXJzOiB1c2Vyc1Jlc291cmNlID0gYXdhaXQgdXNlclNlcnZpY2UuZ2V0VXNlcnMoKTtcclxuICAgICAgcmVzLnN0YXR1cygyMDApLnNlbmQodXNlcnMpO1xyXG4gICAgfSBjYXRjaCAoZXJyKSB7XHJcbiAgICAgIHJlcy5zdGF0dXMoNDA0KTtcclxuICAgICAgbmV4dChlcnIpO1xyXG4gICAgfVxyXG4gIH1cclxufSk7XHJcblxyXG5leHBvcnQgZGVmYXVsdCBVc2Vyc1JvdXRlcjtcclxuIl0sInZlcnNpb24iOjN9

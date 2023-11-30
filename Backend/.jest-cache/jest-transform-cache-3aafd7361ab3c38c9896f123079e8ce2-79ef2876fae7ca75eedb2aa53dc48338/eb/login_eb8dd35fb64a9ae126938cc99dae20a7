@@ -1,0 +1,91 @@
+8e543bfbe37bffb86b1a315e51190fef
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const express_validator_1 = require("express-validator");
+const JWTService_1 = require("../services/JWTService");
+const loginRouter = express_1.default.Router();
+/**
+ * @swagger
+ * /api/login/:
+ *  "post":
+ *    "summary": "Login user"
+ *    "description": "Endpoint to log in a user"
+ *    "tags": [
+ *      "User"
+ *    ]
+ *    "parameters": []
+ *    "requestBody":
+ *      "content":
+ *        "application/json":
+ *          "schema":
+ *            "type": "object"
+ *            "properties":
+ *              "email":
+ *                "type": "string"
+ *              "password":
+ *                "type": "string"
+ *            "required":
+ *              - "email"
+ *              - "password"
+ *          "example":
+ *            "email": "John@doe.com"
+ *            "password": "12abcAB!"
+ *    "responses":
+ *      "200":
+ *        "description": "OK"
+ *        "content":
+ *          "application/json":
+ *            "schema":
+ *              "type": "object"
+ *              "properties": {}
+ *      "400":
+ *        "description": "Bad Request - Validation Error"
+ *        "content":
+ *          "application/json":
+ *            "schema":
+ *              "type": "object"
+ *              "properties":
+ *                "error":
+ *                  "type": "string"
+ *                  "example": "Validation failed: Please provide a valid email and password."
+ *      "401":
+ *        "description": "Unauthorized - Missing JWT"
+ *        "content":
+ *          "application/json":
+ *            "schema":
+ *              "type": "object"
+ *              "properties":
+ *                "error":
+ *                  "type": "string"
+ *                  "example": "Unauthorized: No JWT token provided."
+ *    "security":
+ *      - "bearerAuth": []
+ */
+/**
+ * Diese Funktion bitte noch nicht implementieren, sie steht hier als Platzhalter.
+ * Wir benötigen dafür Authentifizierungsinformationen, die wir später in einem JSW speichern.
+ */
+loginRouter.post("/", (0, express_validator_1.body)("email").isEmail(), (0, express_validator_1.body)("password").isStrongPassword(), async (req, res, next) => {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    //const loginResource = matchedData(req) as LoginResource;
+    const resource = (0, express_validator_1.matchedData)(req);
+    const jwtstring = await (0, JWTService_1.verifyPasswordAndCreateJWT)(resource.email, resource.password);
+    if (!jwtstring) {
+        res.status(401);
+        next(new Error("no jwtstring"));
+    }
+    const result = {
+        access_token: jwtstring,
+        token_type: "Bearer",
+    };
+    res.send(result);
+});
+exports.default = loginRouter;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHJvdXRlc1xcbG9naW4udHMiLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQSxzREFBOEI7QUFDOUIseURBQXdFO0FBRXhFLHVEQUFvRTtBQUVwRSxNQUFNLFdBQVcsR0FBRyxpQkFBTyxDQUFDLE1BQU0sRUFBRSxDQUFDO0FBQ3JDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztHQXdERztBQUNIOzs7R0FHRztBQUNILFdBQVcsQ0FBQyxJQUFJLENBQ2QsR0FBRyxFQUNILElBQUEsd0JBQUksRUFBQyxPQUFPLENBQUMsQ0FBQyxPQUFPLEVBQUUsRUFDdkIsSUFBQSx3QkFBSSxFQUFDLFVBQVUsQ0FBQyxDQUFDLGdCQUFnQixFQUFFLEVBQ25DLEtBQUssRUFBRSxHQUFHLEVBQUUsR0FBRyxFQUFFLElBQUksRUFBRSxFQUFFO0lBQ3ZCLE1BQU0sTUFBTSxHQUFHLElBQUEsb0NBQWdCLEVBQUMsR0FBRyxDQUFDLENBQUM7SUFDckMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxPQUFPLEVBQUUsRUFBRSxDQUFDO1FBQ3RCLE9BQU8sR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUMsRUFBRSxNQUFNLEVBQUUsTUFBTSxDQUFDLEtBQUssRUFBRSxFQUFFLENBQUMsQ0FBQztJQUMxRCxDQUFDO0lBQ0QsMERBQTBEO0lBQzFELE1BQU0sUUFBUSxHQUFHLElBQUEsK0JBQVcsRUFBQyxHQUFHLENBQUMsQ0FBQztJQUNsQyxNQUFNLFNBQVMsR0FBRyxNQUFNLElBQUEsdUNBQTBCLEVBQ2hELFFBQVEsQ0FBQyxLQUFLLEVBQ2QsUUFBUSxDQUFDLFFBQVEsQ0FDbEIsQ0FBQztJQUNGLElBQUksQ0FBQyxTQUFTLEVBQUUsQ0FBQztRQUNmLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUM7UUFDaEIsSUFBSSxDQUFDLElBQUksS0FBSyxDQUFDLGNBQWMsQ0FBQyxDQUFDLENBQUM7SUFDbEMsQ0FBQztJQUNELE1BQU0sTUFBTSxHQUFrQjtRQUM1QixZQUFZLEVBQUUsU0FBVTtRQUN4QixVQUFVLEVBQUUsUUFBUTtLQUNyQixDQUFDO0lBQ0YsR0FBRyxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQztBQUNuQixDQUFDLENBQ0YsQ0FBQztBQUVGLGtCQUFlLFdBQVcsQ0FBQyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJDOlxcVXNlcnNcXG5hY2V1XFxPbmVEcml2ZVxcRGVza3RvcFxcU3R1ZGl1bVxcNSBTZW1lc3RlclxcUHJvamVrdFxcY29ubmVjdGFuZGV4cGxvcmVcXEJhY2tlbmRcXHNyY1xccm91dGVzXFxsb2dpbi50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgZXhwcmVzcyBmcm9tIFwiZXhwcmVzc1wiO1xyXG5pbXBvcnQgeyBib2R5LCBtYXRjaGVkRGF0YSwgdmFsaWRhdGlvblJlc3VsdCB9IGZyb20gXCJleHByZXNzLXZhbGlkYXRvclwiO1xyXG5pbXBvcnQgeyBMb2dpblJlc291cmNlIH0gZnJvbSBcIi4uL1Jlc291cmNlc1wiO1xyXG5pbXBvcnQgeyB2ZXJpZnlQYXNzd29yZEFuZENyZWF0ZUpXVCB9IGZyb20gXCIuLi9zZXJ2aWNlcy9KV1RTZXJ2aWNlXCI7XHJcblxyXG5jb25zdCBsb2dpblJvdXRlciA9IGV4cHJlc3MuUm91dGVyKCk7XHJcbi8qKlxyXG4gKiBAc3dhZ2dlclxyXG4gKiAvYXBpL2xvZ2luLzpcclxuICogIFwicG9zdFwiOlxyXG4gKiAgICBcInN1bW1hcnlcIjogXCJMb2dpbiB1c2VyXCJcclxuICogICAgXCJkZXNjcmlwdGlvblwiOiBcIkVuZHBvaW50IHRvIGxvZyBpbiBhIHVzZXJcIlxyXG4gKiAgICBcInRhZ3NcIjogW1xyXG4gKiAgICAgIFwiVXNlclwiXHJcbiAqICAgIF1cclxuICogICAgXCJwYXJhbWV0ZXJzXCI6IFtdXHJcbiAqICAgIFwicmVxdWVzdEJvZHlcIjpcclxuICogICAgICBcImNvbnRlbnRcIjpcclxuICogICAgICAgIFwiYXBwbGljYXRpb24vanNvblwiOlxyXG4gKiAgICAgICAgICBcInNjaGVtYVwiOlxyXG4gKiAgICAgICAgICAgIFwidHlwZVwiOiBcIm9iamVjdFwiXHJcbiAqICAgICAgICAgICAgXCJwcm9wZXJ0aWVzXCI6XHJcbiAqICAgICAgICAgICAgICBcImVtYWlsXCI6XHJcbiAqICAgICAgICAgICAgICAgIFwidHlwZVwiOiBcInN0cmluZ1wiXHJcbiAqICAgICAgICAgICAgICBcInBhc3N3b3JkXCI6XHJcbiAqICAgICAgICAgICAgICAgIFwidHlwZVwiOiBcInN0cmluZ1wiXHJcbiAqICAgICAgICAgICAgXCJyZXF1aXJlZFwiOlxyXG4gKiAgICAgICAgICAgICAgLSBcImVtYWlsXCJcclxuICogICAgICAgICAgICAgIC0gXCJwYXNzd29yZFwiXHJcbiAqICAgICAgICAgIFwiZXhhbXBsZVwiOlxyXG4gKiAgICAgICAgICAgIFwiZW1haWxcIjogXCJKb2huQGRvZS5jb21cIlxyXG4gKiAgICAgICAgICAgIFwicGFzc3dvcmRcIjogXCIxMmFiY0FCIVwiXHJcbiAqICAgIFwicmVzcG9uc2VzXCI6XHJcbiAqICAgICAgXCIyMDBcIjpcclxuICogICAgICAgIFwiZGVzY3JpcHRpb25cIjogXCJPS1wiXHJcbiAqICAgICAgICBcImNvbnRlbnRcIjpcclxuICogICAgICAgICAgXCJhcHBsaWNhdGlvbi9qc29uXCI6XHJcbiAqICAgICAgICAgICAgXCJzY2hlbWFcIjpcclxuICogICAgICAgICAgICAgIFwidHlwZVwiOiBcIm9iamVjdFwiXHJcbiAqICAgICAgICAgICAgICBcInByb3BlcnRpZXNcIjoge31cclxuICogICAgICBcIjQwMFwiOlxyXG4gKiAgICAgICAgXCJkZXNjcmlwdGlvblwiOiBcIkJhZCBSZXF1ZXN0IC0gVmFsaWRhdGlvbiBFcnJvclwiXHJcbiAqICAgICAgICBcImNvbnRlbnRcIjpcclxuICogICAgICAgICAgXCJhcHBsaWNhdGlvbi9qc29uXCI6XHJcbiAqICAgICAgICAgICAgXCJzY2hlbWFcIjpcclxuICogICAgICAgICAgICAgIFwidHlwZVwiOiBcIm9iamVjdFwiXHJcbiAqICAgICAgICAgICAgICBcInByb3BlcnRpZXNcIjpcclxuICogICAgICAgICAgICAgICAgXCJlcnJvclwiOlxyXG4gKiAgICAgICAgICAgICAgICAgIFwidHlwZVwiOiBcInN0cmluZ1wiXHJcbiAqICAgICAgICAgICAgICAgICAgXCJleGFtcGxlXCI6IFwiVmFsaWRhdGlvbiBmYWlsZWQ6IFBsZWFzZSBwcm92aWRlIGEgdmFsaWQgZW1haWwgYW5kIHBhc3N3b3JkLlwiXHJcbiAqICAgICAgXCI0MDFcIjpcclxuICogICAgICAgIFwiZGVzY3JpcHRpb25cIjogXCJVbmF1dGhvcml6ZWQgLSBNaXNzaW5nIEpXVFwiXHJcbiAqICAgICAgICBcImNvbnRlbnRcIjpcclxuICogICAgICAgICAgXCJhcHBsaWNhdGlvbi9qc29uXCI6XHJcbiAqICAgICAgICAgICAgXCJzY2hlbWFcIjpcclxuICogICAgICAgICAgICAgIFwidHlwZVwiOiBcIm9iamVjdFwiXHJcbiAqICAgICAgICAgICAgICBcInByb3BlcnRpZXNcIjpcclxuICogICAgICAgICAgICAgICAgXCJlcnJvclwiOlxyXG4gKiAgICAgICAgICAgICAgICAgIFwidHlwZVwiOiBcInN0cmluZ1wiXHJcbiAqICAgICAgICAgICAgICAgICAgXCJleGFtcGxlXCI6IFwiVW5hdXRob3JpemVkOiBObyBKV1QgdG9rZW4gcHJvdmlkZWQuXCJcclxuICogICAgXCJzZWN1cml0eVwiOlxyXG4gKiAgICAgIC0gXCJiZWFyZXJBdXRoXCI6IFtdXHJcbiAqL1xyXG4vKipcclxuICogRGllc2UgRnVua3Rpb24gYml0dGUgbm9jaCBuaWNodCBpbXBsZW1lbnRpZXJlbiwgc2llIHN0ZWh0IGhpZXIgYWxzIFBsYXR6aGFsdGVyLlxyXG4gKiBXaXIgYmVuw7Z0aWdlbiBkYWbDvHIgQXV0aGVudGlmaXppZXJ1bmdzaW5mb3JtYXRpb25lbiwgZGllIHdpciBzcMOkdGVyIGluIGVpbmVtIEpTVyBzcGVpY2hlcm4uXHJcbiAqL1xyXG5sb2dpblJvdXRlci5wb3N0KFxyXG4gIFwiL1wiLFxyXG4gIGJvZHkoXCJlbWFpbFwiKS5pc0VtYWlsKCksXHJcbiAgYm9keShcInBhc3N3b3JkXCIpLmlzU3Ryb25nUGFzc3dvcmQoKSxcclxuICBhc3luYyAocmVxLCByZXMsIG5leHQpID0+IHtcclxuICAgIGNvbnN0IGVycm9ycyA9IHZhbGlkYXRpb25SZXN1bHQocmVxKTtcclxuICAgIGlmICghZXJyb3JzLmlzRW1wdHkoKSkge1xyXG4gICAgICByZXR1cm4gcmVzLnN0YXR1cyg0MDApLmpzb24oeyBlcnJvcnM6IGVycm9ycy5hcnJheSgpIH0pO1xyXG4gICAgfVxyXG4gICAgLy9jb25zdCBsb2dpblJlc291cmNlID0gbWF0Y2hlZERhdGEocmVxKSBhcyBMb2dpblJlc291cmNlO1xyXG4gICAgY29uc3QgcmVzb3VyY2UgPSBtYXRjaGVkRGF0YShyZXEpO1xyXG4gICAgY29uc3Qgand0c3RyaW5nID0gYXdhaXQgdmVyaWZ5UGFzc3dvcmRBbmRDcmVhdGVKV1QoXHJcbiAgICAgIHJlc291cmNlLmVtYWlsLFxyXG4gICAgICByZXNvdXJjZS5wYXNzd29yZCxcclxuICAgICk7XHJcbiAgICBpZiAoIWp3dHN0cmluZykge1xyXG4gICAgICByZXMuc3RhdHVzKDQwMSk7XHJcbiAgICAgIG5leHQobmV3IEVycm9yKFwibm8gand0c3RyaW5nXCIpKTtcclxuICAgIH1cclxuICAgIGNvbnN0IHJlc3VsdDogTG9naW5SZXNvdXJjZSA9IHtcclxuICAgICAgYWNjZXNzX3Rva2VuOiBqd3RzdHJpbmchLFxyXG4gICAgICB0b2tlbl90eXBlOiBcIkJlYXJlclwiLFxyXG4gICAgfTtcclxuICAgIHJlcy5zZW5kKHJlc3VsdCk7XHJcbiAgfSxcclxuKTtcclxuXHJcbmV4cG9ydCBkZWZhdWx0IGxvZ2luUm91dGVyO1xyXG4iXSwidmVyc2lvbiI6M30=

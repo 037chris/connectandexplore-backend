@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { clearDatabase, closeDatabase, connect } from "../../database/db";
 import app from "../../server";
 //import { req } from "../jest.setup";
@@ -79,7 +80,7 @@ describe("userRoute test", () => {
   });
   afterEach(async () => await clearDatabase());
   afterAll(async () => {
-    await closeDatabase(); // Perform final cleanup after all tests
+    await mongoose.connection.close(); // Perform final cleanup after all tests
   });
 
   test("getUsers", async () => {

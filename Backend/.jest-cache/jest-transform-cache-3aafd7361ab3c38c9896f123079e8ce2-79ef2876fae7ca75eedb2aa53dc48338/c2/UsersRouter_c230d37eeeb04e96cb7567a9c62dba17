@@ -1,0 +1,69 @@
+a263c7d6f863ece0f185718e9517b303
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const UserService_1 = require("../services/UserService");
+const authentication_1 = require("./authentication");
+const UsersRouter = express_1.default.Router();
+const userService = new UserService_1.UserService();
+/**
+ * @swagger
+ * /api/users/:
+ *   get:
+ *     summary: "Get Users"
+ *     deprecated: false
+ *     description: "Retrieve all users"
+ *     tags:
+ *       - "User"
+ *     responses:
+ *       "200":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization."
+ *       "404":
+ *         description: "Not Found - Users not found"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Users not found."
+ *     security:
+ *       - bearerAuth: []
+ */
+UsersRouter.get("/users", authentication_1.requiresAuthentication, async (req, res, next) => {
+    if (req.role !== "a") {
+        res.status(403);
+        next(new Error("Invalid authorization"));
+    }
+    else {
+        try {
+            const users = await userService.getUsers();
+            res.status(200).send(users);
+        }
+        catch (err) {
+            res.status(404);
+            next(err);
+        }
+    }
+});
+exports.default = UsersRouter;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHJvdXRlc1xcVXNlcnNSb3V0ZXIudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQSxzREFBOEI7QUFDOUIseURBQXNEO0FBQ3RELHFEQUEwRDtBQUcxRCxNQUFNLFdBQVcsR0FBRyxpQkFBTyxDQUFDLE1BQU0sRUFBRSxDQUFDO0FBQ3JDLE1BQU0sV0FBVyxHQUFHLElBQUkseUJBQVcsRUFBRSxDQUFDO0FBQ3RDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7R0F1Q0c7QUFDSCxXQUFXLENBQUMsR0FBRyxDQUFDLFFBQVEsRUFBRSx1Q0FBc0IsRUFBRSxLQUFLLEVBQUUsR0FBRyxFQUFFLEdBQUcsRUFBRSxJQUFJLEVBQUUsRUFBRTtJQUN6RSxJQUFJLEdBQUcsQ0FBQyxJQUFJLEtBQUssR0FBRyxFQUFFO1FBQ3BCLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUM7UUFDaEIsSUFBSSxDQUFDLElBQUksS0FBSyxDQUFDLHVCQUF1QixDQUFDLENBQUMsQ0FBQztLQUMxQztTQUFNO1FBQ0wsSUFBSTtZQUNGLE1BQU0sS0FBSyxHQUFrQixNQUFNLFdBQVcsQ0FBQyxRQUFRLEVBQUUsQ0FBQztZQUMxRCxHQUFHLENBQUMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztTQUM3QjtRQUFDLE9BQU8sR0FBRyxFQUFFO1lBQ1osR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQztZQUNoQixJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7U0FDWDtLQUNGO0FBQ0gsQ0FBQyxDQUFDLENBQUM7QUFFSCxrQkFBZSxXQUFXLENBQUMiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiQzpcXFVzZXJzXFxuYWNldVxcT25lRHJpdmVcXERlc2t0b3BcXFN0dWRpdW1cXDUgU2VtZXN0ZXJcXFByb2pla3RcXGNvbm5lY3RhbmRleHBsb3JlXFxCYWNrZW5kXFxzcmNcXHJvdXRlc1xcVXNlcnNSb3V0ZXIudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGV4cHJlc3MgZnJvbSBcImV4cHJlc3NcIjtcclxuaW1wb3J0IHsgVXNlclNlcnZpY2UgfSBmcm9tIFwiLi4vc2VydmljZXMvVXNlclNlcnZpY2VcIjtcclxuaW1wb3J0IHsgcmVxdWlyZXNBdXRoZW50aWNhdGlvbiB9IGZyb20gXCIuL2F1dGhlbnRpY2F0aW9uXCI7XHJcbmltcG9ydCB7IHVzZXJzUmVzb3VyY2UgfSBmcm9tIFwiLi4vUmVzb3VyY2VzXCI7XHJcblxyXG5jb25zdCBVc2Vyc1JvdXRlciA9IGV4cHJlc3MuUm91dGVyKCk7XHJcbmNvbnN0IHVzZXJTZXJ2aWNlID0gbmV3IFVzZXJTZXJ2aWNlKCk7XHJcbi8qKlxyXG4gKiBAc3dhZ2dlclxyXG4gKiAvYXBpL3VzZXJzLzpcclxuICogICBnZXQ6XHJcbiAqICAgICBzdW1tYXJ5OiBcIkdldCBVc2Vyc1wiXHJcbiAqICAgICBkZXByZWNhdGVkOiBmYWxzZVxyXG4gKiAgICAgZGVzY3JpcHRpb246IFwiUmV0cmlldmUgYWxsIHVzZXJzXCJcclxuICogICAgIHRhZ3M6XHJcbiAqICAgICAgIC0gXCJVc2VyXCJcclxuICogICAgIHJlc3BvbnNlczpcclxuICogICAgICAgXCIyMDBcIjpcclxuICogICAgICAgICBkZXNjcmlwdGlvbjogXCJPS1wiXHJcbiAqICAgICAgICAgY29udGVudDpcclxuICogICAgICAgICAgIGFwcGxpY2F0aW9uL2pzb246XHJcbiAqICAgICAgICAgICAgIHNjaGVtYTpcclxuICogICAgICAgICAgICAgICB0eXBlOiBcIm9iamVjdFwiXHJcbiAqICAgICAgICAgICAgICAgcHJvcGVydGllczoge31cclxuICogICAgICAgXCI0MDNcIjpcclxuICogICAgICAgICBkZXNjcmlwdGlvbjogXCJGb3JiaWRkZW4gLSBJbnZhbGlkIGF1dGhvcml6YXRpb25cIlxyXG4gKiAgICAgICAgIGNvbnRlbnQ6XHJcbiAqICAgICAgICAgICBhcHBsaWNhdGlvbi9qc29uOlxyXG4gKiAgICAgICAgICAgICBzY2hlbWE6XHJcbiAqICAgICAgICAgICAgICAgdHlwZTogXCJvYmplY3RcIlxyXG4gKiAgICAgICAgICAgICAgIHByb3BlcnRpZXM6XHJcbiAqICAgICAgICAgICAgICAgICBlcnJvcjpcclxuICogICAgICAgICAgICAgICAgICAgdHlwZTogXCJzdHJpbmdcIlxyXG4gKiAgICAgICAgICAgICAgICAgICBleGFtcGxlOiBcIkludmFsaWQgYXV0aG9yaXphdGlvbi5cIlxyXG4gKiAgICAgICBcIjQwNFwiOlxyXG4gKiAgICAgICAgIGRlc2NyaXB0aW9uOiBcIk5vdCBGb3VuZCAtIFVzZXJzIG5vdCBmb3VuZFwiXHJcbiAqICAgICAgICAgY29udGVudDpcclxuICogICAgICAgICAgIGFwcGxpY2F0aW9uL2pzb246XHJcbiAqICAgICAgICAgICAgIHNjaGVtYTpcclxuICogICAgICAgICAgICAgICB0eXBlOiBcIm9iamVjdFwiXHJcbiAqICAgICAgICAgICAgICAgcHJvcGVydGllczpcclxuICogICAgICAgICAgICAgICAgIGVycm9yOlxyXG4gKiAgICAgICAgICAgICAgICAgICB0eXBlOiBcInN0cmluZ1wiXHJcbiAqICAgICAgICAgICAgICAgICAgIGV4YW1wbGU6IFwiVXNlcnMgbm90IGZvdW5kLlwiXHJcbiAqICAgICBzZWN1cml0eTpcclxuICogICAgICAgLSBiZWFyZXJBdXRoOiBbXVxyXG4gKi9cclxuVXNlcnNSb3V0ZXIuZ2V0KFwiL3VzZXJzXCIsIHJlcXVpcmVzQXV0aGVudGljYXRpb24sIGFzeW5jIChyZXEsIHJlcywgbmV4dCkgPT4ge1xyXG4gIGlmIChyZXEucm9sZSAhPT0gXCJhXCIpIHtcclxuICAgIHJlcy5zdGF0dXMoNDAzKTtcclxuICAgIG5leHQobmV3IEVycm9yKFwiSW52YWxpZCBhdXRob3JpemF0aW9uXCIpKTtcclxuICB9IGVsc2Uge1xyXG4gICAgdHJ5IHtcclxuICAgICAgY29uc3QgdXNlcnM6IHVzZXJzUmVzb3VyY2UgPSBhd2FpdCB1c2VyU2VydmljZS5nZXRVc2VycygpO1xyXG4gICAgICByZXMuc3RhdHVzKDIwMCkuc2VuZCh1c2Vycyk7XHJcbiAgICB9IGNhdGNoIChlcnIpIHtcclxuICAgICAgcmVzLnN0YXR1cyg0MDQpO1xyXG4gICAgICBuZXh0KGVycik7XHJcbiAgICB9XHJcbiAgfVxyXG59KTtcclxuXHJcbmV4cG9ydCBkZWZhdWx0IFVzZXJzUm91dGVyO1xyXG4iXSwidmVyc2lvbiI6M30=
