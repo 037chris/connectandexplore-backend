@@ -347,7 +347,6 @@ UserRouter.put("/:userid", authentication_1.requiresAuthentication, FileUpload_1
     }
     //req.body.name = JSON.parse(req.body.name);
     const userResource = req.body; //matchedData(req) as userResource;
-    console.log("route:", userResource);
     userResource.id = userid;
     if (req.role === "a") {
         try {

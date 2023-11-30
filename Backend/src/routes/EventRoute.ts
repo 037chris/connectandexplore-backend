@@ -17,6 +17,37 @@ import { deleteEventThumbnail, upload } from "../utils/FileUpload";
 const EventRouter = express.Router();
 const eventService = new EventService();
 
+/**
+ * @swagger
+ * /api/events/search:
+ *   get:
+ *     summary: "Search for events"
+ *     description: "Search events based on a query string"
+ *     tags:
+ *       - "Event"
+ *     parameters:
+ *       - name: "query"
+ *         in: "query"
+ *         required: true
+ *         schema:
+ *           type: "string"
+ *         description: "The query string to search for events"
+ *     responses:
+ *       200:
+ *         description: "Successful response"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/IEvent"
+ *       204:
+ *         description: "No events found matching the query"
+ *       400:
+ *         description: "Bad request. Validation error in the query string"
+ *       404:
+ *         description: "Not found. The requested resource does not exist"
+ *       500:
+ *         description: "Internal server error"
+ */
 EventRouter.get(
   "/search",
   optionalAuthentication,
@@ -128,39 +159,24 @@ EventRouter.get(
  *                - address[country]
  *                - category
  *     responses:
- *       '201':
+ *       201:
  *         description: Event created successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/IEvent'
- *       '400':
+ *       400:
  *         description: Bad request, validation error
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       msg:
- *                         type: string
- *                       param:
- *                         type: string
- *                       value:
- *                         type: string
- *       '500':
+ *             example:
+ *               error: Bad request, validation error
+ *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 Error:
- *                   type: string
+ *             example:
+ *               error: Creating new event failed
  */
 
 EventRouter.post(
@@ -225,7 +241,62 @@ EventRouter.post(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/events/{eventid}/join:
+ *   post:
+ *     summary: "Join an event"
+ *     deprecated: false
+ *     description: "The User can join event"
+ *     tags:
+ *       - "Event"
+ *     parameters:
+ *       - name: "eventid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the event to join"
+ *     responses:
+ *       "200":
+ *         description: "User joined the event successfully"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "409":
+ *         description: "User is already participating in the event"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "User is already participating in the event."
+ *       "404":
+ *         description: "Not Found - Invalid userID"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "No user or event with this ID exists."
+ *       "500":
+ *         description: "Joining event failed"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Joining event failed"
+ *     security:
+ *       - bearerAuth: []
+ */
 EventRouter.post(
   "/:eventid/join",
   requiresAuthentication,
@@ -247,7 +318,52 @@ EventRouter.post(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/events/{eventid}/cancel:
+ *   delete:
+ *     summary: "Cancel participating in event"
+ *     deprecated: false
+ *     description: "Canceling of participating in event"
+ *     tags:
+ *       - "Event"
+ *     parameters:
+ *       - name: "eventid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the event to cancel participating in"
+ *     responses:
+ *       "204":
+ *         description: "User canceled the participating in the event successfully"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "409":
+ *         description: "User is not participating in the event or Can not cancel participation as event manager"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "User is not participating in the event or Can not cancel participation as event manager"
+ *       "500":
+ *         description: "Canceling event failed"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Canceling event failed"
+ *     security:
+ *       - bearerAuth: []
+ */
 EventRouter.delete(
   "/:eventid/cancel",
   requiresAuthentication,
@@ -268,7 +384,41 @@ EventRouter.delete(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/events/joined:
+ *   get:
+ *     summary: "Get all joined events"
+ *     deprecated: false
+ *     description: "Retrieve all participated events ( Event participant )"
+ *     tags:
+ *       - "Event"
+ *     responses:
+ *       '200':
+ *         description: Returns all joined events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 events:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/IEvent'
+ *       '204':
+ *         description: No events found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '404':
+ *         description: Not found
+ *     security:
+ *       - bearerAuth: []
+ */
 EventRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
   try {
     const events: eventsResource = await eventService.getJoinedEvents(
@@ -283,7 +433,36 @@ EventRouter.get("/joined", requiresAuthentication, async (req, res, next) => {
     next(err);
   }
 });
-
+/**
+ * @swagger
+ * /api/events/{eventid}/participants:
+ *   get:
+ *     summary: "Retrieve all participants in event"
+ *     deprecated: false
+ *     description: "Retrieve a list of all participants in event"
+ *     tags:
+ *       - "Event"
+ *     parameters:
+ *       - name: "eventid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the event to cancel participating in"
+ *     responses:
+ *       200:
+ *         description: "Successful response"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "array"
+ *               items:
+ *                 type: "string"
+ *                 description: "User ID of a participant"
+ *       404:
+ *         description: "Event not found or no participants found for the specified event"
+ *       500:
+ *         description: "Internal server error"
+ */
 EventRouter.get(
   "/:eventid/participants",
   requiresAuthentication,
@@ -301,7 +480,37 @@ EventRouter.get(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/events/{eventid}:
+ *   get:
+ *     summary: "Retrieve information of an event"
+ *     deprecated: false
+ *     description: "Retrieve all data of Event with eventid"
+ *     tags:
+ *       - "Event"
+ *     parameters:
+ *       - name: "eventid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the event to retrieve the event data"
+ *     responses:
+ *       200:
+ *         description: "Successful response"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *               $ref: '#/components/schemas/IEvent'
+ *       400:
+ *         description: "Validation error"
+ *       404:
+ *         description: "Event not found for the specified event"
+ *       500:
+ *         description: "Internal server error"
+ */
 EventRouter.get(
   "/:eventid",
   optionalAuthentication,
@@ -355,7 +564,36 @@ EventRouter.put(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/events/{eventid}:
+ *   delete:
+ *     summary: "Delete event"
+ *     deprecated: false
+ *     description: "Deleting event with eventID as an event manager or admin"
+ *     tags:
+ *       - "Event"
+ *     parameters:
+ *       - name: "eventid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the event to delete"
+ *     responses:
+ *       "204":
+ *         description: "Event successfully deleted"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "405":
+ *         description: "Event could not be deleted"
+ *       "404":
+ *         description: "Event not found"
+ *     security:
+ *       - bearerAuth: []
+ */
 EventRouter.delete(
   "/:eventid",
   requiresAuthentication,
@@ -379,7 +617,49 @@ EventRouter.delete(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/events/creator/{userid}:
+ *   get:
+ *     summary: Get all created events of a user
+ *     deprecated: false
+ *     description: "Retrieve all events created by a user where the user is an admin or retrieve events associated with the authenticated user."
+ *     tags:
+ *       - Event
+ *     parameters:
+ *       - name: "userid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the user"
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Returns all created events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 events:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/IEvent'
+ *       '204':
+ *         description: No events found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '403':
+ *         description: Invalid authorization
+ *       '404':
+ *         description: Not found
+ */
 EventRouter.get(
   "/creator/:userid",
   requiresAuthentication,
@@ -423,7 +703,7 @@ EventRouter.get(
  *                 events:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/EventsResource'
+ *                     $ref: '#/components/schemas/IEvent'
  *       '204':
  *         description: No events found
  *         content:

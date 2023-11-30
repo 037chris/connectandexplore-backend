@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../../database/db");
 const server_1 = __importDefault(require("../../server"));
+//import { req } from "../jest.setup";
 const UserModel_1 = require("../../src/model/UserModel");
 const UserService_1 = require("../../src/services/UserService");
 const supertest_1 = __importDefault(require("supertest"));
@@ -74,7 +75,9 @@ describe("userRoute test", () => {
         token = janeLoginResource.access_token;
     });
     afterEach(async () => await (0, db_1.clearDatabase)());
-    afterAll(async () => await (0, db_1.closeDatabase)());
+    afterAll(async () => {
+        await (0, db_1.closeDatabase)(); // Perform final cleanup after all tests
+    });
     test("getUsers", async () => {
         //const req = request(app);
         const response = await req

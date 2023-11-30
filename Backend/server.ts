@@ -6,7 +6,8 @@ const key = fs.readFileSync("./certificates/key.pem");
 const cert = fs.readFileSync("./certificates/cert.pem");
 import { connect } from "./database/db";
 import createAdminUser from "./src/utils/CreateAdminUser";
-const https = require("https");
+import https from "https";
+let server: https.Server | null = null;
 const http = require("http");
 import swaggerDocs from "./src/utils/swagger";
 import UserRoute from "./src/routes/UserRoute";
@@ -45,7 +46,7 @@ connect()
   .then(async () => {
     // Create admin user after connecting to the database
     await createAdminUser();
-    const server = https.createServer({ key, cert }, app);
+    let server = https.createServer({ key, cert }, app);
     server.listen(443, () => {
       console.log("Listening on port 443");
     });

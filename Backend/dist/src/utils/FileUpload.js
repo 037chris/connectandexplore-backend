@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.upload = exports.deleteProfilePicture = void 0;
+exports.upload = exports.deleteEventThumbnail = exports.deleteProfilePicture = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
@@ -32,14 +32,23 @@ function deleteProfilePicture(filename) {
     try {
         const filePath = path_1.default.join(__dirname, filename);
         fs_1.default.unlinkSync(filePath);
-        console.log(`Deleted profile picture: ${filename}`);
     }
     catch (error) {
-        console.error(`Error deleting profile picture: ${filename}`, error);
         throw error;
     }
 }
 exports.deleteProfilePicture = deleteProfilePicture;
+function deleteEventThumbnail(filename) {
+    /* try {
+      const filePath = path.join(__dirname, filename);
+      fs.unlinkSync(filePath);
+      console.log(`Deleted event thumbnail: ${filename}`);
+    } catch (error) {
+      console.error(`Error deleting event thumbnail: ${filename}`, error);
+      throw error;
+    } */
+}
+exports.deleteEventThumbnail = deleteEventThumbnail;
 // file size : 10 MB limit
 exports.upload = (0, multer_1.default)({
     storage: storage,

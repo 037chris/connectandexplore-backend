@@ -1,5 +1,6 @@
 import { clearDatabase, closeDatabase, connect } from "../../database/db";
 import app from "../../server";
+//import { req } from "../jest.setup";
 import { IAddress, User } from "../../src/model/UserModel";
 import {
   LoginResource,
@@ -8,7 +9,6 @@ import {
 } from "../../src/Resources";
 import { UserService } from "../../src/services/UserService";
 import request from "supertest";
-
 const a: IAddress = {
   street: "Street",
   houseNumber: "1",
@@ -78,7 +78,9 @@ describe("userRoute test", () => {
     token = janeLoginResource.access_token;
   });
   afterEach(async () => await clearDatabase());
-  afterAll(async () => await closeDatabase());
+  afterAll(async () => {
+    await closeDatabase(); // Perform final cleanup after all tests
+  });
 
   test("getUsers", async () => {
     //const req = request(app);

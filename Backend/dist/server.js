@@ -11,7 +11,8 @@ const key = fs.readFileSync("./certificates/key.pem");
 const cert = fs.readFileSync("./certificates/cert.pem");
 const db_1 = require("./database/db");
 const CreateAdminUser_1 = __importDefault(require("./src/utils/CreateAdminUser"));
-const https = require("https");
+const https_1 = __importDefault(require("https"));
+let server = null;
 const http = require("http");
 const swagger_1 = __importDefault(require("./src/utils/swagger"));
 const UserRoute_1 = __importDefault(require("./src/routes/UserRoute"));
@@ -42,7 +43,7 @@ app.use((req, res, next) => {
     .then(async () => {
     // Create admin user after connecting to the database
     await (0, CreateAdminUser_1.default)();
-    const server = https.createServer({ key, cert }, app);
+    let server = https_1.default.createServer({ key, cert }, app);
     server.listen(443, () => {
         console.log("Listening on port 443");
     });

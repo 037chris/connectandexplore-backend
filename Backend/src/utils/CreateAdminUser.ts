@@ -29,7 +29,6 @@ const createAdminUser = async () => {
 
   try {
     const user = await User.create(u);
-    console.log("Admin user created:");
   } catch (error) {
     console.error("Error creating admin user:", error);
   }

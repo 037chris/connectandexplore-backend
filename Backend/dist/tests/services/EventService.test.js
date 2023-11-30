@@ -250,18 +250,18 @@ describe("EventService Tests", () => {
         expect(result.participants).toHaveLength(2);
         // invalid/no id
         const id = NON_EXISTING_ID;
-        expect(await eventService.joinEvent(user1.id, id)).toBeFalsy();
-        expect(await eventService.joinEvent(id, event1.id)).toBeFalsy();
+        await expect(eventService.joinEvent(user1.id, id)).rejects.toThrow("Event not found");
+        await expect(eventService.joinEvent(id, event1.id)).rejects.toThrow("User not found");
         result = await eventService.getEvent(event1.id);
-        expect(result.participants).toHaveLength(2);
-        expect(await eventService.joinEvent(undefined, undefined)).toBeFalsy();
+        await expect(result.participants).toHaveLength(2);
+        await expect(eventService.joinEvent(undefined, undefined)).rejects.toThrow();
         // user already participating
-        expect(await eventService.joinEvent(user1.id, event2.id)).toBeFalsy();
-        expect(await eventService.joinEvent(user1.id, event1.id)).toBeFalsy();
+        await expect(eventService.joinEvent(user1.id, event2.id)).rejects.toThrow("User is already participating in the event");
+        await expect(eventService.joinEvent(user1.id, event1.id)).rejects.toThrow("User is already participating in the event");
         result = await eventService.getEvent(event2.id);
         expect(result.participants).toHaveLength(2);
-        expect(await eventService.joinEvent(user2.id, event1.id)).toBeFalsy();
-        expect(await eventService.joinEvent(user2.id, event2.id)).toBeFalsy();
+        await expect(eventService.joinEvent(user2.id, event1.id)).rejects.toThrow("User is already participating in the event");
+        await expect(eventService.joinEvent(user2.id, event2.id)).rejects.toThrow("User is already participating in the event");
         result = await eventService.getEvent(event1.id);
         expect(result.participants).toHaveLength(2);
     });
@@ -293,17 +293,17 @@ describe("EventService Tests", () => {
         expect(result.participants).toHaveLength(2);
         // invalid/no id
         const id = NON_EXISTING_ID;
-        expect(await eventService.cancelEvent(user1.id, id)).toBeFalsy();
-        expect(await eventService.cancelEvent(id, event1.id)).toBeFalsy();
-        expect(await eventService.cancelEvent(undefined, undefined)).toBeFalsy();
+        await expect(eventService.cancelEvent(user1.id, id)).rejects.toThrow("Event not found");
+        await expect(eventService.cancelEvent(id, event1.id)).rejects.toThrow();
+        await expect(eventService.cancelEvent(undefined, undefined)).rejects.toThrow();
         // user not participating
-        expect(await eventService.cancelEvent(user3.id, event2.id)).toBeFalsy();
-        // successful cancel
+        await expect(eventService.cancelEvent(user3.id, event2.id)).rejects.toThrow("User is not participating in the event");
+        // cancel participation works correctly
         expect(await eventService.cancelEvent(user1.id, event2.id)).toBeTruthy();
         result = await eventService.getEvent(event2.id);
         expect(result.participants).toHaveLength(1);
         // cancel participation as event creator should not work
-        expect(await eventService.cancelEvent(user1.id, event1.id)).toBeFalsy();
+        await expect(eventService.cancelEvent(user1.id, event1.id)).rejects.toThrow("Can not cancel participation as event manager");
         result = await eventService.getEvent(event1.id);
         expect(result.participants).toHaveLength(1);
         expect(result.creator).toBe(user1.id);

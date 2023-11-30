@@ -1,4 +1,5 @@
 import request from "supertest";
+//import { req } from "../jest.setup";
 import { connect, closeDatabase, clearDatabase } from "../../database/db";
 import {
   LoginResource,
@@ -177,7 +178,10 @@ describe("EventRoute Tests", () => {
     uToken = uLoginResource.access_token;
   });
   afterEach(async () => await clearDatabase());
-  afterAll(async () => await closeDatabase());
+  afterAll(async () => {
+    //closeServer(); // Close the server after all tests
+    await closeDatabase(); // Perform final cleanup after all tests
+  });
 
   test("create event route", async () => {
     let res = await req

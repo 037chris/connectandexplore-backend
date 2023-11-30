@@ -10,5 +10,6 @@ module.exports = {
       tsconfig: "tsconfig.json",
     },
   },
-  detectOpenHandles:true,
+  detectOpenHandles: true,
+  //setupFilesAfterEnv: ["./tests/jest.setup.ts"],
 };

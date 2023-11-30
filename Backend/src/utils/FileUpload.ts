@@ -28,9 +28,7 @@ export function deleteProfilePicture(filename: string): void {
   try {
     const filePath = path.join(__dirname, filename);
     fs.unlinkSync(filePath);
-    console.log(`Deleted profile picture: ${filename}`);
   } catch (error) {
-    console.error(`Error deleting profile picture: ${filename}`, error);
     throw error;
   }
 }

@@ -28,7 +28,6 @@ const createAdminUser = async () => {
     };
     try {
         const user = await UserModel_1.User.create(u);
-        console.log("Admin user created:");
     }
     catch (error) {
         console.error("Error creating admin user:", error);
