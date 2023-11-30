@@ -11,6 +11,7 @@ import {
 import { EventService } from "../../src/services/EventService";
 import app from "../../server";
 import { UserService } from "../../src/services/UserService";
+import mongoose from "mongoose";
 
 const a: addressResource = {
   street: "Street",
@@ -180,7 +181,7 @@ describe("EventRoute Tests", () => {
   afterEach(async () => await clearDatabase());
   afterAll(async () => {
     //closeServer(); // Close the server after all tests
-    await closeDatabase(); // Perform final cleanup after all tests
+    await mongoose.connection.close(); // Perform final cleanup after all tests
   });
 
   test("create event route", async () => {
