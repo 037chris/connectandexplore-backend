@@ -45,9 +45,11 @@ connect()
     // Create admin user after connecting to the database
     await createAdminUser();
     let server = https.createServer({ key, cert }, app);
-    server.listen(port, () => {
-      console.log("Listening on port 443");
-    });
+    if (process.env.NODE_ENV !== "test") {
+      server.listen(port, () => {
+        console.log("Listening on port 443");
+      });
+    }
   })
   .catch((err) => {
     console.error("Failed to connect to the database:", err);
