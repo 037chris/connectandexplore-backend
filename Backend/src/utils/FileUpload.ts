@@ -60,12 +60,14 @@ export function deleteProfilePicture(filePath: string): void {
 }
 
 export function deleteEventThumbnail(filePath: string): void {
+  /** 
   try {
     const fullPath = path.join(__dirname, "../../Backend", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
     fs.unlinkSync(fullPath);
   } catch (error) {
     throw error;
   }
+  */
 }
 
 // file size : 10 MB limit
