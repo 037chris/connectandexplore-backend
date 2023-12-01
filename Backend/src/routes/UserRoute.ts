@@ -156,7 +156,7 @@ UserRouter.post(
         return res.status(400).json({ errors: errors.array() });
       } else {
         if (req.file) {
-          req.body.profilePicture = `/uploads/${req.file.filename}`;
+          req.body.profilePicture = `/uploads/users/${req.file.filename}`;
         }
         const newUser = await userService.registerUser(req.body);
         return res.status(201).json(newUser);
@@ -168,7 +168,7 @@ UserRouter.post(
         return res.status(500).json({ Error: "Registration failed" });
       }
     }
-  },
+  }
 );
 /**
  * @swagger
@@ -238,7 +238,7 @@ UserRouter.get(
         next(err);
       }
     }
-  },
+  }
 );
 /**
  * @swagger
@@ -384,7 +384,7 @@ UserRouter.put(
 
           const updatedUser = await userService.updateUserWithPw(
             userResource,
-            oldPw,
+            oldPw
           );
           res.status(200).send(updatedUser);
         } catch (err) {
@@ -393,7 +393,7 @@ UserRouter.put(
         }
       }
     }
-  },
+  }
 );
 /**
  * @swagger
@@ -486,6 +486,6 @@ UserRouter.delete(
       res.send(404);
       next(new Error("Probably invalid userid, can not delete user."));
     }
-  },
+  }
 );
 export default UserRouter;
