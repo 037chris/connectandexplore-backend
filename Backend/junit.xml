@@ -1,238 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="53" failures="3" errors="0" time="67.362">
-  <testsuite name="EventRoute Tests" errors="0" failures="0" skipped="0" timestamp="2023-12-01T11:45:52" time="21.741" tests="11">
-    <testcase classname="EventRoute Tests create event route" name="EventRoute Tests create event route" time="1.444">
+<testsuites name="jest tests" tests="53" failures="0" errors="0" time="58.198">
+  <testsuite name="EventRoute Tests" errors="0" failures="0" skipped="0" timestamp="2023-12-01T12:44:50" time="26.29" tests="11">
+    <testcase classname="EventRoute Tests create event route" name="EventRoute Tests create event route" time="1.638">
     </testcase>
-    <testcase classname="EventRoute Tests get event route" name="EventRoute Tests get event route" time="1.023">
+    <testcase classname="EventRoute Tests get event route" name="EventRoute Tests get event route" time="1.009">
     </testcase>
-    <testcase classname="EventRoute Tests join event route" name="EventRoute Tests join event route" time="0.987">
+    <testcase classname="EventRoute Tests join event route" name="EventRoute Tests join event route" time="1.035">
     </testcase>
-    <testcase classname="EventRoute Tests cancel event participation route" name="EventRoute Tests cancel event participation route" time="0.947">
+    <testcase classname="EventRoute Tests cancel event participation route" name="EventRoute Tests cancel event participation route" time="1.08">
     </testcase>
-    <testcase classname="EventRoute Tests get participants of event route" name="EventRoute Tests get participants of event route" time="0.969">
+    <testcase classname="EventRoute Tests get participants of event route" name="EventRoute Tests get participants of event route" time="1.01">
     </testcase>
-    <testcase classname="EventRoute Tests get created events route" name="EventRoute Tests get created events route" time="0.942">
+    <testcase classname="EventRoute Tests get created events route" name="EventRoute Tests get created events route" time="1.127">
     </testcase>
-    <testcase classname="EventRoute Tests get joined events route" name="EventRoute Tests get joined events route" time="1.007">
+    <testcase classname="EventRoute Tests get joined events route" name="EventRoute Tests get joined events route" time="1.086">
     </testcase>
-    <testcase classname="EventRoute Tests get all events route" name="EventRoute Tests get all events route" time="0.833">
+    <testcase classname="EventRoute Tests get all events route" name="EventRoute Tests get all events route" time="0.962">
     </testcase>
-    <testcase classname="EventRoute Tests search events route" name="EventRoute Tests search events route" time="0.985">
+    <testcase classname="EventRoute Tests search events route" name="EventRoute Tests search events route" time="1.124">
     </testcase>
-    <testcase classname="EventRoute Tests delete event route" name="EventRoute Tests delete event route" time="1.049">
+    <testcase classname="EventRoute Tests delete event route" name="EventRoute Tests delete event route" time="1.12">
     </testcase>
-    <testcase classname="EventRoute Tests update event route" name="EventRoute Tests update event route" time="1.051">
-    </testcase>
-  </testsuite>
-  <testsuite name="userRoute test" errors="0" failures="0" skipped="0" timestamp="2023-12-01T11:46:14" time="10.653" tests="14">
-    <testcase classname="userRoute test getUsers" name="userRoute test getUsers" time="0.874">
-    </testcase>
-    <testcase classname="userRoute test getUsers fails on request by non-admin" name="userRoute test getUsers fails on request by non-admin" time="0.567">
-    </testcase>
-    <testcase classname="userRoute test get User request responses with 404 on invalid userID" name="userRoute test get User request responses with 404 on invalid userID" time="0.545">
-    </testcase>
-    <testcase classname="userRoute test get User request responses with 400 on undefined userID" name="userRoute test get User request responses with 400 on undefined userID" time="0.57">
-    </testcase>
-    <testcase classname="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" name="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" time="0.588">
-    </testcase>
-    <testcase classname="userRoute test put user successfully updates user in db and returns updated user information" name="userRoute test put user successfully updates user in db and returns updated user information" time="0.596">
-    </testcase>
-    <testcase classname="userRoute test should return error on updating email to duplicate email" name="userRoute test should return error on updating email to duplicate email" time="0.517">
-    </testcase>
-    <testcase classname="userRoute test should return error on trying to update other users as non-admin" name="userRoute test should return error on trying to update other users as non-admin" time="0.537">
-    </testcase>
-    <testcase classname="userRoute test testing for validation errors on put user route" name="userRoute test testing for validation errors on put user route" time="0.513">
-    </testcase>
-    <testcase classname="userRoute test put user with invalid old password returns error" name="userRoute test put user with invalid old password returns error" time="0.759">
-    </testcase>
-    <testcase classname="userRoute test should allow an admin to delete any user" name="userRoute test should allow an admin to delete any user" time="0.575">
-    </testcase>
-    <testcase classname="userRoute test should allow a user to inactivate their own account" name="userRoute test should allow a user to inactivate their own account" time="0.542">
-    </testcase>
-    <testcase classname="userRoute test should prevent a non-admin user from deleting another user" name="userRoute test should prevent a non-admin user from deleting another user" time="0.579">
-    </testcase>
-    <testcase classname="userRoute test should return an error for an invalid user ID" name="userRoute test should return an error for an invalid user ID" time="0.538">
+    <testcase classname="EventRoute Tests update event route" name="EventRoute Tests update event route" time="1.179">
     </testcase>
   </testsuite>
-  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-12-01T11:46:25" time="6.857" tests="11">
-    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.366">
+  <testsuite name="userRoute test" errors="0" failures="0" skipped="0" timestamp="2023-12-01T12:45:16" time="12.966" tests="14">
+    <testcase classname="userRoute test getUsers" name="userRoute test getUsers" time="1.005">
     </testcase>
-    <testcase classname="EventService Tests get event" name="EventService Tests get event" time="0.245">
+    <testcase classname="userRoute test getUsers fails on request by non-admin" name="userRoute test getUsers fails on request by non-admin" time="0.659">
     </testcase>
-    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.352">
+    <testcase classname="userRoute test get User request responses with 404 on invalid userID" name="userRoute test get User request responses with 404 on invalid userID" time="0.634">
     </testcase>
-    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.362">
+    <testcase classname="userRoute test get User request responses with 400 on undefined userID" name="userRoute test get User request responses with 400 on undefined userID" time="0.562">
     </testcase>
-    <testcase classname="EventService Tests search events" name="EventService Tests search events" time="0.457">
+    <testcase classname="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" name="userRoute test get User returns any user when performed by an admin and returns user when performed by non-admin" time="0.91">
     </testcase>
-    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.475">
+    <testcase classname="userRoute test put user successfully updates user in db and returns updated user information" name="userRoute test put user successfully updates user in db and returns updated user information" time="0.787">
     </testcase>
-    <testcase classname="EventService Tests get joined events" name="EventService Tests get joined events" time="0.545">
+    <testcase classname="userRoute test should return error on updating email to duplicate email" name="userRoute test should return error on updating email to duplicate email" time="0.745">
     </testcase>
-    <testcase classname="EventService Tests cancel event" name="EventService Tests cancel event" time="0.566">
+    <testcase classname="userRoute test should return error on trying to update other users as non-admin" name="userRoute test should return error on trying to update other users as non-admin" time="0.654">
     </testcase>
-    <testcase classname="EventService Tests get participants of event" name="EventService Tests get participants of event" time="0.635">
+    <testcase classname="userRoute test testing for validation errors on put user route" name="userRoute test testing for validation errors on put user route" time="0.642">
     </testcase>
-    <testcase classname="EventService Tests delete event" name="EventService Tests delete event" time="0.556">
+    <testcase classname="userRoute test put user with invalid old password returns error" name="userRoute test put user with invalid old password returns error" time="0.897">
     </testcase>
-    <testcase classname="EventService Tests update event" name="EventService Tests update event" time="0.571">
+    <testcase classname="userRoute test should allow an admin to delete any user" name="userRoute test should allow an admin to delete any user" time="0.609">
     </testcase>
-  </testsuite>
-  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-12-01T11:46:32" time="4.689" tests="11">
-    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.429">
+    <testcase classname="userRoute test should allow a user to inactivate their own account" name="userRoute test should allow a user to inactivate their own account" time="0.649">
     </testcase>
-    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.292">
+    <testcase classname="userRoute test should prevent a non-admin user from deleting another user" name="userRoute test should prevent a non-admin user from deleting another user" time="0.64">
     </testcase>
-    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.276">
-    </testcase>
-    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.272">
-    </testcase>
-    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.267">
-    </testcase>
-    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.571">
-    </testcase>
-    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.136">
-    </testcase>
-    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.262">
-    </testcase>
-    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.154">
-    </testcase>
-    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.157">
-    </testcase>
-    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.15">
+    <testcase classname="userRoute test should return an error for an invalid user ID" name="userRoute test should return an error for an invalid user ID" time="0.662">
     </testcase>
   </testsuite>
-  <testsuite name="userModel test" errors="0" failures="3" skipped="0" timestamp="2023-12-01T11:46:36" time="20.797" tests="3">
-    <testcase classname="userModel test create User" name="userModel test create User" time="5.009">
-      <failure>Error: listen EACCES: permission denied 0.0.0.0:58792
-    at Server.setupListenHandle [as _listen2] (node:net:1313:21)
-    at listenInCluster (node:net:1378:12)
-    at Server.listen (node:net:1465:7)
-    at C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:118:12
-    at new Promise (&lt;anonymous&gt;)
-    at tryPort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:103:10)
-    at getFreePort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:74:15)
-    at MongoMemoryServer.getNewPort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:348:38)
-    at MongoMemoryServer.getStartOptions (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:377:25)
-    at MongoMemoryServer._startUpInstance (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:478:60)
-    at MongoMemoryServer.start (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:297:16)
-    at Function.create (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:264:20)
-    at connect (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\database\db.ts:8:36)
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:31:38)
-    at Promise.then.completed (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusHook (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:281:40)
-    at _runTestsForDescribeBlock (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:95:7)
-    at _runTestsForDescribeBlock (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:32:3
-    at _dispatchDescribe (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\index.js:55:5)
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:30:1)
-    at Runtime._execModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:1439:24)
-    at Runtime._loadModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:1022:12)
-    at Runtime.requireModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:882:12)
-    at jestAdapter (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
-    at runTestInternal (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+  <testsuite name="EventService Tests" errors="0" failures="0" skipped="0" timestamp="2023-12-01T12:45:29" time="7.824" tests="11">
+    <testcase classname="EventService Tests create event" name="EventService Tests create event" time="0.373">
     </testcase>
-    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="5.015">
-      <failure>Error: listen EACCES: permission denied 0.0.0.0:58792
-    at Server.setupListenHandle [as _listen2] (node:net:1313:21)
-    at listenInCluster (node:net:1378:12)
-    at Server.listen (node:net:1465:7)
-    at C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:118:12
-    at new Promise (&lt;anonymous&gt;)
-    at tryPort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:103:10)
-    at getFreePort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:74:15)
-    at MongoMemoryServer.getNewPort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:348:38)
-    at MongoMemoryServer.getStartOptions (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:377:25)
-    at MongoMemoryServer._startUpInstance (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:478:60)
-    at MongoMemoryServer.start (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:297:16)
-    at Function.create (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:264:20)
-    at connect (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\database\db.ts:8:36)
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:31:38)
-    at Promise.then.completed (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusHook (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:281:40)
-    at _runTestsForDescribeBlock (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:95:7)
-    at _runTestsForDescribeBlock (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:32:3
-    at _dispatchDescribe (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\index.js:55:5)
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:30:1)
-    at Runtime._execModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:1439:24)
-    at Runtime._loadModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:1022:12)
-    at Runtime.requireModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:882:12)
-    at jestAdapter (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
-    at runTestInternal (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    <testcase classname="EventService Tests get event" name="EventService Tests get event" time="0.252">
     </testcase>
-    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="5.011">
-      <failure>Error: listen EACCES: permission denied 0.0.0.0:58792
-    at Server.setupListenHandle [as _listen2] (node:net:1313:21)
-    at listenInCluster (node:net:1378:12)
-    at Server.listen (node:net:1465:7)
-    at C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:118:12
-    at new Promise (&lt;anonymous&gt;)
-    at tryPort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:103:10)
-    at getFreePort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\util\getport\index.ts:74:15)
-    at MongoMemoryServer.getNewPort (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:348:38)
-    at MongoMemoryServer.getStartOptions (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:377:25)
-    at MongoMemoryServer._startUpInstance (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:478:60)
-    at MongoMemoryServer.start (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:297:16)
-    at Function.create (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\mongodb-memory-server-core\src\MongoMemoryServer.ts:264:20)
-    at connect (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\database\db.ts:8:36)
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:31:38)
-    at Promise.then.completed (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusHook (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:281:40)
-    at _runTestsForDescribeBlock (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:95:7)
-    at _runTestsForDescribeBlock (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a hook.
-Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:32:3
-    at _dispatchDescribe (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\index.js:55:5)
-    at Object.&lt;anonymous&gt; (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\tests\model\UserModel.test.ts:30:1)
-    at Runtime._execModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:1439:24)
-    at Runtime._loadModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:1022:12)
-    at Runtime.requireModule (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runtime\build\index.js:882:12)
-    at jestAdapter (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
-    at runTestInternal (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\naceu\OneDrive\Desktop\Studium\5 Semester\Projekt\connectandexplore\Backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    <testcase classname="EventService Tests get created events" name="EventService Tests get created events" time="0.395">
     </testcase>
-    <testcase classname=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." name=" Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
-      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;Error: thrown: \&quot;Exceeded timeout of 5000 ms for a hook.\nAdd a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.\&quot;\n    at C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\tests\\model\\UserModel.test.ts:33:3\n    at _dispatchDescribe (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-circus\\build\\index.js:91:26)\n    at describe (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-circus\\build\\index.js:55:5)\n    at Object.&lt;anonymous&gt; (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\tests\\model\\UserModel.test.ts:30:1)\n    at Runtime._execModule (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-runtime\\build\\index.js:1439:24)\n    at Runtime._loadModule (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-runtime\\build\\index.js:1022:12)\n    at Runtime.requireModule (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-runtime\\build\\index.js:882:12)\n    at jestAdapter (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapter.js:77:13)\n    at runTestInternal (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-runner\\build\\runTest.js:367:16)\n    at runTest (C:\\Users\\naceu\\OneDrive\\Desktop\\Studium\\5 Semester\\Projekt\\connectandexplore\\Backend\\node_modules\\jest-runner\\build\\runTest.js:444:34)&quot;}</failure>
+    <testcase classname="EventService Tests get all events" name="EventService Tests get all events" time="0.431">
+    </testcase>
+    <testcase classname="EventService Tests search events" name="EventService Tests search events" time="0.479">
+    </testcase>
+    <testcase classname="EventService Tests join event" name="EventService Tests join event" time="0.593">
+    </testcase>
+    <testcase classname="EventService Tests get joined events" name="EventService Tests get joined events" time="0.511">
+    </testcase>
+    <testcase classname="EventService Tests cancel event" name="EventService Tests cancel event" time="0.59">
+    </testcase>
+    <testcase classname="EventService Tests get participants of event" name="EventService Tests get participants of event" time="0.757">
+    </testcase>
+    <testcase classname="EventService Tests delete event" name="EventService Tests delete event" time="0.714">
+    </testcase>
+    <testcase classname="EventService Tests update event" name="EventService Tests update event" time="0.637">
     </testcase>
   </testsuite>
-  <testsuite name="Event Model Tests" errors="0" failures="0" skipped="0" timestamp="2023-12-01T11:46:57" time="2.026" tests="3">
-    <testcase classname="Event Model Tests create event" name="Event Model Tests create event" time="0.141">
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-12-01T12:45:37" time="3.138" tests="3">
+    <testcase classname="userModel test create User" name="userModel test create User" time="0.355">
     </testcase>
-    <testcase classname="Event Model Tests empty eventdata" name="Event Model Tests empty eventdata" time="0.029">
+    <testcase classname="userModel test updated user password middleware" name="userModel test updated user password middleware" time="0.428">
     </testcase>
-    <testcase classname="Event Model Tests negative price" name="Event Model Tests negative price" time="0.038">
+    <testcase classname="userModel test rejects on duplicate email" name="userModel test rejects on duplicate email" time="0.36">
+    </testcase>
+  </testsuite>
+  <testsuite name="userModel test" errors="0" failures="0" skipped="0" timestamp="2023-12-01T12:45:41" time="5.323" tests="11">
+    <testcase classname="userModel test createUser function" name="userModel test createUser function" time="0.436">
+    </testcase>
+    <testcase classname="userModel test getUser works and returns user without password" name="userModel test getUser works and returns user without password" time="0.359">
+    </testcase>
+    <testcase classname="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." name="userModel test get all users also returns inactive users, getUser(userID) throws error at inactive user." time="0.453">
+    </testcase>
+    <testcase classname="userModel test updateUserWithAdmin user update validations" name="userModel test updateUserWithAdmin user update validations" time="0.342">
+    </testcase>
+    <testcase classname="userModel test updateUserWithAdmin duplicate email check" name="userModel test updateUserWithAdmin duplicate email check" time="0.278">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw update with old password to update password" name="userModel test updateUserWithPw update with old password to update password" time="0.614">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw throws errors on invalid userdata" name="userModel test updateUserWithPw throws errors on invalid userdata" time="0.155">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw duplicate email check" name="userModel test updateUserWithPw duplicate email check" time="0.293">
+    </testcase>
+    <testcase classname="userModel test updateUserWithPw can not change isActive status of user" name="userModel test updateUserWithPw can not change isActive status of user" time="0.177">
+    </testcase>
+    <testcase classname="userModel test deleteUser deletes user from database (when performed by an admin)" name="userModel test deleteUser deletes user from database (when performed by an admin)" time="0.174">
+    </testcase>
+    <testcase classname="userModel test deleteUser inactivates acc when inactivateAccount = true" name="userModel test deleteUser inactivates acc when inactivateAccount = true" time="0.188">
+    </testcase>
+  </testsuite>
+  <testsuite name="Event Model Tests" errors="0" failures="0" skipped="0" timestamp="2023-12-01T12:45:46" time="1.94" tests="3">
+    <testcase classname="Event Model Tests create event" name="Event Model Tests create event" time="0.169">
+    </testcase>
+    <testcase classname="Event Model Tests empty eventdata" name="Event Model Tests empty eventdata" time="0.035">
+    </testcase>
+    <testcase classname="Event Model Tests negative price" name="Event Model Tests negative price" time="0.037">
     </testcase>
   </testsuite>
 </testsuites>

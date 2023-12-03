@@ -1,9 +1,15 @@
-image: node:14
+image: docker:latest
+
+services:
+  - docker:19.03.12-dind
 
 before_script:
   - wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
   - dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
   - cd Backend
+default:
+  tags:
+    - deploy-me
 
 stages:
   - test
@@ -11,5 +17,5 @@ stages:
 tests:
   stage: test
   script:
-    - npm install
-    - npm test
+    - docker build -t connectandexplorebackend:latest -f Dockerfile.test .
+    - docker run connectandexplorebackend:latest
