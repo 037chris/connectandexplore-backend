@@ -8,7 +8,7 @@ before_script:
   - cd Backend
 default:
   tags:
-    - deploy-me
+    - docker-privileged
 
 stages:
   - test
