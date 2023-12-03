@@ -6,7 +6,7 @@ before_script:
   - cd Backend
 default:
   tags:
-    - docker-privileged
+    - docker
 
 stages:
   - test
