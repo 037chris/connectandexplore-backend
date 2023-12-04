@@ -1000,8 +1000,15 @@ const t="uploads",r=d.default.join(__dirname,"../../Backend");// Assuming 'FileU
 return"profilePicture"===e?d.default.join(r,t,"users"):"thumbnail"===e?d.default.join(r,t,"events"):d.default.join(r,t)}(t.fieldname);
 // Check if the folder exists, create it if it doesn't
 c.default.existsSync(i)||c.default.mkdirSync(i,{recursive:!0}),r(null,i)},filename:function(e,t,r){r(null,`${(0,u.v4)()}-${t.originalname}`)}});t.deleteProfilePicture=function(e){try{const t=d.default.join(__dirname,"../../Backend",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
-c.default.unlinkSync(t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){try{const t=d.default.join(__dirname,"../../Backend",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
-c.default.unlinkSync(t)}catch(e){throw e}},
+c.default.unlinkSync(t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){
+/**
+    try {
+      const fullPath = path.join(__dirname, "../../Backend", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
+      fs.unlinkSync(fullPath);
+    } catch (error) {
+      throw error;
+    }
+    */},
 // file size : 10 MB limit
 t.upload=(0,o.default)({storage:l,fileFilter:(e,t,r)=>{"image/jpg"===t.mimetype||"image/jpeg"===t.mimetype||"image/png"===t.mimetype?r(null,!0):r(new Error("Image uploaded is not of type jpg/jpeg or png"),!1)},limits:{fileSize:10485760}})},
 /***/448:
