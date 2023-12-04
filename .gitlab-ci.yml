@@ -1,22 +1,46 @@
-image: docker:20.10.12
-services:
-  - name: docker:20.10.12-dind
-
-before_script:
-  - cd Backend
+default:
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  before_script:
+    - cd Backend
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  
 default:
   tags:
     - docker-privileged
 variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: "tcp://docker:2375" # dind with TLS disabled
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
 stages:
   - build
   - test
-
+  - release
+  - deploy
+  
+build:
+  stage: build
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
 build-stage:
   stage: build
   script:
-    - docker build -t "${CI_REGISTRY_IMAGE}:latest-test" -f Dockerfile.test .
-    - docker run "${CI_REGISTRY_IMAGE}:latest-test"
+    - docker build --pull -t $CONTAINER_TEST_IMAGE -f Dockerfile.test .
+    - docker push $CONTAINER_TEST_IMAGE
+
+test-stage:
+  stage: test
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE
+
+release-stage:
+  stage: release
+  script:
+    - docker build --pull -t $CONTAINER_RELEASE_IMAGE -f Dockerfile.prod .
+    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker run $CONTAINER_RELEASE_IMAGE
