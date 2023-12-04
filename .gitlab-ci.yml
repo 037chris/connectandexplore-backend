@@ -29,11 +29,11 @@ build-stage:
 test-stage:
   stage: test
   script:
-    - retry=3
-    - while [ $retry -gt 0 ]; do
+    - |
+      retry=3
+      while [ $retry -gt 0 ]; do
         docker pull $CONTAINER_TEST_IMAGE &&
-        docker run $CONTAINER_TEST_IMAGE &&
-        break ||
+        docker run $CONTAINER_TEST_IMAGE && break ||
         ((retry--))
         sleep 5  # Introduce a delay between retries, e.g., 5 seconds
       done
