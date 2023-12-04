@@ -5,6 +5,9 @@ default:
       alias: docker
   before_script:
     - cd Backend
+    - echo "CI_REGISTRY_USER: $CI_REGISTRY_USER"
+    - echo "CI_REGISTRY_PASSWORD: $CI_REGISTRY_PASSWORD"
+    - echo "CI_REGISTRY: $CI_REGISTRY"
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   tags:
     - docker-privileged
