@@ -34,7 +34,7 @@ test-stage:
       while [ $retry -gt 0 ]; do
         docker pull $CONTAINER_TEST_IMAGE &&
         docker run $CONTAINER_TEST_IMAGE && break ||
-        ((retry--))
+        retry=$((retry-1))
         sleep 5  # Introduce a delay between retries, e.g., 5 seconds
       done
 
