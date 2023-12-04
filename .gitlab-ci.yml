@@ -12,10 +12,11 @@ variables:
   DOCKER_HOST: "tcp://docker:2375" # dind with TLS disabled
 
 stages:
+  - build
   - test
 
-tests:
-  stage: test
+build-stage:
+  stage: build
   script:
-    - docker build -t connectandexplorebackend:latest -f Dockerfile.test .
-    - docker run connectandexplorebackend:latest
+    - docker build -t "${CI_REGISTRY_IMAGE}:latest-test" -f Dockerfile.test .
+    - docker run "${CI_REGISTRY_IMAGE}:latest-test"
