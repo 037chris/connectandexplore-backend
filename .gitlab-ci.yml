@@ -29,8 +29,14 @@ build-stage:
 test-stage:
   stage: test
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker run $CONTAINER_TEST_IMAGE
+    - |
+      retry=3
+      while [ $retry -gt 0 ]; do
+        docker pull $CONTAINER_TEST_IMAGE &&
+        docker run $CONTAINER_TEST_IMAGE && break ||
+        retry=$((retry-1))
+        sleep 5  # Introduce a delay between retries, e.g., 5 seconds
+      done
 
 release-stage:
   stage: release
@@ -38,4 +44,5 @@ release-stage:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
+    #- docker run $CONTAINER_RELEASE_IMAGE
     #- docker run $CONTAINER_RELEASE_IMAGE
