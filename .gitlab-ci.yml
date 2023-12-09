@@ -41,8 +41,6 @@ test-stage:
 release-stage:
   stage: release
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker build --pull -t $CONTAINER_RELEASE_IMAGE -f Dockerfile.prod .
     - docker push $CONTAINER_RELEASE_IMAGE
-    #- docker run $CONTAINER_RELEASE_IMAGE
     #- docker run $CONTAINER_RELEASE_IMAGE
