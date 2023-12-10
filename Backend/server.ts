@@ -31,6 +31,10 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).send("Health Check: OK");
+});
 app.use("/api/users", UserRoute);
 app.use("/api", UsersRouter);
 app.use("/api/login", loginRouter);
