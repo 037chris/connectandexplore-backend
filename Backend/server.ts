@@ -14,7 +14,7 @@ import UsersRouter from "./src/routes/UsersRouter";
 import loginRouter from "./src/routes/login";
 import EventRouter from "./src/routes/EventRoute";
 const app: Express = express();
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 80;
 /* Routes */
 app.use("*", cors());
 
@@ -48,10 +48,11 @@ connect()
   .then(async () => {
     // Create admin user after connecting to the database
     await createAdminUser();
-    let server = https.createServer({ key, cert }, app);
+    //let server = https.createServer({ key, cert }, app);
+    let server = http.createServer(app);
     if (process.env.NODE_ENV !== "test") {
       server.listen(port, () => {
-        console.log("Listening on port 443");
+        console.log("Listening on port ", port);
       });
     }
   })
