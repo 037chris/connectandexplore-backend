@@ -3,7 +3,7 @@ import request from "supertest";
 import { connect, closeDatabase, clearDatabase } from "../../database/db";
 import {
   LoginResource,
-  addressResource,
+  addressEResource,
   categoryResource,
   eventResource,
   userResource,
@@ -13,7 +13,7 @@ import app from "../../server";
 import { UserService } from "../../src/services/UserService";
 import mongoose from "mongoose";
 
-const a: addressResource = {
+const a: addressEResource = {
   street: "Street",
   houseNumber: "1",
   postalCode: "12345",

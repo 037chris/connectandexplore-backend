@@ -21,13 +21,8 @@ export interface IUser {
 }
 
 export interface IAddress {
-  street: String;
-  houseNumber: String;
-  apartmentNumber?: String;
   postalCode: String;
   city: String;
-  stateOrRegion?: String;
-  country: String;
 }
 
 export enum userRole {
@@ -43,13 +38,8 @@ type UserModel = Model<IUser, {}, IUserMethods>;
  * Adressen werden später in das UserSchema eingefügt und als teil eines Users in mongoDB gespeichert
  */
 export const addressSchema = new Schema({
-  street: { type: String, required: true },
-  houseNumber: { type: String, required: true },
-  apartmentNumber: String,
   postalCode: { type: String, required: true },
   city: { type: String, required: true },
-  stateOrRegion: String,
-  country: { type: String, required: true },
 });
 
 const userSchema = new Schema<IUser, UserModel>({
@@ -89,7 +79,7 @@ userSchema.pre(
       const hashedPassword = await bcrypt.hash(update.password, 10);
       update.password = hashedPassword;
     }
-  },
+  }
 );
 
 userSchema.method(
@@ -97,7 +87,7 @@ userSchema.method(
   async function (password: string): Promise<boolean> {
     const isPW = await bcrypt.compare(password, this.password);
     return isPW;
-  },
+  }
 );
 
 export const User = model<IUser, UserModel>("User", userSchema);

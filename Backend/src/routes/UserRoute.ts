@@ -52,27 +52,12 @@ const userService = new UserService();
  *                gender:
  *                  type: string
  *                  example: "Male"
- *                address[street]:
- *                  type: string
- *                  example: "123 Test Street"
- *                address[houseNumber]:
- *                  type: string
- *                  example: "1"
- *                address[apartmentNumber]:
- *                  type: string
- *                  example: "123"
  *                address[postalCode]:
  *                  type: string
  *                  example: "12345"
  *                address[city]:
  *                  type: string
  *                  example: "Berlin"
- *                address[stateOrRegion]:
- *                  type: string
- *                  example: "Berlin"
- *                address[country]:
- *                  type: string
- *                  example: "DE"
  *              required:
  *                - email
  *                - password
@@ -80,11 +65,8 @@ const userService = new UserService();
  *                - birthDate
  *                - name[first]
  *                - name[last]
- *                - address[street]
- *                - address[houseNumber]
  *                - address[postalCode]
  *                - address[city]
- *                - address[country]
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -120,25 +102,10 @@ UserRouter.post(
       .withMessage("Last name is required."),
     body("password").isStrongPassword(),
     body("isAdministrator").optional().isBoolean(),
-    body("address.street")
-      .notEmpty()
-      .withMessage("Street address is required."),
-    body("address.houseNumber")
-      .notEmpty()
-      .withMessage("House number is required."),
     body("address.postalCode")
       .notEmpty()
       .withMessage("Postal code is required."),
     body("address.city").notEmpty().withMessage("City is required."),
-    body("address.country").notEmpty().withMessage("Country is required."),
-    body("address.stateOrRegion")
-      .optional()
-      .isString()
-      .withMessage("Invalid State or Region."),
-    body("address.apartmentNumber")
-      .optional()
-      .isString()
-      .withMessage("Invalid Apartment number."),
     body("profilePicture").optional().isString(),
     body("birthDate").isDate(),
     body("gender").isString().notEmpty(),
@@ -286,21 +253,12 @@ UserRouter.get(
  *               gender:
  *                 type: string
  *                 example: "Male"
- *               address[street]:
- *                 type: string
- *                 example: "123 Test Street"
- *               address[houseNumber]:
- *                 type: string
- *                 example: "1"
  *               address[postalCode]:
  *                 type: string
  *                 example: "12345"
  *               address[city]:
  *                 type: string
  *                 example: "Berlin"
- *               address[country]:
- *                 type: string
- *                 example: "DE"
  *     responses:
  *       200:
  *         description: User details updated successfully

@@ -2,11 +2,8 @@ import { User, IAddress, IUser } from "../model/UserModel";
 
 const createAdminUser = async () => {
   const a: IAddress = {
-    street: "Street",
-    houseNumber: "1",
     postalCode: "12345",
     city: "Berlin",
-    country: "Germany",
   };
 
   let u: IUser = {

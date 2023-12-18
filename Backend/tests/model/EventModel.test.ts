@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import { Event, ICategory, IEvent } from "../../src/model/EventModel";
 import { clearDatabase, closeDatabase, connect } from "../../database/db";
-import { IAddress } from "../../src/model/UserModel";
+import { IEAddress } from "../../src/model/EventModel";
 
-const a: IAddress = {
+const a: IEAddress = {
   street: "Street",
   houseNumber: "1",
   postalCode: "12345",
@@ -41,7 +41,7 @@ describe("Event Model Tests", () => {
     expect(createdEvent.price).toBe(eventData.price);
     expect(createdEvent.date).toBe(eventData.date);
     expect(createdEvent.address).toMatchObject(a);
-    expect(createdEvent.category.map(c => c.name)).toContain("Hobbys");
+    expect(createdEvent.category.map((c) => c.name)).toContain("Hobbys");
     expect(createdEvent.chat).toBe(eventData.chat);
     expect(createdEvent.participants).toStrictEqual(eventData.participants);
   });

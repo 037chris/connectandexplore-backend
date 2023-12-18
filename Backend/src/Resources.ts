@@ -27,6 +27,11 @@ export type usersResource = {
 
 export type addressResource = {
   id?: string;
+  postalCode: String;
+  city: String;
+};
+export type addressEResource = {
+  id?: string;
   street: String;
   houseNumber: String;
   apartmentNumber?: String;
@@ -35,7 +40,6 @@ export type addressResource = {
   stateOrRegion?: String;
   country: String;
 };
-
 export type LoginResource = {
   /** The JWT */
   access_token: string;
@@ -50,7 +54,7 @@ export type eventResource = {
   description: string;
   price: number;
   date: Date;
-  address: addressResource;
+  address: addressEResource;
   thumbnail?: string;
   hashtags?: string[];
   category?: categoryResource[];

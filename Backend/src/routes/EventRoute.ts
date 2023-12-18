@@ -58,6 +58,7 @@ EventRouter.get(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
+      //console.log(query)
       const term = req.query.query as string;
       const events: eventsResource = await eventService.searchEvents(term);
       if (events.events.length === 0) {

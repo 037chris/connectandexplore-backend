@@ -11,11 +11,8 @@ import {
 import { UserService } from "../../src/services/UserService";
 import request from "supertest";
 const a: IAddress = {
-  street: "Street",
-  houseNumber: "1",
   postalCode: "12345",
   city: "Berlin",
-  country: "Germany",
 };
 const u: userResource = {
   email: "John@doe.com",

@@ -4,11 +4,8 @@ import { IAddress, IUser, User } from "../../src/model/UserModel";
 import { UserService } from "../../src/services/UserService";
 
 const a: IAddress = {
-  street: "Street",
-  houseNumber: "1",
   postalCode: "12345",
   city: "Berlin",
-  country: "Germany",
 };
 const u: userResource = {
   email: "John@doe.com",
@@ -56,10 +53,10 @@ describe("userModel test", () => {
   test("getUser works and returns user without password", async () => {
     const user = await userService.createUser(u);
     await expect(userService.getUser(undefined)).rejects.toThrow(
-      "Can not get user, userID is invalid",
+      "Can not get user, userID is invalid"
     );
     await expect(userService.getUser(NON_EXISTING_ID)).rejects.toThrow(
-      `No user with id: ${NON_EXISTING_ID} exists.`,
+      `No user with id: ${NON_EXISTING_ID} exists.`
     );
     const res: userResource = await userService.getUser(user.id);
     expect(user.id).toBeDefined();
@@ -110,7 +107,7 @@ describe("userModel test", () => {
       isActive: u2.isActive,
     };
     await expect(userService.getUser(u2.id)).rejects.toThrow(
-      `No user with id: ${u2.id} exists.`,
+      `No user with id: ${u2.id} exists.`
     );
     const users = await userService.getUsers();
     expect(users.users.length).toBe(2);
@@ -142,15 +139,15 @@ describe("userModel test", () => {
     //Test for missing userID
     const userWithNoId = { ...u, id: undefined };
     await expect(userService.updateUserWithAdmin(userWithNoId)).rejects.toThrow(
-      "User id is missing, cannot update User.",
+      "User id is missing, cannot update User."
     );
 
     //Test for non-existing userID
     const nonExistingUser = { ...u, id: NON_EXISTING_ID };
     await expect(
-      userService.updateUserWithAdmin(nonExistingUser),
+      userService.updateUserWithAdmin(nonExistingUser)
     ).rejects.toThrow(
-      `No user with id: ${NON_EXISTING_ID} found, cannot update`,
+      `No user with id: ${NON_EXISTING_ID} found, cannot update`
     );
   });
 
@@ -160,7 +157,7 @@ describe("userModel test", () => {
     //Create another user with a different ID but same email for duplicate check
     const userWithDuplicateEmail = { ...user, email: "duplicate@example.com" };
     await expect(
-      userService.updateUserWithAdmin(userWithDuplicateEmail),
+      userService.updateUserWithAdmin(userWithDuplicateEmail)
     ).rejects.toThrow("Duplicate email");
   });
 
@@ -172,7 +169,7 @@ describe("userModel test", () => {
     user.password = "newPassword123!";
     const updatedUser: userResource = await userService.updateUserWithPw(
       user,
-      oldPw,
+      oldPw
     );
     expect(updatedUser.name.first).toBe("Jane");
     const Jane = await User.findById(user.id).exec();
@@ -181,7 +178,7 @@ describe("userModel test", () => {
 
     //Test if user does not update Password on wrong old password.
     await expect(
-      userService.updateUserWithPw(user, "wrongPassword"),
+      userService.updateUserWithPw(user, "wrongPassword")
     ).rejects.toThrow("invalid oldPassword, can not update User!");
   });
 
@@ -190,11 +187,11 @@ describe("userModel test", () => {
     user.id = undefined;
     user.name.first = "Jane";
     await expect(userService.updateUserWithPw(user)).rejects.toThrow(
-      "User id is missing, cannot update User.",
+      "User id is missing, cannot update User."
     );
     user.id = NON_EXISTING_ID;
     await expect(userService.updateUserWithPw(user)).rejects.toThrow(
-      `No user with id: ${NON_EXISTING_ID} found, cannot update`,
+      `No user with id: ${NON_EXISTING_ID} found, cannot update`
     );
   });
 
@@ -204,7 +201,7 @@ describe("userModel test", () => {
     //Create another user with a different ID but same email for duplicate check
     const userWithDuplicateEmail = { ...user, email: "duplicate@example.com" };
     await expect(
-      userService.updateUserWithPw(userWithDuplicateEmail),
+      userService.updateUserWithPw(userWithDuplicateEmail)
     ).rejects.toThrow("Duplicate email");
   });
 
@@ -225,12 +222,12 @@ describe("userModel test", () => {
     expect(noUserFound).toBeNull();
 
     await expect(
-      userService.deleteUser(NON_EXISTING_ID, false),
+      userService.deleteUser(NON_EXISTING_ID, false)
     ).rejects.toThrow(
-      "User not found, probably invalid userID or user is already deleted",
+      "User not found, probably invalid userID or user is already deleted"
     );
     await expect(userService.deleteUser("", false)).rejects.toThrow(
-      "invalid userID, can not delete/inactivate account",
+      "invalid userID, can not delete/inactivate account"
     );
   });
 

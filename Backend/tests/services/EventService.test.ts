@@ -1,6 +1,6 @@
 import { connect, closeDatabase, clearDatabase } from "../../database/db";
 import {
-  addressResource,
+  addressEResource,
   categoryResource,
   eventResource,
   eventsResource,
@@ -11,7 +11,7 @@ import { Event } from "../../src/model/EventModel";
 import { User } from "../../src/model/UserModel";
 import { EventService } from "../../src/services/EventService";
 
-const a: addressResource = {
+const a: addressEResource = {
   street: "Street",
   houseNumber: "1",
   postalCode: "12345",

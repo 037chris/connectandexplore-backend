@@ -2,11 +2,8 @@ import { clearDatabase, closeDatabase, connect } from "../../database/db";
 import { IAddress, IUser, User } from "../../src/model/UserModel";
 
 const a: IAddress = {
-  street: "Street",
-  houseNumber: "1",
   postalCode: "12345",
   city: "Berlin",
-  country: "Germany",
 };
 let u: IUser = {
   email: "John@doe.com",

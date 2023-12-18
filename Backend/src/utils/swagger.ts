@@ -24,6 +24,17 @@ const options: swaggerJsdoc.Options = {
         IAddress: {
           type: "object",
           properties: {
+            postalCode: {
+              type: "string",
+            },
+            city: {
+              type: "string",
+            },
+          },
+        },
+        IEAddress: {
+          type: "object",
+          properties: {
             street: {
               type: "string",
             },
@@ -137,7 +148,7 @@ const options: swaggerJsdoc.Options = {
               format: "date-time",
             },
             address: {
-              $ref: "#/components/schemas/IAddress",
+              $ref: "#/components/schemas/IEAddress",
             },
             thumbnail: {
               type: "string",

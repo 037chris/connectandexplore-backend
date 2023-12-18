@@ -23,13 +23,6 @@ export const validate = [
   validateIfPresent("isAdministrator", body("isAdministrator").isBoolean()),
 
   //validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
-  validateIfPresent("address.street", body("address.street").isString()),
-  validateIfPresent(
-    "address.houseNumber",
-    body("address.houseNumber")
-      .isNumeric()
-      .withMessage("houseNumber is required.")
-  ),
   validateIfPresent(
     "address.postalCode",
     body("address.postalCode")
@@ -44,27 +37,15 @@ export const validate = [
     "address.country",
     body("address.country").isString().withMessage("Country is required.")
   ),
-  validateIfPresent(
-    "address.stateOrRegion",
-    body("address.stateOrRegion")
-      .isString()
-      .withMessage("invalid State or Region."),
-  ),
-  validateIfPresent(
-    "address.appartmentNumber",
-    body("address.appartmentNumber")
-      .isString()
-      .withMessage("invalid Appartmentnumber."),
-  ),
   validateIfPresent("profilePicture", body("profilePicture").isString()),
   validateIfPresent("birthDate", body("birthDate").isString()),
   validateIfPresent("gender", body("gender").isString()),
   validateIfPresent(
     "socialMediaUrls.facebook",
-    body("socialMediaUrls.facebook").isString(),
+    body("socialMediaUrls.facebook").isString()
   ),
   validateIfPresent(
     'socialMediaUrls.instagram"',
-    body("socialMediaUrls.instagram").isString(),
+    body("socialMediaUrls.instagram").isString()
   ),
 ];
