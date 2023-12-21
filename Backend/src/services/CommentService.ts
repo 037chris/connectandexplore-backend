@@ -145,20 +145,29 @@ export class CommentService {
 
   /**
    * used to create comments.
+   * Every user can only post one comment for each event.
    * @param comment describes the comment
    * @returns the created comment with additional information (creatorName, eventName and date of creation).
    */
   async createComment(comment: CommentResource): Promise<CommentResource> {
+    const existingComment = await Comment.findOne({
+      creator: comment.creator,
+      event: comment.event,
+    });
+    if (existingComment) {
+      throw new Error("User has already submitted a comment for this event.");
+    }
+
     const user = await User.findById(comment.creator);
     const event = await Event.findById(comment.event);
     if (!user) {
       throw new Error(
-        `No creator with id: ${comment.creator} exists, can not create comment.`,
+        `No creator with id: ${comment.creator} exists, can not create comment.`
       );
     }
     if (!event) {
       throw new Error(
-        `No event with id: ${comment.event} exists, can not create comment.`,
+        `No event with id: ${comment.event} exists, can not create comment.`
       );
     }
     const createdComment = await Comment.create({
@@ -197,20 +206,22 @@ export class CommentService {
     const foundComment = await Comment.findById(comment.id).exec();
     if (!foundComment) {
       throw new Error(
-        `No comment with id: ${comment.id} exists, can not update comment.`,
+        `No comment with id: ${comment.id} exists, can not update comment.`
       );
     }
+    const foundUser = await User.findById(foundComment.creator).exec();
+    const foundEvent = await Event.findById(foundComment.event).exec();
 
     const user = await User.findById(comment.creator);
     const event = await Event.findById(comment.event);
     if (!user) {
       throw new Error(
-        `No creator with id: ${comment.creator} exists, can not update comment.`,
+        `No creator with id: ${comment.creator} exists, can not update comment.`
       );
     }
     if (!event) {
       throw new Error(
-        `No event with id: ${comment.event} exists, can not update comment.`,
+        `No event with id: ${comment.event} exists, can not update comment.`
       );
     }
 
@@ -235,10 +246,10 @@ export class CommentService {
       content: commentResource.content,
       edited: commentResource.edited,
       createdAt: dateToString(commentResource.createdAt!),
-      creator: user.id,
-      creatorName: user.name,
-      event: event.id,
-      eventName: event.name,
+      creator: foundUser.id,
+      creatorName: foundUser.name,
+      event: foundEvent.id,
+      eventName: foundEvent.name,
     };
   }
 

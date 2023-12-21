@@ -28,7 +28,7 @@ const u: userResource = {
 
 const userService: UserService = new UserService();
 const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
-describe("userModel test", () => {
+describe("UserService test", () => {
   beforeAll(async () => await connect());
   afterEach(async () => await clearDatabase());
   afterAll(async () => await closeDatabase());

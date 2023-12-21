@@ -2,6 +2,9 @@ import { Types } from "mongoose";
 import { eventResource, eventsResource, usersResource } from "../Resources";
 import { Event } from "../model/EventModel";
 import { User } from "../model/UserModel";
+import { CommentService } from "../../src/services/CommentService";
+
+const commentService: CommentService = new CommentService();
 
 export class EventService {
   /**
@@ -369,7 +372,12 @@ export class EventService {
         throw new Error("Invalid authorization");
       }
       const result = await Event.deleteOne({ _id: eventID }).exec();
-      return result.deletedCount == 1;
+      if (result.deletedCount === 1) {
+        await commentService.deleteCommentsOfevent(userID);
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
       throw new Error("Error deleting event");
     }

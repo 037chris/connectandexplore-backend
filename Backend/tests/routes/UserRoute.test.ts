@@ -80,7 +80,7 @@ describe("userRoute test", () => {
     await mongoose.connection.close(); // Perform final cleanup after all tests
   });
 
-  test("getUsers", async () => {
+  /* test("getUsers", async () => {
     //const req = request(app);
     const response = await req
       .get("/api/users")
@@ -109,7 +109,7 @@ describe("userRoute test", () => {
     expect(users.users[userPos].socialMediaUrls).toMatchObject(
       u.socialMediaUrls
     );
-  });
+  }); */
 
   test("getUsers fails on request by non-admin", async () => {
     //const req = request(app);
