@@ -1,5 +1,5 @@
 import express from "express";
-import { requiresAuthentication } from "./authentication";
+import { optionalAuthentication, requiresAuthentication } from "./authentication";
 import { body, matchedData, param, validationResult } from "express-validator";
 import {
   CommentResource,
@@ -8,6 +8,7 @@ import {
 } from "../Resources";
 import { CommentService } from "../services/CommentService";
 import { RatingService } from "../services/RatingService";
+import { Comment } from "../model/CommentModel";
 
 const commentsRouter = express.Router();
 
@@ -15,10 +16,10 @@ const commentService: CommentService = new CommentService();
 const ratingService: RatingService = new RatingService();
 
 commentsRouter.get(
-  "/comments",
+  "/",
   requiresAuthentication,
   async (req, res, next) => {
-    if (req.role !== "a") {
+    if (req.role === "a") {
       try {
         const comments = await commentService.getComments();
         res.status(200).send(comments);
@@ -34,7 +35,8 @@ commentsRouter.get(
 );
 
 commentsRouter.get(
-  "/event/:id/comments",
+  "/event/:id",
+  optionalAuthentication,
   param("id").isMongoId(),
   async (req, res, next) => {
     const id = req.params?.id;
@@ -62,7 +64,7 @@ commentsRouter.get(
 );
 
 commentsRouter.get(
-  "/user/:id/comments",
+  "/user/:id",
   requiresAuthentication,
   param("id").isMongoId(),
   async (req, res, next) => {
@@ -71,7 +73,7 @@ commentsRouter.get(
       if (comments.comments.length < 1) {
         res.send(comments);
       }
-      if (req.role === "a" || req.userId !== comments.comments[0].id) {
+      if (req.role === "a" /* || req.userId !== comments.comments[0].id */) {
         //admin dashboard for comments of an user and user dashbaord of comments
         res.status(200).send(comments);
       } else {
@@ -86,7 +88,7 @@ commentsRouter.get(
 );
 
 commentsRouter.post(
-  "/comment",
+  "/post",
   requiresAuthentication,
   body("title").isString().isLength({ min: 1, max: 100 }),
   body("stars")
@@ -117,8 +119,9 @@ commentsRouter.post(
 );
 
 commentsRouter.put(
-  "/comment/:id",
+  "/:id",
   requiresAuthentication,
+  param("id").isMongoId(),
   body("title").isString().isLength({ min: 1, max: 100 }),
   body("stars")
     .isInt()
@@ -142,6 +145,7 @@ commentsRouter.put(
     }
     try {
       const commentData = matchedData(req) as CommentResource;
+      if(commentData.id === req.params.id) commentData.id = req.params.id;
       const createdComment = await commentService.updateComment(commentData);
       res.status(200).send(createdComment);
     } catch (err) {
@@ -152,18 +156,20 @@ commentsRouter.put(
 );
 
 commentsRouter.delete(
-  "/comment/:id",
-  param("id"),
+  "/:id",
   requiresAuthentication,
+  param("id").isMongoId(),
   async (req, res, next) => {
-    const id = req.params?.id;
-    if (req.role === "u" && req.body.creator !== req.userId) {
+    const id = req.params.id;
+    const comment = await Comment.findById(id).exec();
+    if (req.role === "u" && comment.creator.toString() !== req.userId) {
       res.status(403);
       next(
         new Error(
           "Only Admins and the creator of the comment are authorized to delete comments!",
         ),
       );
+      return;
     }
     try {
       await ratingService.deleteRatingsOfComment(id);

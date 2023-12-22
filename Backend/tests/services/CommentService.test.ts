@@ -146,12 +146,12 @@ describe("CommentService Tests", () => {
       creator: user.id,
       event: event.id,
     };
-    // stars < 0 or stars > 5 should not work
+    // stars < 1 or stars > 5 should not work
     await expect(commentService.createComment(c)).rejects.toThrow();
     c.stars = 6;
     await expect(commentService.createComment(c)).rejects.toThrow();
 
-    c.stars = 0;
+    c.stars = 1;
     const comment = await commentService.createComment(c);
     expect(comment.id).toBeDefined();
     expect(comment.title).toBe(c.title);
@@ -175,7 +175,7 @@ describe("CommentService Tests", () => {
     const event2 = await eventService.createEvent(e2, user.id);
     const c: CommentResource = {
       title: "Sample Comment",
-      stars: 0,
+      stars: 1,
       content: "this is my first comment",
       edited: false,
       creator: user.id,
@@ -222,7 +222,7 @@ describe("CommentService Tests", () => {
     const event = await eventService.createEvent(e, user.id);
     const c: CommentResource = {
       title: "Sample Comment",
-      stars: 0,
+      stars: 1,
       content: "this is my first comment",
       edited: false,
       creator: user.id,
@@ -274,7 +274,7 @@ describe("CommentService Tests", () => {
     const event1 = await eventService.createEvent(e1, user1.id);
     const c: CommentResource = {
       title: "Sample Comment",
-      stars: 0,
+      stars: 1,
       content: "this is my first comment",
       edited: false,
       creator: user.id,
@@ -341,7 +341,7 @@ describe("CommentService Tests", () => {
     const event = await eventService.createEvent(e, user.id);
     const c: CommentResource = {
       title: "Sample Comment",
-      stars: 0,
+      stars: 1,
       content: "this is my comment",
       edited: false,
       creator: user.id,
@@ -350,7 +350,7 @@ describe("CommentService Tests", () => {
     const comment = await commentService.createComment(c);
     expect(comment.id).toBeDefined();
     expect(comment.title).toBe(c.title);
-    expect(comment.stars).toBe(0);
+    expect(comment.stars).toBe(1);
     expect(comment.edited).toBeFalsy();
 
     const c1: CommentResource = {
@@ -384,9 +384,9 @@ describe("CommentService Tests", () => {
     const comment2 = await commentService.updateComment(c2);
     expect(comment2.createdAt).not.toBe(c2.createdAt);
     expect(comment2.createdAt).toBe(comment.createdAt);
-    expect(comment2.createdAt).not.toBe(c2.creator);
+    expect(comment2.creator).not.toBe(c2.creator);
     expect(comment2.creator).toBe(c.creator);
-    expect(comment2.createdAt).not.toBe(c2.event);
+    expect(comment2.event).not.toBe(c2.event);
     expect(comment2.event).toBe(c.event);
   });
 
@@ -395,7 +395,7 @@ describe("CommentService Tests", () => {
     const event = await eventService.createEvent(e, user.id);
     const c: CommentResource = {
       title: "Sample Comment",
-      stars: 0,
+      stars: 1,
       content: "this is my comment",
       edited: false,
       creator: user.id,

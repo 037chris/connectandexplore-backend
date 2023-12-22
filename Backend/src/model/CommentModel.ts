@@ -20,7 +20,7 @@ const comentSchema = new Schema<IComment>(
       type: Number,
       required: true,
       validate: {
-        validator: (value: number) => value >= 0 && value <= 5,
+        validator: (value: number) => value >= 1 && value <= 5,
         message: "Stars must be between 0 and 5.",
       },
     },
