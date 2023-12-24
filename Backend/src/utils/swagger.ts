@@ -171,8 +171,37 @@ const options: swaggerJsdoc.Options = {
             participants: {
               type: "array",
               items: {
-                type: "string", // Assuming participants are represented by strings (e.g., ObjectId as strings)
+                type: "string",
               },
+            },
+          },
+        },
+        IComment: {
+          type: "object",
+          properties: {
+            title: {
+              type: "string",
+            },
+            stars: {
+              type: "number",
+              minimum: 1,
+              maximum: 5,
+            },
+            content: {
+              type: "string",
+            },
+            edited: {
+              type: "boolean",
+            },
+            creator: {
+              $ref: "#/components/schemas/IUser",
+            },
+            event: {
+              $ref: "#/components/schemas/IEvent",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
             },
           },
         },
