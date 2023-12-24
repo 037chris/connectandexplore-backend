@@ -29,15 +29,23 @@ export class RatingService {
     const user = await User.findById(rating.creator).exec();
     if (!user) {
       throw new Error(
-        `No creator with id: ${rating.creator} of rating found. Can not create Rating.`,
+        `No creator with id: ${rating.creator} of rating found. Can not create Rating.`
       );
     }
     const comment = await Comment.findById(rating.comment).exec();
     if (!comment) {
       throw new Error(
-        `No comment with id: ${rating.comment} of rating found. Can not create Rating.`,
+        `No comment with id: ${rating.comment} of rating found. Can not create Rating.`
       );
     }
+    if (user.id == comment.creator) {
+      throw new Error("Users cannot rate their own comments.");
+    }
+    const dupe = await Rating.find({
+      comment: comment.id,
+      creator: user.id,
+    }).exec();
+    if (dupe.length > 0) throw new Error("Already rated this comment.");
 
     const createdRating = await Rating.create(rating);
 
@@ -55,7 +63,7 @@ export class RatingService {
     const recievedRating = await Rating.findById(rating.id).exec();
     if (!recievedRating) {
       throw new Error(
-        `No rating with id:${rating.id} found, can not update rating`,
+        `No rating with id:${rating.id} found, can not update rating`
       );
     }
 
@@ -64,7 +72,7 @@ export class RatingService {
     }).exec();
     if (!user) {
       throw new Error(
-        `No creator with id: ${rating.creator} of rating found. Can not update rating.`,
+        `No creator with id: ${rating.creator} of rating found. Can not update rating.`
       );
     }
     const comment = await Comment.findById({
@@ -72,9 +80,15 @@ export class RatingService {
     }).exec();
     if (!comment) {
       throw new Error(
-        `No comment with id: ${rating.comment} of rating found. Can not update rating.`,
+        `No comment with id: ${rating.comment} of rating found. Can not update rating.`
       );
     }
+
+    if (
+      recievedRating.creator != user.id ||
+      recievedRating.comment != comment.id
+    )
+      throw new Error("userID or commentID does not match.");
 
     if (rating.ratingType) recievedRating.ratingType = rating.ratingType;
 
