@@ -373,7 +373,7 @@ export class EventService {
       }
       const result = await Event.deleteOne({ _id: eventID }).exec();
       if (result.deletedCount === 1) {
-        await commentService.deleteCommentsOfevent(userID);
+        await commentService.deleteCommentsOfevent(eventID);
         return true;
       } else {
         return false;
