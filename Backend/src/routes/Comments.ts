@@ -223,7 +223,80 @@ commentsRouter.post(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/comments/{id}:
+ *   put:
+ *     summary: Update a comment
+ *     description: Update an existing comment by ID.
+ *     tags:
+ *       - Comments
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the comment to update
+ *         schema:
+ *           type: string
+ *           format: mongo-id
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Amazing"
+ *                 description: "Title of the comment (max length: 100)"
+ *               stars:
+ *                 type: integer
+ *                 example: 4
+ *                 description: "Number of stars (1-5)"
+ *               content:
+ *                 type: string
+ *                 example: "The best Event that i have joined in my entire life"
+ *                 description: "Content of the comment (max length: 1000)"
+ *               creator:
+ *                 type: string
+ *                 format: mongo-id
+ *                 description: "ID of the comment creator (User ID)"
+ *               edited:
+ *                 type: boolean
+ *                 default: false
+ *                 description: "Indicates if the comment has been edited"
+ *               event:
+ *                 type: string
+ *                 format: mongo-id
+ *                 description: "ID of the associated event"
+ *     responses:
+ *       '200':
+ *         description: Successful update
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/IComment'
+ *       '400':
+ *         description: Bad request, validation error or other errors
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Bad request, validation error or other errors
+ *       '403':
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Only admins or the creator are authorized to update comments!
+ *       '404':
+ *         description: Comment not found or unauthorized to update
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Comment not found or unauthorized to update
+ */
 commentsRouter.put(
   "/:id",
   requiresAuthentication,
@@ -260,7 +333,40 @@ commentsRouter.put(
     }
   }
 );
-
+/**
+ * @swagger
+ * /api/comments/{id}:
+ *   delete:
+ *     summary: Delete a comment
+ *     description: Delete an existing comment by ID.
+ *     tags:
+ *       - Comments
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the comment to delete
+ *         schema:
+ *           type: string
+ *           format: mongo-id
+ *     responses:
+ *       '204':
+ *         description: Comment deleted successfully
+ *       '403':
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Only Admins and the creator of the comment are authorized to delete comments!
+ *       '404':
+ *         description: Comment not found or unauthorized to delete
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Comment not found or unauthorized to delete
+ */
 commentsRouter.delete(
   "/:id",
   requiresAuthentication,
@@ -287,5 +393,60 @@ commentsRouter.delete(
     }
   }
 );
+/**
+ * @swagger
+ * /api/comments/event/{id}/average-rating:
+ *   get:
+ *     summary: Calculate the average rating of an event based on comments
+ *     description: Retrieves the average rating of an event by its ID using the comments associated with it.
+ *     tags:
+ *       - Comments
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the event to calculate the average rating for
+ *         schema:
+ *           type: string
+ *           format: mongo-id
+ *     responses:
+ *       '200':
+ *         description: Successful response with average rating
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 averageRating:
+ *                   type: number
+ *                   description: The calculated average rating of the event based on comments
+ *                   example: 3.5
+ *       '400':
+ *         description: Bad request, invalid ID format
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Bad request, invalid ID format
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal Server Error
+ */
+commentsRouter.get(
+  "/event/:id/average-rating",
+  param("id").isMongoId(),
+  async (req, res, next) => {
+    try {
+      const eventId = req.params.id;
+      const averageRating =
+        await commentService.getAverageRatingForEvent(eventId);
 
+      res.status(200).json({ averageRating });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
 export default commentsRouter;

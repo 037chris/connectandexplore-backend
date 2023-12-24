@@ -2,25 +2,25 @@
 /******/"use strict";
 /******/var e={
 /***/14:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.clearDatabase=t.closeDatabase=t.connect=void 0;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.clearDatabase=t.closeDatabase=t.connect=void 0;
 // Copyright: This script is taken from: https://codesandbox.io/s/typescript-forked-8vscow?file=/src/db.ts
-const a=i(r(185)),n=r(725);let s;t.connect=async()=>{s=await n.MongoMemoryServer.create();const e=s.getUri();await a.default.connect(e,{dbName:"ConnectAndExplore"}).then((e=>console.log("connected...."))).catch((e=>console.log(`Cannot connect => ${e}`)))};t.closeDatabase=async()=>{await a.default.connection.dropDatabase(),await a.default.connection.close(),await s.stop()};t.clearDatabase=async()=>{const e=a.default.connection.collections;for(const t in e){const r=e[t];await r.deleteMany({})}}},
+const i=a(r(185)),n=r(725);let s;t.connect=async()=>{s=await n.MongoMemoryServer.create();const e=s.getUri();await i.default.connect(e,{dbName:"ConnectAndExplore"}).then((e=>console.log("connected...."))).catch((e=>console.log(`Cannot connect => ${e}`)))};t.closeDatabase=async()=>{await i.default.connection.dropDatabase(),await i.default.connection.close(),await s.stop()};t.clearDatabase=async()=>{const e=i.default.connection.collections;for(const t in e){const r=e[t];await r.deleteMany({})}}},
 /***/505:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(860)),n=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=i(r(993)),m=i(r(617)),p=(r(685),i(r(811))),y=i(r(79)),f=i(r(562)),h=i(r(11)),g=i(r(996)),w=i(r(653)),v=i(r(109)),b=(0,a.default)(),E=process.env.PORT||443;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=a(r(993)),m=a(r(617)),p=(r(685),a(r(811))),h=a(r(79)),y=a(r(562)),f=a(r(11)),g=a(r(996)),w=a(r(653)),v=a(r(109)),b=(0,i.default)(),E=process.env.PORT||443;
 /* Routes */
-b.use("*",o()),b.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),b.use(n.json()),b.use(a.default.urlencoded({extended:!0})),b.use(a.default.static(__dirname)),
+b.use("*",o()),b.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),b.use(n.json()),b.use(i.default.urlencoded({extended:!0})),b.use(i.default.static(__dirname)),
 // Health check endpoint
-b.get("/health",((e,t)=>{t.status(200).send("Health Check: OK")})),b.use("/api/users",y.default),b.use("/api",f.default),b.use("/api/login",h.default),b.use("/api/events",g.default),b.use("/api/comments",v.default),(0,p.default)(b,+E),b.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
+b.get("/health",((e,t)=>{t.status(200).send("Health Check: OK")})),b.use("/api/users",h.default),b.use("/api",y.default),b.use("/api/login",f.default),b.use("/api/events",g.default),b.use("/api/comments",v.default),(0,p.default)(b,+E),b.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
 // Create admin user after connecting to the database
 await(0,l.default)(),await(0,w.default)(),m.default.createServer({key:d,cert:c},b).listen(E,(()=>{console.log("Listening on port ",E)}))})).catch((e=>{console.error("Failed to connect to the database:",e)})),t.default=b},
 /***/439:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Comment=void 0;const i=r(185),a=new i.Schema({title:{type:String,required:!0},stars:{type:Number,required:!0,validate:{validator:e=>e>=1&&e<=5,message:"Stars must be between 0 and 5."}},content:{type:String,required:!0},edited:{type:Boolean,default:!1},creator:{type:i.Schema.Types.ObjectId,ref:"User",required:!0},event:{type:i.Schema.Types.ObjectId,ref:"Event",required:!0}},{timestamps:!0});t.Comment=(0,i.model)("Comment",a)}
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Comment=void 0;const a=r(185),i=new a.Schema({title:{type:String,required:!0},stars:{type:Number,required:!0,validate:{validator:e=>e>=1&&e<=5,message:"Stars must be between 0 and 5."}},content:{type:String,required:!0},edited:{type:Boolean,default:!1},creator:{type:a.Schema.Types.ObjectId,ref:"User",required:!0},event:{type:a.Schema.Types.ObjectId,ref:"Event",required:!0}},{timestamps:!0});t.Comment=(0,a.model)("Comment",i)}
 /***/,
 /***/924:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Categoty=t.Event=t.addressESchema=void 0;const i=r(185);
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Categoty=t.Event=t.addressESchema=void 0;const a=r(185);
 /**
  * Adressen werden später in das EventSchema eingefügt und als teil eines Users in mongoDB gespeichert
- */t.addressESchema=new i.Schema({street:{type:String,required:!0},houseNumber:{type:String,required:!0},apartmentNumber:String,postalCode:{type:String,required:!0},city:{type:String,required:!0},stateOrRegion:String,country:{type:String,required:!0}});const a=new i.Schema({name:{type:String,required:!0/* , unique: true */},description:{type:String}}),n=new i.Schema({name:{type:String,required:!0},creator:{type:i.Schema.Types.ObjectId,ref:"User",required:!0},description:{type:String,required:!0},price:{type:Number,required:!0,min:0},date:{type:Date,required:!0},address:t.addressESchema,thumbnail:{type:String},hashtags:[{type:String}],category:[a],chat:{type:i.Schema.Types.ObjectId,ref:"Chat",required:!0},participants:[{type:i.Schema.Types.ObjectId,ref:"User",required:!0}]});
+ */t.addressESchema=new a.Schema({street:{type:String,required:!0},houseNumber:{type:String,required:!0},apartmentNumber:String,postalCode:{type:String,required:!0},city:{type:String,required:!0},stateOrRegion:String,country:{type:String,required:!0}});const i=new a.Schema({name:{type:String,required:!0/* , unique: true */},description:{type:String}}),n=new a.Schema({name:{type:String,required:!0},creator:{type:a.Schema.Types.ObjectId,ref:"User",required:!0},description:{type:String,required:!0},price:{type:Number,required:!0,min:0},date:{type:Date,required:!0},address:t.addressESchema,thumbnail:{type:String},hashtags:[{type:String}],category:[i],chat:{type:a.Schema.Types.ObjectId,ref:"Chat",required:!0},participants:[{type:a.Schema.Types.ObjectId,ref:"User",required:!0}]});
 /*
 Zu implementieren?:
 Middleware-Methode, die sicherstellt, dass nach Bearbeitung eines Events, alle Teilnehmer benachrichtigt werden
@@ -33,19 +33,19 @@ eventSchema.post('updateOne', async function (result, next) {
     }
     next();
 }); */
-t.Event=(0,i.model)("Event",n),t.Categoty=(0,i.model)("Category",a)}
+t.Event=(0,a.model)("Event",n),t.Categoty=(0,a.model)("Category",i)}
 /***/,
 /***/467:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Rating=t.RatingType=void 0;const i=r(185);var a;!function(e){e.Helpful="helpful",e.Reported="reported"}(a||(t.RatingType=a={}));const n=new i.Schema({comment:{type:i.Schema.Types.ObjectId,ref:"Comment",required:!0},creator:{type:i.Schema.Types.ObjectId,ref:"User",required:!0},ratingType:{type:String,enum:Object.values(a),required:!0}});t.Rating=(0,i.model)("Rating",n)}
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Rating=t.RatingType=void 0;const a=r(185);var i;!function(e){e.Helpful="helpful",e.Reported="reported"}(i||(t.RatingType=i={}));const n=new a.Schema({comment:{type:a.Schema.Types.ObjectId,ref:"Comment",required:!0},creator:{type:a.Schema.Types.ObjectId,ref:"User",required:!0},ratingType:{type:String,enum:Object.values(i),required:!0}});t.Rating=(0,a.model)("Rating",n)}
 /***/,
 /***/95:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.User=t.addressSchema=t.userRole=void 0;const a=r(185),n=i(r(432));var s;!function(e){e.User="u",e.Admin="a"}(s||(t.userRole=s={})),
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.User=t.addressSchema=t.userRole=void 0;const i=r(185),n=a(r(432));var s;!function(e){e.User="u",e.Admin="a"}(s||(t.userRole=s={})),
 /**
  * Adressen werden später in das UserSchema eingefügt und als teil eines Users in mongoDB gespeichert
  */
-t.addressSchema=new a.Schema({postalCode:{type:String,required:!0},city:{type:String,required:!0}});const o=new a.Schema({email:{type:String,required:!0,unique:!0},name:{first:{type:String,required:!0},last:{type:String,required:!0}},password:{type:String,required:!0},isAdministrator:{type:Boolean,default:!1},address:t.addressSchema,profilePicture:String,birthDate:{type:Date,required:!0},gender:{type:String,required:!0},socialMediaUrls:{facebook:String,instagram:String},isActive:{type:Boolean,default:!0}});o.pre("save",(async function(){if(this.isModified("password")){const e=await n.default.hash(this.password,10);this.password=e}})),o.pre("updateOne",{document:!1,query:!0},(async function(){const e=this.getUpdate();if(null!=(null==e?void 0:e.password)){const t=await n.default.hash(e.password,10);e.password=t}})),o.method("isCorrectPassword",(async function(e){return await n.default.compare(e,this.password)})),t.User=(0,a.model)("User",o)},
+t.addressSchema=new i.Schema({postalCode:{type:String,required:!0},city:{type:String,required:!0}});const o=new i.Schema({email:{type:String,required:!0,unique:!0},name:{first:{type:String,required:!0},last:{type:String,required:!0}},password:{type:String,required:!0},isAdministrator:{type:Boolean,default:!1},address:t.addressSchema,profilePicture:String,birthDate:{type:Date,required:!0},gender:{type:String,required:!0},socialMediaUrls:{facebook:String,instagram:String},isActive:{type:Boolean,default:!0}});o.pre("save",(async function(){if(this.isModified("password")){const e=await n.default.hash(this.password,10);this.password=e}})),o.pre("updateOne",{document:!1,query:!0},(async function(){const e=this.getUpdate();if(null!=(null==e?void 0:e.password)){const t=await n.default.hash(e.password,10);e.password=t}})),o.method("isCorrectPassword",(async function(e){return await n.default.compare(e,this.password)})),t.User=(0,i.model)("User",o)},
 /***/109:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(860)),n=r(468),s=r(553),o=r(282),d=r(980),c=r(439),u=a.default.Router(),l=new o.CommentService,m=new d.RatingService;u.get("/",n.requiresAuthentication,(async(e,t,r)=>{if("a"===e.role)try{const e=await l.getComments();t.status(200).send(e)}catch(e){t.status(404),r(e)}else t.status(403),r(new Error("Unauthorized for this resource!"))})),
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(468),s=r(553),o=r(282),d=r(980),c=r(439),u=i.default.Router(),l=new o.CommentService,m=new d.RatingService;u.get("/",n.requiresAuthentication,(async(e,t,r)=>{if("a"===e.role)try{const e=await l.getComments();t.status(200).send(e)}catch(e){t.status(404),r(e)}else t.status(403),r(new Error("Unauthorized for this resource!"))})),
 /**
  * @swagger
  * /api/comments/event/{id}:
@@ -80,9 +80,9 @@ t.addressSchema=new a.Schema({postalCode:{type:String,required:!0},city:{type:St
  *             example:
  *               error: Event not found or no comments exist for the event
  */
-u.get("/event/:id",n.optionalAuthentication,(0,s.param)("id").isMongoId(),(async(e,t,r)=>{var i;const a=null===(i=e.params)||void 0===i?void 0:i.id;try{const e=await l.getCommentsOfEvent(a),r={comments:[]};for(const t of e.comments){const e=await m.getRatingsOfComment(t.id);if(t.creatorName){let i=Object.assign(Object.assign({},t),{ratings:e});r.comments.push(i)}}t.send(r)}catch(e){t.status(404),r(e)}})),u.get("/user/:id",n.requiresAuthentication,(0,s.param)("id").isMongoId(),(async(e,t,r)=>{try{const i=await l.getComments();i.comments.length<1&&t.send(i),"a"/* || req.userId !== comments.comments[0].id */===e.role?
+u.get("/event/:id",n.optionalAuthentication,(0,s.param)("id").isMongoId(),(async(e,t,r)=>{var a;const i=null===(a=e.params)||void 0===a?void 0:a.id;try{const e=await l.getCommentsOfEvent(i),r={comments:[]};for(const t of e.comments){const e=await m.getRatingsOfComment(t.id);if(t.creatorName){let a=Object.assign(Object.assign({},t),{ratings:e});r.comments.push(a)}}t.send(r)}catch(e){t.status(404),r(e)}})),u.get("/user/:id",n.requiresAuthentication,(0,s.param)("id").isMongoId(),(async(e,t,r)=>{try{const a=await l.getComments();a.comments.length<1&&t.send(a),"a"/* || req.userId !== comments.comments[0].id */===e.role?
 //admin dashboard for comments of an user and user dashbaord of comments
-t.status(200).send(i):(t.status(403),r(new Error("Unauthorized for this resource!")))}catch(e){t.status(404),r(e)}})),
+t.status(200).send(a):(t.status(403),r(new Error("Unauthorized for this resource!")))}catch(e){t.status(404),r(e)}})),
 /**
  * @swagger
  * /api/comments/post:
@@ -157,9 +157,161 @@ t.status(200).send(i):(t.status(403),r(new Error("Unauthorized for this resource
  *             example:
  *               error: Only users are authorized to create comments!
  */
-u.post("/post",n.requiresAuthentication,(0,s.body)("title").isString().isLength({min:1,max:100}),(0,s.body)("stars").isInt().custom((e=>e>=1&&e<=5)),(0,s.body)("content").isString().isLength({min:0,max:1e3}),(0,s.body)("creator").isMongoId(),(0,s.body)("edited").optional().isBoolean(),(0,s.body)("event").isMongoId(),(async(e,t,r)=>{const i=(0,s.validationResult)(e);if(!i.isEmpty())return t.status(400).json({errors:i.array()});"u"!==e.role&&e.body.creator!==e.userId&&(t.status(403),r(new Error("Only users are authorized to create comments!")));try{const r=(0,s.matchedData)(e),i=await l.createComment(r);t.status(201).send(i)}catch(e){t.status(400),r(e)}})),u.put("/:id",n.requiresAuthentication,(0,s.param)("id").isMongoId(),(0,s.body)("title").isString().isLength({min:1,max:100}),(0,s.body)("stars").isInt().custom((e=>e>=1&&e<=5)),(0,s.body)("content").isString().isLength({min:0,max:1e3}),(0,s.body)("creator").isMongoId(),(0,s.body)("edited").optional().isBoolean(),(0,s.body)("event").isMongoId(),(async(e,t,r)=>{const i=(0,s.validationResult)(e);if(!i.isEmpty())return t.status(400).json({errors:i.array()});"u"===e.role&&e.body.creator!==e.userId&&(t.status(403),r(new Error("Only admins or the creator are authorized to update comments!")));try{const r=(0,s.matchedData)(e);r.id===e.params.id&&(r.id=e.params.id);const i=await l.updateComment(r);t.status(200).send(i)}catch(e){t.status(400),r(e)}})),u.delete("/:id",n.requiresAuthentication,(0,s.param)("id").isMongoId(),(async(e,t,r)=>{const i=e.params.id,a=await c.Comment.findById(i).exec();if("u"===e.role&&a.creator.toString()!==e.userId)return t.status(403),void r(new Error("Only Admins and the creator of the comment are authorized to delete comments!"));try{await m.deleteRatingsOfComment(i),await l.deleteComment(i),t.sendStatus(204)}catch(e){t.status(404),r(e)}})),t.default=u},
+u.post("/post",n.requiresAuthentication,(0,s.body)("title").isString().isLength({min:1,max:100}),(0,s.body)("stars").isInt().custom((e=>e>=1&&e<=5)),(0,s.body)("content").isString().isLength({min:0,max:1e3}),(0,s.body)("creator").isMongoId(),(0,s.body)("edited").optional().isBoolean(),(0,s.body)("event").isMongoId(),(async(e,t,r)=>{const a=(0,s.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});"u"===e.role&&e.body.creator!==e.userId&&(t.status(403),r(new Error("Not authorized to post comment.")));try{const r=(0,s.matchedData)(e),a=await l.createComment(r);t.status(201).send(a)}catch(e){t.status(400),r(e)}})),
+/**
+ * @swagger
+ * /api/comments/{id}:
+ *   put:
+ *     summary: Update a comment
+ *     description: Update an existing comment by ID.
+ *     tags:
+ *       - Comments
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the comment to update
+ *         schema:
+ *           type: string
+ *           format: mongo-id
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Amazing"
+ *                 description: "Title of the comment (max length: 100)"
+ *               stars:
+ *                 type: integer
+ *                 example: 4
+ *                 description: "Number of stars (1-5)"
+ *               content:
+ *                 type: string
+ *                 example: "The best Event that i have joined in my entire life"
+ *                 description: "Content of the comment (max length: 1000)"
+ *               creator:
+ *                 type: string
+ *                 format: mongo-id
+ *                 description: "ID of the comment creator (User ID)"
+ *               edited:
+ *                 type: boolean
+ *                 default: false
+ *                 description: "Indicates if the comment has been edited"
+ *               event:
+ *                 type: string
+ *                 format: mongo-id
+ *                 description: "ID of the associated event"
+ *     responses:
+ *       '200':
+ *         description: Successful update
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/IComment'
+ *       '400':
+ *         description: Bad request, validation error or other errors
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Bad request, validation error or other errors
+ *       '403':
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Only admins or the creator are authorized to update comments!
+ *       '404':
+ *         description: Comment not found or unauthorized to update
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Comment not found or unauthorized to update
+ */
+u.put("/:id",n.requiresAuthentication,(0,s.param)("id").isMongoId(),(0,s.body)("title").isString().isLength({min:1,max:100}),(0,s.body)("stars").isInt().custom((e=>e>=1&&e<=5)),(0,s.body)("content").isString().isLength({min:0,max:1e3}),(0,s.body)("creator").isMongoId(),(0,s.body)("edited").optional().isBoolean(),(0,s.body)("event").isMongoId(),(async(e,t,r)=>{const a=(0,s.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});"u"===e.role&&e.body.creator!==e.userId&&(t.status(403),r(new Error("Only admins or the creator are authorized to update comments!")));try{const r=(0,s.matchedData)(e);r.id===e.params.id&&(r.id=e.params.id);const a=await l.updateComment(r);t.status(200).send(a)}catch(e){t.status(400),r(e)}})),
+/**
+ * @swagger
+ * /api/comments/{id}:
+ *   delete:
+ *     summary: Delete a comment
+ *     description: Delete an existing comment by ID.
+ *     tags:
+ *       - Comments
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the comment to delete
+ *         schema:
+ *           type: string
+ *           format: mongo-id
+ *     responses:
+ *       '204':
+ *         description: Comment deleted successfully
+ *       '403':
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Only Admins and the creator of the comment are authorized to delete comments!
+ *       '404':
+ *         description: Comment not found or unauthorized to delete
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Comment not found or unauthorized to delete
+ */
+u.delete("/:id",n.requiresAuthentication,(0,s.param)("id").isMongoId(),(async(e,t,r)=>{const a=e.params.id,i=await c.Comment.findById(a).exec();if("u"===e.role&&i.creator.toString()!==e.userId)return t.status(403),void r(new Error("Only Admins and the creator of the comment are authorized to delete comments!"));try{await m.deleteRatingsOfComment(a),await l.deleteComment(a),t.sendStatus(204)}catch(e){t.status(404),r(e)}})),
+/**
+ * @swagger
+ * /api/comments/event/{id}/average-rating:
+ *   get:
+ *     summary: Calculate the average rating of an event based on comments
+ *     description: Retrieves the average rating of an event by its ID using the comments associated with it.
+ *     tags:
+ *       - Comments
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the event to calculate the average rating for
+ *         schema:
+ *           type: string
+ *           format: mongo-id
+ *     responses:
+ *       '200':
+ *         description: Successful response with average rating
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 averageRating:
+ *                   type: number
+ *                   description: The calculated average rating of the event based on comments
+ *                   example: 3.5
+ *       '400':
+ *         description: Bad request, invalid ID format
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Bad request, invalid ID format
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal Server Error
+ */
+u.get("/event/:id/average-rating",(0,s.param)("id").isMongoId(),(async(e,t,r)=>{try{const r=e.params.id,a=await l.getAverageRatingForEvent(r);t.status(200).json({averageRating:a})}catch(e){t.status(500).json({error:"Internal Server Error"})}})),t.default=u},
 /***/996:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(860)),n=r(682),s=r(468),o=r(553),d=r(0),c=a.default.Router(),u=new n.EventService;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(682),s=r(468),o=r(553),d=r(0),c=i.default.Router(),u=new n.EventService;
 /**
  * @swagger
  * /api/events/search:
@@ -191,9 +343,9 @@ u.post("/post",n.requiresAuthentication,(0,s.body)("title").isString().isLength(
  *       500:
  *         description: "Internal server error"
  */
-c.get("/search",s.optionalAuthentication,[(0,o.query)("query").isString().notEmpty()],(async(e,t,r)=>{const i=(0,o.validationResult)(e);if(!i.isEmpty())return t.status(400).json({errors:i.array()});try{
+c.get("/search",s.optionalAuthentication,[(0,o.query)("query").isString().notEmpty()],(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});try{
 //console.log(query)
-const r=e.query.query,i=await u.searchEvents(r);if(0===i.events.length)return t.status(204).json({message:"No events found matching the query."});t.status(200).send(i)}catch(e){t.status(404),r(e)}})),
+const r=e.query.query,a=await u.searchEvents(r);if(0===a.events.length)return t.status(204).json({message:"No events found matching the query."});t.status(200).send(a)}catch(e){t.status(404),r(e)}})),
 /**
  * @swagger
  * paths:
@@ -506,9 +658,9 @@ c.get("/:eventid/participants",s.requiresAuthentication,(0,o.param)("eventid").i
  *       500:
  *         description: "Internal server error"
  */
-c.get("/:eventid",s.optionalAuthentication,(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const i=(0,o.validationResult)(e);if(!i.isEmpty())return t.status(400).json({errors:i.array()});try{const r=await u.getEvent(e.params.eventid);t.status(200).send(r)}catch(e){t.status(404),r(e)}})),c.put("/:eventid",s.requiresAuthentication,d.upload.single("thumbnail"),(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const i=(0,o.validationResult)(e);if(!i.isEmpty())return e.file&&
+c.get("/:eventid",s.optionalAuthentication,(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});try{const r=await u.getEvent(e.params.eventid);t.status(200).send(r)}catch(e){t.status(404),r(e)}})),c.put("/:eventid",s.requiresAuthentication,d.upload.single("thumbnail"),(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return e.file&&
 // Delete the file
-(0,d.deleteEventThumbnail)(e.file.path),t.status(400).json({errors:i.array()});try{const r=await u.getEvent(e.params.eventid);e.file&&(e.body.thumbnail=`/uploads/${e.file.filename}`,r.thumbnail&&(0,d.deleteEventThumbnail)(r.thumbnail));const i=e.body,a=await u.updateEvent(e.params.eventid,i,e.userId);t.status(200).send(a)}catch(i){(0,d.deleteEventThumbnail)(e.body.thumbnail),t.status(404),r(i)}})),
+(0,d.deleteEventThumbnail)(e.file.path),t.status(400).json({errors:a.array()});try{const r=await u.getEvent(e.params.eventid);e.file&&(e.body.thumbnail=`/uploads/${e.file.filename}`,r.thumbnail&&(0,d.deleteEventThumbnail)(r.thumbnail));const a=e.body,i=await u.updateEvent(e.params.eventid,a,e.userId);t.status(200).send(i)}catch(a){(0,d.deleteEventThumbnail)(e.body.thumbnail),t.status(404),r(a)}})),
 /**
  * @swagger
  * /api/events/{eventid}:
@@ -539,7 +691,7 @@ c.get("/:eventid",s.optionalAuthentication,(0,o.param)("eventid").isMongoId(),(a
  *     security:
  *       - bearerAuth: []
  */
-c.delete("/:eventid",s.requiresAuthentication,(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{try{const r=await u.getEvent(e.params.eventid),i=await u.deleteEvent(e.params.eventid,e.userId);r.thumbnail&&(0,d.deleteEventThumbnail)(r.thumbnail),i?t.status(204).json({message:"Event successfully deleted"}):t.status(405).json({error:"Event could not be deleted"})}catch(e){t.status(404),r(e)}})),
+c.delete("/:eventid",s.requiresAuthentication,(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{try{const r=await u.getEvent(e.params.eventid),a=await u.deleteEvent(e.params.eventid,e.userId);r.thumbnail&&(0,d.deleteEventThumbnail)(r.thumbnail),a?t.status(204).json({message:"Event successfully deleted"}):t.status(405).json({error:"Event could not be deleted"})}catch(e){t.status(404),r(e)}})),
 /**
  * @swagger
  * /api/events/creator/{userid}:
@@ -583,7 +735,7 @@ c.delete("/:eventid",s.requiresAuthentication,(0,o.param)("eventid").isMongoId()
  *       '404':
  *         description: Not found
  */
-c.get("/creator/:userid",s.requiresAuthentication,(0,o.param)("userid").isMongoId(),(async(e,t,r)=>{if("a"===e.role||e.params.userid===e.userId)try{const r=e.params.userid,i=await u.getEvents(r);if(0===i.events.length)return t.status(204).json({message:"No events found."});t.status(200).send(i)}catch(e){t.status(404),r(e)}else t.status(403),r(new Error("Invalid authorization"))})),
+c.get("/creator/:userid",s.requiresAuthentication,(0,o.param)("userid").isMongoId(),(async(e,t,r)=>{if("a"===e.role||e.params.userid===e.userId)try{const r=e.params.userid,a=await u.getEvents(r);if(0===a.events.length)return t.status(204).json({message:"No events found."});t.status(200).send(a)}catch(e){t.status(404),r(e)}else t.status(403),r(new Error("Invalid authorization"))})),
 /**
  * @swagger
  * /api/events/:
@@ -619,7 +771,7 @@ c.get("/creator/:userid",s.requiresAuthentication,(0,o.param)("userid").isMongoI
  */
 c.get("/",s.optionalAuthentication,(async(e,t,r)=>{try{const e=await u.getAllEvents();if(0===e.events.length)return t.status(204).json({message:"No events found."});t.status(200).send(e)}catch(e){t.status(404),r(e)}})),t.default=c},
 /***/79:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(860)),n=r(553),s=r(105),o=r(0),d=r(448),c=r(468),u=a.default.Router(),l=new s.UserService;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(553),s=r(105),o=r(0),d=r(448),c=r(468),u=i.default.Router(),l=new s.UserService;
 /**
  * @swagger
  * /api/users/register:
@@ -741,7 +893,7 @@ u.post("/register",o.upload.single("profilePicture"),[(0,n.body)("email").isEmai
  *     security:
  *       - bearerAuth: []
  */
-u.get("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(async(e,t,r)=>{const i=(0,n.validationResult)(e);if(!i.isEmpty())return t.status(400).json({errors:i.array()});const a=e.params.userid;if("a"!==e.role&&a!==e.userId)t.status(403),r(new Error("Invalid authorization, can not get User."));else try{const e=await l.getUser(a);t.status(200).json(e)}catch(e){t.status(404),r(e)}})),
+u.get("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(async(e,t,r)=>{const a=(0,n.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});const i=e.params.userid;if("a"!==e.role&&i!==e.userId)t.status(403),r(new Error("Invalid authorization, can not get User."));else try{const e=await l.getUser(i);t.status(200).json(e)}catch(e){t.status(404),r(e)}})),
 /**
  * @swagger
  * /api/users/{userid}:
@@ -820,12 +972,12 @@ u.get("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(asy
  *             example:
  *               error: Update failed
  */
-u.put("/:userid",c.requiresAuthentication,o.upload.single("profilePicture"),[(0,n.param)("userid").isMongoId()],d.validate,(async(e,t,r)=>{const i=(0,n.validationResult)(e);if(!i.isEmpty())return e.file&&
+u.put("/:userid",c.requiresAuthentication,o.upload.single("profilePicture"),[(0,n.param)("userid").isMongoId()],d.validate,(async(e,t,r)=>{const a=(0,n.validationResult)(e);if(!a.isEmpty())return e.file&&
 // Delete the file
-(0,o.deleteProfilePicture)(e.file.path),t.status(400).json({errors:i.array()});const a=e.params.userid;if("a"===e.role||a===e.userId){const r=await l.getUser(a);try{e.file&&(e.body.profilePicture=`/uploads/${e.file.filename}`,r.profilePicture&&(0,o.deleteProfilePicture)(r.profilePicture))}catch(r){(0,o.deleteProfilePicture)(e.body.profilePicture),t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}}
+(0,o.deleteProfilePicture)(e.file.path),t.status(400).json({errors:a.array()});const i=e.params.userid;if("a"===e.role||i===e.userId){const r=await l.getUser(i);try{e.file&&(e.body.profilePicture=`/uploads/${e.file.filename}`,r.profilePicture&&(0,o.deleteProfilePicture)(r.profilePicture))}catch(r){(0,o.deleteProfilePicture)(e.body.profilePicture),t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}}
 //req.body.name = JSON.parse(req.body.name);
 const s=e.body;//matchedData(req) as userResource;
-if(s.id=a,"a"===e.role)try{const e=await l.updateUserWithAdmin(s);t.status(200).send(e)}catch(e){t.status(404),r(e)}else if(e.userId!==a)t.status(403),r(new Error("Invalid authorization, can not update user."));else try{let r;e.body.oldPassword&&(r=e.body.oldPassword);const i=await l.updateUserWithPw(s,r);t.status(200).send(i)}catch(e){t.status(403),r(new Error("Invalid authorization, probably invalid password."))}})),
+if(s.id=i,"a"===e.role)try{const e=await l.updateUserWithAdmin(s);t.status(200).send(e)}catch(e){t.status(404),r(e)}else if(e.userId!==i)t.status(403),r(new Error("Invalid authorization, can not update user."));else try{let r;e.body.oldPassword&&(r=e.body.oldPassword);const a=await l.updateUserWithPw(s,r);t.status(200).send(a)}catch(e){t.status(403),r(new Error("Invalid authorization, probably invalid password."))}})),
 /**
  * @swagger
  * /api/users/{userid}:
@@ -872,9 +1024,9 @@ if(s.id=a,"a"===e.role)try{const e=await l.updateUserWithAdmin(s);t.status(200).
  *     security:
  *       - bearerAuth: []
  */
-u.delete("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(async(e,t,r)=>{const i=e.params.userid;try{if("a"===e.role){const e=await l.getUser(i),r=await l.deleteUser(i,!1);try{e.profilePicture&&(0,o.deleteProfilePicture)(e.profilePicture)}catch(e){t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}t.status(204).send(r)}else if(e.userId===i){const e=await l.getUser(i),r=await l.deleteUser(i,!0);try{e.profilePicture&&(0,o.deleteProfilePicture)(e.profilePicture)}catch(e){t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}t.status(204).send(r)}else t.send(403),r(new Error("Invalid authorization, can not delete user."))}catch(e){t.send(404),r(new Error("Probably invalid userid, can not delete user."))}})),t.default=u},
+u.delete("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(async(e,t,r)=>{const a=e.params.userid;try{if("a"===e.role){const e=await l.getUser(a),r=await l.deleteUser(a,!1);try{e.profilePicture&&(0,o.deleteProfilePicture)(e.profilePicture)}catch(e){t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}t.status(204).send(r)}else if(e.userId===a){const e=await l.getUser(a),r=await l.deleteUser(a,!0);try{e.profilePicture&&(0,o.deleteProfilePicture)(e.profilePicture)}catch(e){t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}t.status(204).send(r)}else t.send(403),r(new Error("Invalid authorization, can not delete user."))}catch(e){t.send(404),r(new Error("Probably invalid userid, can not delete user."))}})),t.default=u},
 /***/562:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(860)),n=r(105),s=r(468),o=a.default.Router(),d=new n.UserService;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(105),s=r(468),o=i.default.Router(),d=new n.UserService;
 /**
  * @swagger
  * /api/users/:
@@ -917,20 +1069,20 @@ u.delete("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(
  */
 o.get("/users",s.requiresAuthentication,(async(e,t,r)=>{if("a"!==e.role)t.status(403),r(new Error("Invalid authorization"));else try{const e=await d.getUsers();t.status(200).send(e)}catch(e){t.status(404),r(e)}})),t.default=o},
 /***/468:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.optionalAuthentication=t.requiresAuthentication=void 0;const i=r(829);
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.optionalAuthentication=t.requiresAuthentication=void 0;const a=r(829);
 /**
  * Prüft Authentifizierung und schreibt `userId` mit Mongo-ID des Users und `role` mit Kürzel der Rolle in den Request.
  * Falls Authentifizierung fehlschlägt, wird ein Fehler (401) erzeugt.
- */t.requiresAuthentication=async function(e,t,r){try{const a=e.headers.authorization;if(a&&a.startsWith("Bearer ")){const n=a.substring(7),{userId:s,role:o}=(0,i.verifyJWT)(n);if(!s||!o)return t.status(401),r(new Error("Authentication Failed"));e.userId=s,e.role=o,r()}else t.status(401),t.setHeader("WWW-Authenticate",["Bearer",'realm="app"']),r(new Error("authentication required!"))}catch(e){t.status(401),t.setHeader("WWW-Authenticate",["Bearer",'realm="app"','error="invalid_token"']),r(e)}},t.optionalAuthentication=
+ */t.requiresAuthentication=async function(e,t,r){try{const i=e.headers.authorization;if(i&&i.startsWith("Bearer ")){const n=i.substring(7),{userId:s,role:o}=(0,a.verifyJWT)(n);if(!s||!o)return t.status(401),r(new Error("Authentication Failed"));e.userId=s,e.role=o,r()}else t.status(401),t.setHeader("WWW-Authenticate",["Bearer",'realm="app"']),r(new Error("authentication required!"))}catch(e){t.status(401),t.setHeader("WWW-Authenticate",["Bearer",'realm="app"','error="invalid_token"']),r(e)}},t.optionalAuthentication=
 /**
  * Prüft Authentifizierung und schreibt `userId` mit Mongo-ID des Users und `role` mit Kürzel der Rolle in den Request.
  * Falls kein JSON-Web-Token im Request-Header vorhanden ist, wird kein Fehler erzeugt (und auch nichts in den Request geschrieben).
  * Falls Authentifizierung fehlschlägt, wird ein Fehler (401) erzeugt.
  */
-async function(e,t,r){const a=e.headers.authorization;if(a)try{const n=a.split(" ")[1],{userId:s,role:o}=(0,i.verifyJWT)(n);if(!s||!o)return t.status(401),r(new Error("Authentication Failed"));e.userId=s,e.role=o,r()}catch(e){t.status(401),r(e)}else r()}}
+async function(e,t,r){const i=e.headers.authorization;if(i)try{const n=i.split(" ")[1],{userId:s,role:o}=(0,a.verifyJWT)(n);if(!s||!o)return t.status(401),r(new Error("Authentication Failed"));e.userId=s,e.role=o,r()}catch(e){t.status(401),r(e)}else r()}}
 /***/,
 /***/11:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(860)),n=r(553),s=r(829),o=a.default.Router();
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(553),s=r(829),o=i.default.Router();
 /**
  * @swagger
  * /api/login/:
@@ -992,11 +1144,11 @@ async function(e,t,r){const a=e.headers.authorization;if(a)try{const n=a.split("
  * Diese Funktion bitte noch nicht implementieren, sie steht hier als Platzhalter.
  * Wir benötigen dafür Authentifizierungsinformationen, die wir später in einem JSW speichern.
  */
-o.post("/",(0,n.body)("email").isEmail(),(0,n.body)("password").isStrongPassword(),(async(e,t,r)=>{const i=(0,n.validationResult)(e);if(!i.isEmpty())return t.status(400).json({errors:i.array()});
+o.post("/",(0,n.body)("email").isEmail(),(0,n.body)("password").isStrongPassword(),(async(e,t,r)=>{const a=(0,n.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});
 //const loginResource = matchedData(req) as LoginResource;
-const a=(0,n.matchedData)(e),o=await(0,s.verifyPasswordAndCreateJWT)(a.email,a.password);o||(t.status(401),r(new Error("no jwtstring")));const d={access_token:o,token_type:"Bearer"};t.send(d)})),t.default=o},
+const i=(0,n.matchedData)(e),o=await(0,s.verifyPasswordAndCreateJWT)(i.email,i.password);o||(t.status(401),r(new Error("no jwtstring")));const d={access_token:o,token_type:"Bearer"};t.send(d)})),t.default=o},
 /***/282:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.CommentService=void 0;const i=r(185),a=r(439),n=r(95),s=r(893),o=r(924);t.CommentService=class{
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.CommentService=void 0;const a=r(185),i=r(439),n=r(95),s=r(893),o=r(924);t.CommentService=class{
 /**
      * finds all existing comments,
      * fills in creator and event name by populating documents.
@@ -1004,26 +1156,26 @@ const a=(0,n.matchedData)(e),o=await(0,s.verifyPasswordAndCreateJWT)(a.email,a.p
      * (comments where event/creator is invalid/missing are invalid).
      * @returns all existing comments
      */
-async getComments(){const e=await a.Comment.find({}).populate("creator","name").populate("event","name").exec(),t=[],r=e.filter((e=>!(!e.event||!e.creator)||(t.push(this.deleteComment(e.id)),!1)));await Promise.all(t);return{comments:r.map((e=>({id:e.id,title:e.title,stars:e.stars,content:e.content,createdAt:(0,s.dateToString)(e.createdAt),creator:e.creator._id.toString(),creatorName:e.creator.name,event:e.event._id.toString(),eventName:e.event.name,edited:e.edited})))}}
+async getComments(){const e=await i.Comment.find({}).populate("creator","name").populate("event","name").exec(),t=[],r=e.filter((e=>!(!e.event||!e.creator)||(t.push(this.deleteComment(e.id)),!1)));await Promise.all(t);return{comments:r.map((e=>({id:e.id,title:e.title,stars:e.stars,content:e.content,createdAt:(0,s.dateToString)(e.createdAt),creator:e.creator._id.toString(),creatorName:e.creator.name,event:e.event._id.toString(),eventName:e.event.name,edited:e.edited})))}}
 /**
      * populates the name of the event and sets the creatorName of every comment of the user.
      * @param userId specifies the user
      * @returns array of all comments from a user
-     */async getCommentsOfUser(e){const t=await n.User.findById(e);if(!t)throw new Error(`Invalid userId ${e}, can not find Comment!`);const r=await a.Comment.find({creator:t.id}).populate("event","name").exec(),i=[],o=r.filter((e=>!!e.event||(i.push(this.deleteComment(e.id)),!1)));await Promise.all(i);return{comments:o.map((e=>({id:e.id,title:e.title,stars:e.stars,content:e.content,createdAt:(0,s.dateToString)(e.createdAt),creator:t.id,creatorName:t.name,event:e.event._id.toString(),eventName:e.event.name,edited:e.edited})))}}async getCommentsOfEvent(e){const t=await o.Event.findById(e);if(!t)throw new Error(`Invalid eventId ${e}, can not find Comment!`);const r=await a.Comment.find({event:t.id}).populate("creator","name").exec(),i=[],n=r.filter((e=>!!e.creator||(i.push(this.deleteComment(e.id)),!1)));await Promise.all(i);return{comments:n.map((e=>({id:e.id,title:e.title,stars:e.stars,content:e.content,createdAt:(0,s.dateToString)(e.createdAt),creator:e.creator._id.toString(),creatorName:e.creator.name,event:t.id,eventName:t.name,edited:e.edited})))}}
+     */async getCommentsOfUser(e){const t=await n.User.findById(e);if(!t)throw new Error(`Invalid userId ${e}, can not find Comment!`);const r=await i.Comment.find({creator:t.id}).populate("event","name").exec(),a=[],o=r.filter((e=>!!e.event||(a.push(this.deleteComment(e.id)),!1)));await Promise.all(a);return{comments:o.map((e=>({id:e.id,title:e.title,stars:e.stars,content:e.content,createdAt:(0,s.dateToString)(e.createdAt),creator:t.id,creatorName:t.name,event:e.event._id.toString(),eventName:e.event.name,edited:e.edited})))}}async getCommentsOfEvent(e){const t=await o.Event.findById(e);if(!t)throw new Error(`Invalid eventId ${e}, can not find Comment!`);const r=await i.Comment.find({event:t.id}).populate("creator","name").exec(),a=[],n=r.filter((e=>!!e.creator||(a.push(this.deleteComment(e.id)),!1)));await Promise.all(a);return{comments:n.map((e=>({id:e.id,title:e.title,stars:e.stars,content:e.content,createdAt:(0,s.dateToString)(e.createdAt),creator:e.creator._id.toString(),creatorName:e.creator.name,event:t.id,eventName:t.name,edited:e.edited})))}}
 /**
      * used to create comments.
      * Every user can only post one comment for each event.
      * @param comment describes the comment
      * @returns the created comment with additional information (creatorName, eventName and date of creation).
-     */async createComment(e){if(await a.Comment.findOne({creator:e.creator,event:e.event}))throw new Error("User has already submitted a comment for this event.");const t=await n.User.findById(e.creator),r=await o.Event.findById(e.event);if(!t)throw new Error(`No creator with id: ${e.creator} exists, can not create comment.`);if(!r)throw new Error(`No event with id: ${e.event} exists, can not create comment.`);const i=await a.Comment.create({title:e.title,stars:e.stars,content:e.content,creator:t.id,creatorName:t.name,event:r.id,eventName:r.name});return{id:i.id,title:i.title,stars:i.stars,content:i.content,creator:t.id,creatorName:t.name,event:r.id,eventName:r.name,createdAt:(0,s.dateToString)(i.createdAt),edited:i.edited}}
+     */async createComment(e){if(await i.Comment.findOne({creator:e.creator,event:e.event}))throw new Error("User has already submitted a comment for this event.");const t=await n.User.findById(e.creator),r=await o.Event.findById(e.event);if(!t)throw new Error(`No creator with id: ${e.creator} exists, can not create comment.`);if(!r)throw new Error(`No event with id: ${e.event} exists, can not create comment.`);const a=await i.Comment.create({title:e.title,stars:e.stars,content:e.content,creator:t.id,creatorName:t.name,event:r.id,eventName:r.name});return{id:a.id,title:a.title,stars:a.stars,content:a.content,creator:t.id,creatorName:t.name,event:r.id,eventName:r.name,createdAt:(0,s.dateToString)(a.createdAt),edited:a.edited}}
 /**
      * Updated ein Kommentar. Es können nur title, stars und content aktualisiert werden.
      * Edited wird auf true gesetzt.
-     */async updateComment(e){if(!e.id)throw new Error("CommentId missing, can not update.");const t=await a.Comment.findById(e.id).exec();if(!t)throw new Error(`No comment with id: ${e.id} exists, can not update comment.`);const r=await n.User.findById(t.creator).exec(),i=await o.Event.findById(t.event).exec(),d=await n.User.findById(e.creator),c=await o.Event.findById(e.event);if(!d)throw new Error(`No creator with id: ${e.creator} exists, can not update comment.`);if(!c)throw new Error(`No event with id: ${e.event} exists, can not update comment.`);e.title&&e.title!=t.title&&(t.title=e.title,t.edited=!0),e.stars&&e.stars!=t.stars&&(t.stars=e.stars,t.edited=!0),e.content&&e.content!=t.content&&(t.content=e.content,t.edited=!0);const u=await t.save();return{id:u.id,title:u.title,stars:u.stars,content:u.content,edited:u.edited,createdAt:(0,s.dateToString)(u.createdAt),creator:r.id,creatorName:r.name,event:i.id,eventName:i.name}}
+     */async updateComment(e){if(!e.id)throw new Error("CommentId missing, can not update.");const t=await i.Comment.findById(e.id).exec();if(!t)throw new Error(`No comment with id: ${e.id} exists, can not update comment.`);const r=await n.User.findById(t.creator).exec(),a=await o.Event.findById(t.event).exec(),d=await n.User.findById(e.creator),c=await o.Event.findById(e.event);if(!d)throw new Error(`No creator with id: ${e.creator} exists, can not update comment.`);if(!c)throw new Error(`No event with id: ${e.event} exists, can not update comment.`);e.title&&e.title!=t.title&&(t.title=e.title,t.edited=!0),e.stars&&e.stars!=t.stars&&(t.stars=e.stars,t.edited=!0),e.content&&e.content!=t.content&&(t.content=e.content,t.edited=!0);const u=await t.save();return{id:u.id,title:u.title,stars:u.stars,content:u.content,edited:u.edited,createdAt:(0,s.dateToString)(u.createdAt),creator:r.id,creatorName:r.name,event:a.id,eventName:a.name}}
 /**
      * Deletes comment and all ratings of said comment.
      * @param id comment to be deleted.
-     */async deleteComment(e){if(!e)throw new Error("CommentId missing, can not delete.");if(!await a.Comment.findById(e).exec())throw new Error(`Comment ${e} does not exist, can not delete.`);await a.Comment.deleteOne({_id:new i.Types.ObjectId(e)}).exec()}
+     */async deleteComment(e){if(!e)throw new Error("CommentId missing, can not delete.");if(!await i.Comment.findById(e).exec())throw new Error(`Comment ${e} does not exist, can not delete.`);await i.Comment.deleteOne({_id:new a.Types.ObjectId(e)}).exec()}
 /**
      * used to delete all comments of a user who gets deleted.
      * comments of non exisiting users are not needed and are getting deleted.
@@ -1040,7 +1192,7 @@ async getComments(){const e=await a.Comment.find({}).populate("creator","name").
         
         await Comment.deleteMany({ creator:user._id }).exec();
         */
-await a.Comment.deleteMany({creator:e}).exec()}
+await i.Comment.deleteMany({creator:e}).exec()}
 /**
      * used to delete all Comments of a event that gets removed from database.
      * comments of non existing events are not needed and are getting deleted.
@@ -1057,54 +1209,55 @@ await a.Comment.deleteMany({creator:e}).exec()}
         
         await Comment.deleteMany({ event:event._id }).exec();
         */
-await a.Comment.deleteMany({event:e}).exec()}}}
+await i.Comment.deleteMany({event:e}).exec()}async getAverageRatingForEvent(e){const t=await i.Comment.find({event:e}).exec();if(!t||0===t.length)return 0;// If no comments found, return 0 as the average rating
+return t.reduce(((e,t)=>e+t.stars),0)/t.length}}}
 /***/,
 /***/682:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.EventService=void 0;const i=r(185),a=r(924),n=r(95),s=new(r(282).CommentService);class o{
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.EventService=void 0;const a=r(185),i=r(924),n=r(95),s=new(r(282).CommentService);class o{
 /**
      * Event erstellen
      */
-async createEvent(e,t){try{const r=await n.User.findById(t),s=await a.Event.create({name:e.name,creator:r.id,description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:new i.Types.ObjectId,participants:[t]});return{id:s.id,name:s.name,creator:s.creator.toString(),description:s.description,price:s.price,date:s.date,address:s.address,thumbnail:s.thumbnail,hashtags:s.hashtags,category:s.category,chat:s.chat.toString(),participants:s.participants.map((e=>e.toString()))}}catch(e){throw new Error("Event creation failed")}}
+async createEvent(e,t){try{const r=await n.User.findById(t),s=await i.Event.create({name:e.name,creator:r.id,description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:new a.Types.ObjectId,participants:[t]});return{id:s.id,name:s.name,creator:s.creator.toString(),description:s.description,price:s.price,date:s.date,address:s.address,thumbnail:s.thumbnail,hashtags:s.hashtags,category:s.category,chat:s.chat.toString(),participants:s.participants.map((e=>e.toString()))}}catch(e){throw new Error("Event creation failed")}}
 /**
      * Ein bestimmtes Event abrufen
-     */async getEvent(e){try{const t=await a.Event.findById(e).exec();if(!t)throw new Error("Event not found");return{id:t.id,name:t.name,creator:t.creator.toString(),description:t.description,price:t.price,date:t.date,address:t.address,thumbnail:t.thumbnail,hashtags:t.hashtags,category:t.category,chat:t.chat.toString(),participants:t.participants.map((e=>e.toString()))}}catch(e){throw new Error("Error getting event")}}
+     */async getEvent(e){try{const t=await i.Event.findById(e).exec();if(!t)throw new Error("Event not found");return{id:t.id,name:t.name,creator:t.creator.toString(),description:t.description,price:t.price,date:t.date,address:t.address,thumbnail:t.thumbnail,hashtags:t.hashtags,category:t.category,chat:t.chat.toString(),participants:t.participants.map((e=>e.toString()))}}catch(e){throw new Error("Error getting event")}}
 /**
      * Alle erstellten Events abrufen ( Event Manager / Admin )
-     */async getEvents(e){if(!e)throw new Error("Can not get creator, userID is invalid");try{const t=await a.Event.find({creator:e}).exec();return{events:t.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error getting events")}}
+     */async getEvents(e){if(!e)throw new Error("Can not get creator, userID is invalid");try{const t=await i.Event.find({creator:e}).exec();return{events:t.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error getting events")}}
 /**
      * Alle Events abrufen
-     */async getAllEvents(){try{const e=await a.Event.find({}).exec();return{events:e.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error getting events")}}
+     */async getAllEvents(){try{const e=await i.Event.find({}).exec();return{events:e.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error getting events")}}
 /**
      * Events filtern / Event suchen
-     */async searchEvents(e){if(!e||0===e.trim().length)return this.getAllEvents();try{const t=await a.Event.find({$or:[{name:{$regex:new RegExp(e,"i")}},{description:{$regex:new RegExp(e,"i")}},{hashtags:{$in:[new RegExp(e,"i")]}}]}).exec();return{events:t.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error searching events")}}
+     */async searchEvents(e){if(!e||0===e.trim().length)return this.getAllEvents();try{const t=await i.Event.find({$or:[{name:{$regex:new RegExp(e,"i")}},{description:{$regex:new RegExp(e,"i")}},{hashtags:{$in:[new RegExp(e,"i")]}}]}).exec();return{events:t.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error searching events")}}
 /**
      * Am Event teilnehmen ( Event Teilnehmer )
-     */async joinEvent(e,t){if(!e)throw new Error(`User ID: ${e} is invalid.`);if(!t)throw new Error(`Event ID: ${t} is invalid.`);const r=await n.User.findById(e).exec(),i=await a.Event.findById(t).exec();if(!r)throw new Error("User not found");if(!i)throw new Error("Event not found");if(i.participants.includes(r._id))throw new Error("User is already participating in the event");try{return i.participants.push(r._id),await i.save(),!0}catch(e){return!1}}
+     */async joinEvent(e,t){if(!e)throw new Error(`User ID: ${e} is invalid.`);if(!t)throw new Error(`Event ID: ${t} is invalid.`);const r=await n.User.findById(e).exec(),a=await i.Event.findById(t).exec();if(!r)throw new Error("User not found");if(!a)throw new Error("Event not found");if(a.participants.includes(r._id))throw new Error("User is already participating in the event");try{return a.participants.push(r._id),await a.save(),!0}catch(e){return!1}}
 /**
      * Alle teilgenommenen Events abrufen ( Event Teilnehmer )
-     */async getJoinedEvents(e){try{const t=await a.Event.find({participants:e}).exec();return{events:t.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error getting events")}}
+     */async getJoinedEvents(e){try{const t=await i.Event.find({participants:e}).exec();return{events:t.map((e=>({id:e.id,name:e.name,creator:e.creator.toString(),description:e.description,price:e.price,date:e.date,address:e.address,thumbnail:e.thumbnail,hashtags:e.hashtags,category:e.category,chat:e.chat.toString(),participants:e.participants.map((e=>e.toString()))})))}}catch(e){throw new Error("Error getting events")}}
 /**
      * Teilnahme am Event absagen ( Event Teilnehmer )
-     */async cancelEvent(e,t){if(!e)throw new Error(`User ID: ${e} is invalid.`);if(!t)throw new Error(`Event ID: ${t} is invalid.`);const r=await a.Event.findById(t).exec();if(!r)throw new Error("Event not found");if(r.creator&&r.creator.toString()===e)throw new Error("Can not cancel participation as event manager");const n=r.participants.findIndex((t=>t.equals(new i.Types.ObjectId(e))));if(-1===n)throw new Error("User is not participating in the event");try{return r.participants.splice(n,1),await r.save(),!0}catch(e){return!1}}
+     */async cancelEvent(e,t){if(!e)throw new Error(`User ID: ${e} is invalid.`);if(!t)throw new Error(`Event ID: ${t} is invalid.`);const r=await i.Event.findById(t).exec();if(!r)throw new Error("Event not found");if(r.creator&&r.creator.toString()===e)throw new Error("Can not cancel participation as event manager");const n=r.participants.findIndex((t=>t.equals(new a.Types.ObjectId(e))));if(-1===n)throw new Error("User is not participating in the event");try{return r.participants.splice(n,1),await r.save(),!0}catch(e){return!1}}
 /**
      * Alle Teilnehmer vom Event abrufen ( Event Manager / Admin )
-     */async getParticipants(e,t){try{const r=await a.Event.findById(e).exec();if(!r)throw new Error("Event not found");const i=await n.User.findById(r.creator).exec(),s=await n.User.findById(t);if(!i||!s||i.id!==t&&!s.isAdministrator)throw new Error("Invalid authorization");const o=r.participants,d={users:(await n.User.find({_id:{$in:o}}).exec()).map((e=>({id:e.id,name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls,isActive:e.isActive})))};return d}catch(e){throw new Error("Error getting participants")}}
+     */async getParticipants(e,t){try{const r=await i.Event.findById(e).exec();if(!r)throw new Error("Event not found");const a=await n.User.findById(r.creator).exec(),s=await n.User.findById(t);if(!a||!s||a.id!==t&&!s.isAdministrator)throw new Error("Invalid authorization");const o=r.participants,d={users:(await n.User.find({_id:{$in:o}}).exec()).map((e=>({id:e.id,name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls,isActive:e.isActive})))};return d}catch(e){throw new Error("Error getting participants")}}
 /**
      * Event bearbeiten ( Event Manager / Admin )
-     */async updateEvent(e,t,r){const i=await a.Event.findById(e).exec();if(!i)throw new Error("Event not found");const s=await n.User.findById(i.creator).exec(),o=await n.User.findById(r).exec();if(!s||!o||s._id.toString()!==r&&!o.isAdministrator)throw new Error("Invalid authorization");if(t.name&&(i.name=t.name),t.description&&(i.description=t.description),void 0!==t.price){if(t.price<0)throw new Error("Event price cannot be less than 0");0===t.price?i.price=0:i.price=t.price}t.date&&(i.date=t.date),t.address&&(i.address=t.address),t.thumbnail&&(i.thumbnail=t.thumbnail),t.hashtags&&(i.hashtags=t.hashtags),t.category&&(i.category=t.category);const d=await i.save();return{id:d.id,name:d.name,creator:d.creator.toString(),description:d.description,price:d.price,date:d.date,address:d.address,thumbnail:d.thumbnail,hashtags:d.hashtags,category:d.category,chat:d.chat.toString(),participants:d.participants.map((e=>e.toString()))}}
+     */async updateEvent(e,t,r){const a=await i.Event.findById(e).exec();if(!a)throw new Error("Event not found");const s=await n.User.findById(a.creator).exec(),o=await n.User.findById(r).exec();if(!s||!o||s._id.toString()!==r&&!o.isAdministrator)throw new Error("Invalid authorization");if(t.name&&(a.name=t.name),t.description&&(a.description=t.description),void 0!==t.price){if(t.price<0)throw new Error("Event price cannot be less than 0");0===t.price?a.price=0:a.price=t.price}t.date&&(a.date=t.date),t.address&&(a.address=t.address),t.thumbnail&&(a.thumbnail=t.thumbnail),t.hashtags&&(a.hashtags=t.hashtags),t.category&&(a.category=t.category);const d=await a.save();return{id:d.id,name:d.name,creator:d.creator.toString(),description:d.description,price:d.price,date:d.date,address:d.address,thumbnail:d.thumbnail,hashtags:d.hashtags,category:d.category,chat:d.chat.toString(),participants:d.participants.map((e=>e.toString()))}}
 /**
      * Event löschen ( Event Manager / Admin )
-     */async deleteEvent(e,t){try{const r=await a.Event.findById(e).exec();if(!r)throw new Error("Event not found");const i=await n.User.findById(r.creator).exec(),o=await n.User.findById(t).exec();if(!i||!o||i._id.toString()!==t&&!o.isAdministrator)throw new Error("Invalid authorization");return 1===(await a.Event.deleteOne({_id:e}).exec()).deletedCount&&(await s.deleteCommentsOfevent(t),!0)}catch(e){throw new Error("Error deleting event")}}}t.EventService=o,t.default=new o}
+     */async deleteEvent(e,t){try{const r=await i.Event.findById(e).exec();if(!r)throw new Error("Event not found");const a=await n.User.findById(r.creator).exec(),o=await n.User.findById(t).exec();if(!a||!o||a._id.toString()!==t&&!o.isAdministrator)throw new Error("Invalid authorization");return 1===(await i.Event.deleteOne({_id:e}).exec()).deletedCount&&(await s.deleteCommentsOfevent(e),!0)}catch(e){throw new Error("Error deleting event")}}}t.EventService=o,t.default=new o}
 /***/,
 /***/829:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.verifyJWT=t.verifyPasswordAndCreateJWT=void 0;const a=r(344),n=r(95);i(r(142)).default.config(),t.verifyPasswordAndCreateJWT=
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.verifyJWT=t.verifyPasswordAndCreateJWT=void 0;const i=r(344),n=r(95);a(r(142)).default.config(),t.verifyPasswordAndCreateJWT=
 /**
  * @param email E-Mail-Adresse des Users
  * @param password Das Passwort des Users
  * @returns JWT als String, im JWT ist sub gesetzt mit der Mongo-ID des Users als String sowie role mit "u" oder "a" (User oder Admin);
  *      oder undefined wenn Authentifizierung fehlschlägt.
  */
-async function(e,t){const r=await n.User.find({email:e,isActive:!0}).exec();if(!r||1!=r.length)return;const i=r[0];if(!await i.isCorrectPassword(t))return;const s=process.env.JWT_SECRET;if(!s)throw new Error("JWT_SECRET not set");const o=Math.floor(Date.now()/1e3),d=process.env.JWT_TTL;if(!d)throw new Error("TTL not set");const c=o+parseInt(d),u=i.isAdministrator?"a":"u",l={sub:i.id,iat:o,exp:c,role:u};return(0,a.sign)(l,s,{algorithm:"HS256"})},t.verifyJWT=
+async function(e,t){const r=await n.User.find({email:e,isActive:!0}).exec();if(!r||1!=r.length)return;const a=r[0];if(!await a.isCorrectPassword(t))return;const s=process.env.JWT_SECRET;if(!s)throw new Error("JWT_SECRET not set");const o=Math.floor(Date.now()/1e3),d=process.env.JWT_TTL;if(!d)throw new Error("TTL not set");const c=o+parseInt(d),u=a.isAdministrator?"a":"u",l={sub:a.id,iat:o,exp:c,role:u};return(0,i.sign)(l,s,{algorithm:"HS256"})},t.verifyJWT=
 /**
  * Gibt user id (Mongo-ID) und ein Kürzel der Rolle zurück, falls Verifizierung erfolgreich, sonst wird ein Error geworfen.
  *
@@ -1115,29 +1268,29 @@ async function(e,t){const r=await n.User.find({email:e,isActive:!0}).exec();if(!
  * @return user id des Users (Mongo ID als String) und Rolle (u oder a) des Benutzers;
  *      niemals undefined (bei Fehler wird ein Error geworfen)
  */
-function(e){var t;if(!e)throw new Error("No JWT-string");const r=process.env.JWT_SECRET;if(!r)throw new Error("JWT_SECRET not set");try{const i=(0,a.verify)(e,r);if("object"==typeof i&&"sub"in i&&i.sub){return{userId:null===(t=i.sub)||void 0===t?void 0:t.toString(),role:i.role}}}catch(e){throw new Error("verify_error")}throw new Error("invalid_token")}},
+function(e){var t;if(!e)throw new Error("No JWT-string");const r=process.env.JWT_SECRET;if(!r)throw new Error("JWT_SECRET not set");try{const a=(0,i.verify)(e,r);if("object"==typeof a&&"sub"in a&&a.sub){return{userId:null===(t=a.sub)||void 0===t?void 0:t.toString(),role:a.role}}}catch(e){throw new Error("verify_error")}throw new Error("invalid_token")}},
 /***/980:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.RatingService=void 0;const i=r(95),a=r(439),n=r(467),s=r(185);t.RatingService=class{async getRatingsOfComment(e){const t=await a.Comment.findById(e).exec();if(!t)throw new Error(`No comment with id: ${e} of rating found.`);return{ratings:(await n.Rating.find({comment:e}).exec()).map((e=>({id:e.id,comment:t.id,creator:e.creator.toString(),ratingType:e.ratingType})))}}async createRating(e){if(!await i.User.findById(e.creator).exec())throw new Error(`No creator with id: ${e.creator} of rating found. Can not create Rating.`);if(!await a.Comment.findById(e.comment).exec())throw new Error(`No comment with id: ${e.comment} of rating found. Can not create Rating.`);const t=await n.Rating.create(e);return Object.assign(Object.assign({},e),{id:t.id})}async updateRating(e){if(!e.id)throw new Error(`No ratingId:${e.id} found, can not update rating`);const t=await n.Rating.findById(e.id).exec();if(!t)throw new Error(`No rating with id:${e.id} found, can not update rating`);if(!await i.User.findById({_id:new s.Types.ObjectId(e.creator)}).exec())throw new Error(`No creator with id: ${e.creator} of rating found. Can not update rating.`);if(!await a.Comment.findById({_id:new s.Types.ObjectId(e.comment)}).exec())throw new Error(`No comment with id: ${e.comment} of rating found. Can not update rating.`);e.ratingType&&(t.ratingType=e.ratingType);const r=await t.save();return{id:r.id,comment:r.comment.toString(),creator:r.creator.toString(),ratingType:r.ratingType}}async deleteRating(e){if(!e)throw new Error("RatingId missing, can not delete.");if(1!==(await n.Rating.deleteOne({_id:new s.Types.ObjectId(e)}).exec()).deletedCount)throw new Error(`No rating with id ${e} deleted, probably id not valid`)}async deleteRatingsOfUser(e){if(!e)throw new Error("UserId missing, can not delete.");if(!await i.User.findById(e).exec())throw new Error(`User with id: ${e} missing, can not delete.`);await n.Rating.deleteMany({creator:e}).exec()}async deleteRatingsOfComment(e){if(!e)throw new Error("CommentId missing, can not delete.");if(!await a.Comment.findById(e).exec())throw new Error(`Comment with id: ${e} missing, can not delete.`);await n.Rating.deleteMany({comment:new s.Types.ObjectId(e)}).exec()}}}
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.RatingService=void 0;const a=r(95),i=r(439),n=r(467),s=r(185);t.RatingService=class{async getRatingsOfComment(e){const t=await i.Comment.findById(e).exec();if(!t)throw new Error(`No comment with id: ${e} of rating found.`);return{ratings:(await n.Rating.find({comment:e}).exec()).map((e=>({id:e.id,comment:t.id,creator:e.creator.toString(),ratingType:e.ratingType})))}}async createRating(e){const t=await a.User.findById(e.creator).exec();if(!t)throw new Error(`No creator with id: ${e.creator} of rating found. Can not create Rating.`);const r=await i.Comment.findById(e.comment).exec();if(!r)throw new Error(`No comment with id: ${e.comment} of rating found. Can not create Rating.`);if(t.id==r.creator)throw new Error("Users cannot rate their own comments.");if((await n.Rating.find({comment:r.id,creator:t.id}).exec()).length>0)throw new Error("Already rated this comment.");const s=await n.Rating.create(e);return Object.assign(Object.assign({},e),{id:s.id})}async updateRating(e){if(!e.id)throw new Error(`No ratingId:${e.id} found, can not update rating`);const t=await n.Rating.findById(e.id).exec();if(!t)throw new Error(`No rating with id:${e.id} found, can not update rating`);const r=await a.User.findById({_id:new s.Types.ObjectId(e.creator)}).exec();if(!r)throw new Error(`No creator with id: ${e.creator} of rating found. Can not update rating.`);const o=await i.Comment.findById({_id:new s.Types.ObjectId(e.comment)}).exec();if(!o)throw new Error(`No comment with id: ${e.comment} of rating found. Can not update rating.`);if(t.creator!=r.id||t.comment!=o.id)throw new Error("userID or commentID does not match.");e.ratingType&&(t.ratingType=e.ratingType);const d=await t.save();return{id:d.id,comment:d.comment.toString(),creator:d.creator.toString(),ratingType:d.ratingType}}async deleteRating(e){if(!e)throw new Error("RatingId missing, can not delete.");if(1!==(await n.Rating.deleteOne({_id:new s.Types.ObjectId(e)}).exec()).deletedCount)throw new Error(`No rating with id ${e} deleted, probably id not valid`)}async deleteRatingsOfUser(e){if(!e)throw new Error("UserId missing, can not delete.");if(!await a.User.findById(e).exec())throw new Error(`User with id: ${e} missing, can not delete.`);await n.Rating.deleteMany({creator:e}).exec()}async deleteRatingsOfComment(e){if(!e)throw new Error("CommentId missing, can not delete.");if(!await i.Comment.findById(e).exec())throw new Error(`Comment with id: ${e} missing, can not delete.`);await n.Rating.deleteMany({comment:new s.Types.ObjectId(e)}).exec()}}}
 /***/,
 /***/893:
 /***/(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.dateToString=void 0,t.dateToString=function(e){return`${e.getDate()}.${e.getMonth()+1}.${e.getFullYear()}`}}
 /***/,
 /***/105:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.UserService=void 0;const i=r(95),a=new(r(282).CommentService);class n{async registerUser(e){if(!e||"object"!=typeof e)throw new Error("Invalid user data");
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.UserService=void 0;const a=r(95),i=new(r(282).CommentService);class n{async registerUser(e){if(!e||"object"!=typeof e)throw new Error("Invalid user data");
 // Check if the user already exists in the database
-const{email:t}=e;if(await i.User.findOne({email:t}))throw new Error("User already exists");
+const{email:t}=e;if(await a.User.findOne({email:t}))throw new Error("User already exists");
 // Create a new user
-try{return await i.User.create(e)}catch(e){throw new Error("Registration failed")}}async getUsers(){return{users:(await i.User.find({}).exec()).map((e=>({id:e.id,name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls,isActive:e.isActive})))}}async getUser(e){if(!e)throw new Error("Can not get user, userID is invalid");const t=await i.User.findOne({_id:e,isActive:!0}).exec();if(!t)throw new Error(`No user with id: ${e} exists.`);return{id:t.id,name:t.name,email:t.email,isAdministrator:t.isAdministrator,address:t.address,profilePicture:t.profilePicture,birthDate:t.birthDate,gender:t.gender,socialMediaUrls:t.socialMediaUrls,isActive:t.isActive}}
+try{return await a.User.create(e)}catch(e){throw new Error("Registration failed")}}async getUsers(){return{users:(await a.User.find({}).exec()).map((e=>({id:e.id,name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls,isActive:e.isActive})))}}async getUser(e){if(!e)throw new Error("Can not get user, userID is invalid");const t=await a.User.findOne({_id:e,isActive:!0}).exec();if(!t)throw new Error(`No user with id: ${e} exists.`);return{id:t.id,name:t.name,email:t.email,isAdministrator:t.isAdministrator,address:t.address,profilePicture:t.profilePicture,birthDate:t.birthDate,gender:t.gender,socialMediaUrls:t.socialMediaUrls,isActive:t.isActive}}
 /**
      * used to prefill db with standard admin user. Therefore this servicemethod does not need an endpoint.
      * @param userResource
      * @returns userResource
-     */async createUser(e){const t=await i.User.create({name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,password:e.password,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls});return{id:t.id,name:t.name,email:t.email,isAdministrator:t.isAdministrator,address:t.address,profilePicture:t.profilePicture,birthDate:t.birthDate,gender:t.gender,socialMediaUrls:t.socialMediaUrls,isActive:t.isActive}}
+     */async createUser(e){const t=await a.User.create({name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,password:e.password,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls});return{id:t.id,name:t.name,email:t.email,isAdministrator:t.isAdministrator,address:t.address,profilePicture:t.profilePicture,birthDate:t.birthDate,gender:t.gender,socialMediaUrls:t.socialMediaUrls,isActive:t.isActive}}
 /**
      * Admin function to update userdata. can update password & isAdministrator.
      * @param userResource
      * @returns userResource of updated user.
-     */async updateUserWithAdmin(e){if(!e.id)throw new Error("User id is missing, cannot update User.");const t=await i.User.findById(e.id).exec();if(!t)throw new Error(`No user with id: ${e.id} found, cannot update`);if(e.name&&(t.name=e.name),e.email){if(e.email=e.email,e.email!==t.email){if(await i.User.count({email:e.email}).exec()>0)throw new Error("Duplicate email")}t.email=e.email}e.password&&(t.password=e.password),e.isAdministrator&&(t.isAdministrator=e.isAdministrator),e.address&&(t.address=e.address),e.birthDate&&(t.birthDate=e.birthDate),e.gender&&(t.gender=e.gender),e.profilePicture&&(t.profilePicture=e.profilePicture),e.socialMediaUrls&&(t.socialMediaUrls=e.socialMediaUrls),e.isActive&&(t.isActive=e.isActive);const r=await t.save();return{id:r.id,name:r.name,email:r.email,address:r.address,isAdministrator:r.isAdministrator,birthDate:r.birthDate,gender:r.gender,socialMediaUrls:r.socialMediaUrls,isActive:r.isActive,profilePicture:r.profilePicture}}
+     */async updateUserWithAdmin(e){if(!e.id)throw new Error("User id is missing, cannot update User.");const t=await a.User.findById(e.id).exec();if(!t)throw new Error(`No user with id: ${e.id} found, cannot update`);if(e.name&&(t.name=e.name),e.email){if(e.email=e.email,e.email!==t.email){if(await a.User.count({email:e.email}).exec()>0)throw new Error("Duplicate email")}t.email=e.email}e.password&&(t.password=e.password),e.isAdministrator&&(t.isAdministrator=e.isAdministrator),e.address&&(t.address=e.address),e.birthDate&&(t.birthDate=e.birthDate),e.gender&&(t.gender=e.gender),e.profilePicture&&(t.profilePicture=e.profilePicture),e.socialMediaUrls&&(t.socialMediaUrls=e.socialMediaUrls),e.isActive&&(t.isActive=e.isActive);const r=await t.save();return{id:r.id,name:r.name,email:r.email,address:r.address,isAdministrator:r.isAdministrator,birthDate:r.birthDate,gender:r.gender,socialMediaUrls:r.socialMediaUrls,isActive:r.isActive,profilePicture:r.profilePicture}}
 /**
      * only admins can change isAdministrator:
      * authorization to change isAdministrator is done in userRouter ->
@@ -1145,7 +1298,7 @@ try{return await i.User.create(e)}catch(e){throw new Error("Registration failed"
      * @param userResource
      * @param oldPw
      * @returns userResource
-     */async updateUserWithPw(e,t){var r,a;if(!e.id)throw new Error("User id is missing, cannot update User.");const n=await i.User.findById(e.id).exec();if(!n)throw new Error(`No user with id: ${e.id} found, cannot update`);if(t){if(!await n.isCorrectPassword(t))throw new Error("invalid oldPassword, can not update User!");e.password&&(n.password=e.password)}if((null===(r=e.name)||void 0===r?void 0:r.first)&&(n.name.first=e.name.first),(null===(a=e.name)||void 0===a?void 0:a.last)&&(n.name.last=e.name.last),e.email){if(e.email=e.email,e.email!==n.email){if(await i.User.count({email:e.email}).exec()>0)throw new Error("Duplicate email")}n.email=e.email}e.address&&(n.address=e.address),e.birthDate&&(n.birthDate=e.birthDate),e.gender&&(n.gender=e.gender),e.profilePicture&&(n.profilePicture=e.profilePicture),e.socialMediaUrls&&(n.socialMediaUrls=e.socialMediaUrls);const s=await n.save();return{id:s.id,name:s.name,email:s.email,address:s.address,isAdministrator:s.isAdministrator,birthDate:s.birthDate,gender:s.gender,socialMediaUrls:s.socialMediaUrls,isActive:n.isActive,profilePicture:s.profilePicture}}
+     */async updateUserWithPw(e,t){var r,i;if(!e.id)throw new Error("User id is missing, cannot update User.");const n=await a.User.findById(e.id).exec();if(!n)throw new Error(`No user with id: ${e.id} found, cannot update`);if(t){if(!await n.isCorrectPassword(t))throw new Error("invalid oldPassword, can not update User!");e.password&&(n.password=e.password)}if((null===(r=e.name)||void 0===r?void 0:r.first)&&(n.name.first=e.name.first),(null===(i=e.name)||void 0===i?void 0:i.last)&&(n.name.last=e.name.last),e.email){if(e.email=e.email,e.email!==n.email){if(await a.User.count({email:e.email}).exec()>0)throw new Error("Duplicate email")}n.email=e.email}e.address&&(n.address=e.address),e.birthDate&&(n.birthDate=e.birthDate),e.gender&&(n.gender=e.gender),e.profilePicture&&(n.profilePicture=e.profilePicture),e.socialMediaUrls&&(n.socialMediaUrls=e.socialMediaUrls);const s=await n.save();return{id:s.id,name:s.name,email:s.email,address:s.address,isAdministrator:s.isAdministrator,birthDate:s.birthDate,gender:s.gender,socialMediaUrls:s.socialMediaUrls,isActive:n.isActive,profilePicture:s.profilePicture}}
 /**
      * This function is used to either disable a user account or to delete the account from the database.
      * If the logged-in user is an admin (role in req.role === "a") and performs the "delete" endpoint request,
@@ -1154,22 +1307,22 @@ try{return await i.User.create(e)}catch(e){throw new Error("Registration failed"
      * @param userID The ID of the user to be deactivated or deleted.
      * @param inactivateAccount If true, user.isActive is set to false and the user object remains in the database; otherwise, the admin deletes the user from the database.
      * @returns true if the user was deleted or inactivated, false if no user was deleted.
-     */async deleteUser(e,t){if(!e)throw new Error("invalid userID, can not delete/inactivate account");const r=await i.User.findOne({_id:e}).exec();if(!r)throw new Error("User not found, probably invalid userID or user is already deleted");if(t){r.isActive=!1;return!(await r.save()).isActive}return 1===(await i.User.deleteOne({_id:e})).deletedCount&&(await a.deleteCommentsOfUser(e),!0)}}t.UserService=n,t.default=new n}
+     */async deleteUser(e,t){if(!e)throw new Error("invalid userID, can not delete/inactivate account");const r=await a.User.findOne({_id:e}).exec();if(!r)throw new Error("User not found, probably invalid userID or user is already deleted");if(t){r.isActive=!1;return!(await r.save()).isActive}return 1===(await a.User.deleteOne({_id:e})).deletedCount&&(await i.deleteCommentsOfUser(e),!0)}}t.UserService=n,t.default=new n}
 /***/,
 /***/993:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0});const i=r(95);t.default=async()=>{let e={email:"admin.team@connectandexplore.com",name:{first:"admin",last:"team"},password:"k.9MSn#JJh+§3F3a",isAdministrator:!0,address:{postalCode:"12345",city:"Berlin"},birthDate:new Date,gender:"male",isActive:!0,socialMediaUrls:{facebook:"facebook.com",instagram:"instagram.com"}};try{await i.User.create(e)}catch(e){console.error("Error creating admin user:",e)}}}
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0});const a=r(95);t.default=async()=>{let e={email:"admin.team@connectandexplore.com",name:{first:"admin",last:"team"},password:"k.9MSn#JJh+§3F3a",isAdministrator:!0,address:{postalCode:"12345",city:"Berlin"},birthDate:new Date,gender:"male",isActive:!0,socialMediaUrls:{facebook:"facebook.com",instagram:"instagram.com"}};try{await a.User.create(e)}catch(e){console.error("Error creating admin user:",e)}}}
 /***/,
 /***/0:
-/***/function(e,t,r){var i=this&&this.__createBinding||(Object.create?function(e,t,r,i){void 0===i&&(i=r);var a=Object.getOwnPropertyDescriptor(t,r);a&&!("get"in a?!t.__esModule:a.writable||a.configurable)||(a={enumerable:!0,get:function(){return t[r]}}),Object.defineProperty(e,i,a)}:function(e,t,r,i){void 0===i&&(i=r),e[i]=t[r]}),a=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)"default"!==r&&Object.prototype.hasOwnProperty.call(e,r)&&i(t,e,r);return a(t,e),t},s=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.upload=t.deleteEventThumbnail=t.deleteProfilePicture=void 0;const o=s(r(738)),d=s(r(17)),c=s(r(231)),u=r(828);n(r(142)).config();process.env.UPLOAD_PATH;
+/***/function(e,t,r){var a=this&&this.__createBinding||(Object.create?function(e,t,r,a){void 0===a&&(a=r);var i=Object.getOwnPropertyDescriptor(t,r);i&&!("get"in i?!t.__esModule:i.writable||i.configurable)||(i={enumerable:!0,get:function(){return t[r]}}),Object.defineProperty(e,a,i)}:function(e,t,r,a){void 0===a&&(a=r),e[a]=t[r]}),i=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)"default"!==r&&Object.prototype.hasOwnProperty.call(e,r)&&a(t,e,r);return i(t,e),t},s=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.upload=t.deleteEventThumbnail=t.deleteProfilePicture=void 0;const o=s(r(738)),d=s(r(17)),c=s(r(231)),u=r(828);n(r(142)).config();process.env.UPLOAD_PATH;
 //Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
-const l=o.default.diskStorage({destination:function(e,t,r){const i=
+const l=o.default.diskStorage({destination:function(e,t,r){const a=
 // This function is created with chatgpt
 function(e){
 //const uploadPath = process.env.UPLOAD_PATH || "uploads"; // Get upload path from .env file or use default 'uploads'
 const t="uploads",r=d.default.join(__dirname,"../../Backend");// Assuming 'FileUpload.ts' is in the 'utils' directory
 return"profilePicture"===e?d.default.join(r,t,"users"):"thumbnail"===e?d.default.join(r,t,"events"):d.default.join(r,t)}(t.fieldname);
 // Check if the folder exists, create it if it doesn't
-c.default.existsSync(i)||c.default.mkdirSync(i,{recursive:!0}),r(null,i)},filename:function(e,t,r){r(null,`${(0,u.v4)()}-${t.originalname}`)}});t.deleteProfilePicture=function(e){try{const t=d.default.join(__dirname,"../../Backend",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
+c.default.existsSync(a)||c.default.mkdirSync(a,{recursive:!0}),r(null,a)},filename:function(e,t,r){r(null,`${(0,u.v4)()}-${t.originalname}`)}});t.deleteProfilePicture=function(e){try{const t=d.default.join(__dirname,"../../Backend",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
 c.default.unlinkSync(t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){
 /**
     try {
@@ -1182,22 +1335,22 @@ c.default.unlinkSync(t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){
 // file size : 10 MB limit
 t.upload=(0,o.default)({storage:l,fileFilter:(e,t,r)=>{"image/jpg"===t.mimetype||"image/jpeg"===t.mimetype||"image/png"===t.mimetype?r(null,!0):r(new Error("Image uploaded is not of type jpg/jpeg or png"),!1)},limits:{fileSize:10485760}})},
 /***/448:
-/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.validate=void 0;const i=r(553),a=(e,t)=>(r,i,a)=>
+/***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.validate=void 0;const a=r(553),i=(e,t)=>(r,a,i)=>
 // Check if the field exists in the request body and has a value
 // && req.body[field] !== ""
-void 0!==r.body[e]?t(r,i,a):a();
+void 0!==r.body[e]?t(r,a,i):i();
 // Validation middleware
-t.validate=[a("email",(0,i.body)("email").isEmail()),a("name.first",(0,i.body)("name.first").isString()),a("name.last",(0,i.body)("name.last").isString()),a("password",(0,i.body)("password").isStrongPassword()),a("isAdministrator",(0,i.body)("isAdministrator").isBoolean()),
+t.validate=[i("email",(0,a.body)("email").isEmail()),i("name.first",(0,a.body)("name.first").isString()),i("name.last",(0,a.body)("name.last").isString()),i("password",(0,a.body)("password").isStrongPassword()),i("isAdministrator",(0,a.body)("isAdministrator").isBoolean()),
 //validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
-a("address.postalCode",(0,i.body)("address.postalCode").isNumeric().withMessage("Postal code is required.")),a("address.city",(0,i.body)("address.city").isString().withMessage("City is required.")),a("address.country",(0,i.body)("address.country").isString().withMessage("Country is required.")),a("profilePicture",(0,i.body)("profilePicture").isString()),a("birthDate",(0,i.body)("birthDate").isString()),a("gender",(0,i.body)("gender").isString()),a("socialMediaUrls.facebook",(0,i.body)("socialMediaUrls.facebook").isString()),a('socialMediaUrls.instagram"',(0,i.body)("socialMediaUrls.instagram").isString())]}
+i("address.postalCode",(0,a.body)("address.postalCode").isNumeric().withMessage("Postal code is required.")),i("address.city",(0,a.body)("address.city").isString().withMessage("City is required.")),i("address.country",(0,a.body)("address.country").isString().withMessage("Country is required.")),i("profilePicture",(0,a.body)("profilePicture").isString()),i("birthDate",(0,a.body)("birthDate").isString()),i("gender",(0,a.body)("gender").isString()),i("socialMediaUrls.facebook",(0,a.body)("socialMediaUrls.facebook").isString()),i('socialMediaUrls.instagram"',(0,a.body)("socialMediaUrls.instagram").isString())]}
 /***/,
 /***/653:
-/***/function(e,t,r){var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(682)),n=r(105);t.default=async()=>{const e={postalCode:"54321",city:"Berlin"},t={email:"John@some-host.de",name:{first:"John",last:"Doe"},password:"12abcAB!",isAdministrator:!1,address:e,birthDate:new Date("2000-06-14"),gender:"male",isActive:!0},r={email:"Jane@some-host.de",name:{first:"Jane",last:"Doe"},password:"12abcAB!",isAdministrator:!1,address:e,birthDate:new Date("2000-04-10"),gender:"female",isActive:!0},i=new n.UserService,s=await i.createUser(t),o=await i.createUser(r),d={name:"Summer Music Festival",description:"Ein großes Festival mit verschiedenen Musikgenres und lokalen Künstlern.",price:50,date:new Date("2024-06-21"),address:{street:"Musikstraße",houseNumber:"1",city:"Berlin",postalCode:"10115",country:"Deutschland"},category:[{name:"Music",description:"Music Event"}],hashtags:["party","Party","food","Food"]},c={name:"Street Food Market",description:"Eine kulinarische Reise durch die Street Food Kulturen der Welt.",price:10,date:new Date("2024-07-10"),address:{street:"Gourmetplatz",houseNumber:"5",city:"Hamburg",postalCode:"20095",country:"Deutschland"},hashtags:["Food","food"]},u={name:"Coding Workshop",description:"Ein interaktiver Workshop für Anfänger im Programmieren.",price:0,date:new Date("2024-08-15"),address:{street:"Techweg",houseNumber:"3",city:"München",postalCode:"80331",country:"Deutschland"}},l={name:"Yoga im Park",description:"Entspannende Yoga-Sessions im Freien für alle Niveaus.",price:15,date:new Date("2024-05-25"),address:{street:"Grünallee",houseNumber:"2",city:"Köln",postalCode:"50678",country:"Deutschland"}},m={name:"Kunstausstellung Modern Art",description:"Entdecken Sie moderne Kunstwerke lokaler Künstler.",price:20,date:new Date("2024-09-30"),address:{street:"Künstlerstraße",houseNumber:"4",city:"Frankfurt",postalCode:"60311",country:"Deutschland"},category:[{name:"Art",description:"Art Event"}]};await a.default.createEvent(d,s.id),await a.default.createEvent(c,s.id),await a.default.createEvent(u,s.id),await a.default.createEvent(l,o.id),await a.default.createEvent(m,o.id)}},
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(682)),n=r(105);t.default=async()=>{const e={postalCode:"54321",city:"Berlin"},t={email:"John@some-host.de",name:{first:"John",last:"Doe"},password:"12abcAB!",isAdministrator:!1,address:e,birthDate:new Date("2000-06-14"),gender:"male",isActive:!0},r={email:"Jane@some-host.de",name:{first:"Jane",last:"Doe"},password:"12abcAB!",isAdministrator:!1,address:e,birthDate:new Date("2000-04-10"),gender:"female",isActive:!0},a=new n.UserService,s=await a.createUser(t),o=await a.createUser(r),d={name:"Summer Music Festival",description:"Ein großes Festival mit verschiedenen Musikgenres und lokalen Künstlern.",price:50,date:new Date("2024-06-21"),address:{street:"Musikstraße",houseNumber:"1",city:"Berlin",postalCode:"10115",country:"Deutschland"},category:[{name:"Music",description:"Music Event"}],hashtags:["party","Party","food","Food"]},c={name:"Street Food Market",description:"Eine kulinarische Reise durch die Street Food Kulturen der Welt.",price:10,date:new Date("2024-07-10"),address:{street:"Gourmetplatz",houseNumber:"5",city:"Hamburg",postalCode:"20095",country:"Deutschland"},hashtags:["Food","food"]},u={name:"Coding Workshop",description:"Ein interaktiver Workshop für Anfänger im Programmieren.",price:0,date:new Date("2024-08-15"),address:{street:"Techweg",houseNumber:"3",city:"München",postalCode:"80331",country:"Deutschland"}},l={name:"Yoga im Park",description:"Entspannende Yoga-Sessions im Freien für alle Niveaus.",price:15,date:new Date("2024-05-25"),address:{street:"Grünallee",houseNumber:"2",city:"Köln",postalCode:"50678",country:"Deutschland"}},m={name:"Kunstausstellung Modern Art",description:"Entdecken Sie moderne Kunstwerke lokaler Künstler.",price:20,date:new Date("2024-09-30"),address:{street:"Künstlerstraße",houseNumber:"4",city:"Frankfurt",postalCode:"60311",country:"Deutschland"},category:[{name:"Art",description:"Art Event"}]};await i.default.createEvent(d,s.id),await i.default.createEvent(c,s.id),await i.default.createEvent(u,s.id),await i.default.createEvent(l,o.id),await i.default.createEvent(m,o.id)}},
 /***/811:
 /***/function(e,t,r){
 // Copyrights Code: https://github.com/TomDoesTech/REST-API-Tutorial-Updated/blob/main/src/utils/swagger.ts
-var i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const a=i(r(777)),n=i(r(948)),s={definition:{openapi:"3.1.0",info:{title:"Explore and Connect REST API Docs",version:r(147).version},components:{securitySchemes:{bearerAuth:{type:"http",scheme:"bearer",bearerFormat:"JWT"}},schemas:{IAddress:{type:"object",properties:{postalCode:{type:"string"},city:{type:"string"}}},IEAddress:{type:"object",properties:{street:{type:"string"},houseNumber:{type:"string"},apartmentNumber:{type:"string"},postalCode:{type:"string"},city:{type:"string"},stateOrRegion:{type:"string"},country:{type:"string"}}},ICategory:{type:"object",properties:{name:{type:"string"},description:{type:"string"}}},IChat:{type:"object",properties:{}},IUser:{type:"object",properties:{email:{type:"string"},name:{type:"object",properties:{first:{type:"string"},last:{type:"string"}}},password:{type:"string"},isAdministrator:{type:"boolean"},address:{$ref:"#/components/schemas/IAddress"},profilePicture:{type:"string"},birthDate:{type:"date",format:"date"},gender:{type:"string"},socialMediaUrls:{type:"object",properties:{facebook:{type:"string"},instagram:{type:"string"}}},isActive:{type:"boolean"}}},IEvent:{type:"object",properties:{name:{type:"string"},creator:{$ref:"#/components/schemas/IUser"},description:{type:"string"},price:{type:"number",minimum:0},date:{type:"string",// Date represented as string in ISO 8601 format
-format:"date-time"},address:{$ref:"#/components/schemas/IEAddress"},thumbnail:{type:"string"},hashtags:{type:"array",items:{type:"string"}},category:{type:"array",items:{$ref:"#/components/schemas/ICategory"}},chat:{$ref:"#/components/schemas/IChat"},participants:{type:"array",items:{type:"string"}}}},IComment:{type:"object",properties:{title:{type:"string"},stars:{type:"number",minimum:1,maximum:5},content:{type:"string"},edited:{type:"boolean"},creator:{$ref:"#/components/schemas/IUser"},event:{$ref:"#/components/schemas/IEvent"},createdAt:{type:"string",format:"date-time"}}}}},security:[{bearerAuth:[]}]},apis:["./src/routes/*.ts","./src/model/*.ts"]},o=(0,a.default)(s);t.default=function(e,t){
+var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(777)),n=a(r(948)),s={definition:{openapi:"3.1.0",info:{title:"Explore and Connect REST API Docs",version:r(147).version},components:{securitySchemes:{bearerAuth:{type:"http",scheme:"bearer",bearerFormat:"JWT"}},schemas:{IAddress:{type:"object",properties:{postalCode:{type:"string"},city:{type:"string"}}},IEAddress:{type:"object",properties:{street:{type:"string"},houseNumber:{type:"string"},apartmentNumber:{type:"string"},postalCode:{type:"string"},city:{type:"string"},stateOrRegion:{type:"string"},country:{type:"string"}}},ICategory:{type:"object",properties:{name:{type:"string"},description:{type:"string"}}},IChat:{type:"object",properties:{}},IUser:{type:"object",properties:{email:{type:"string"},name:{type:"object",properties:{first:{type:"string"},last:{type:"string"}}},password:{type:"string"},isAdministrator:{type:"boolean"},address:{$ref:"#/components/schemas/IAddress"},profilePicture:{type:"string"},birthDate:{type:"date",format:"date"},gender:{type:"string"},socialMediaUrls:{type:"object",properties:{facebook:{type:"string"},instagram:{type:"string"}}},isActive:{type:"boolean"}}},IEvent:{type:"object",properties:{name:{type:"string"},creator:{$ref:"#/components/schemas/IUser"},description:{type:"string"},price:{type:"number",minimum:0},date:{type:"string",// Date represented as string in ISO 8601 format
+format:"date-time"},address:{$ref:"#/components/schemas/IEAddress"},thumbnail:{type:"string"},hashtags:{type:"array",items:{type:"string"}},category:{type:"array",items:{$ref:"#/components/schemas/ICategory"}},chat:{$ref:"#/components/schemas/IChat"},participants:{type:"array",items:{type:"string"}}}},IComment:{type:"object",properties:{title:{type:"string"},stars:{type:"number",minimum:1,maximum:5},content:{type:"string"},edited:{type:"boolean"},creator:{$ref:"#/components/schemas/IUser"},event:{$ref:"#/components/schemas/IEvent"},createdAt:{type:"string",format:"date-time"}}}}},security:[{bearerAuth:[]}]},apis:["./src/routes/*.ts","./src/model/*.ts"]},o=(0,i.default)(s);t.default=function(e,t){
 // Swagger page
 e.use("/swagger/docs",n.default.serve,n.default.setup(o)),
 // Docs in JSON format
@@ -1269,14 +1422,14 @@ e.get("/docs.json",((e,t)=>{t.setHeader("Content-Type","application/json"),t.sen
 /******/(
 /******/
 /******/ // The require function
-/******/function r(i){
+/******/function r(a){
 /******/ // Check if module is in cache
-/******/var a=t[i];
-/******/if(void 0!==a)
-/******/return a.exports;
+/******/var i=t[a];
+/******/if(void 0!==i)
+/******/return i.exports;
 /******/
 /******/ // Create a new module (and put it into the cache)
-/******/var n=t[i]={
+/******/var n=t[a]={
 /******/ // no module.id needed
 /******/ // no module.loaded needed
 /******/exports:{}
@@ -1286,7 +1439,7 @@ e.get("/docs.json",((e,t)=>{t.setHeader("Content-Type","application/json"),t.sen
 /******/
 /******/
 /******/ // Return the exports of the module
-/******/return e[i].call(n.exports,n,n.exports,r),n.exports;
+/******/return e[a].call(n.exports,n,n.exports,r),n.exports;
 /******/})(505);
 /******/
 /******/})();

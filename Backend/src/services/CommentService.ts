@@ -311,4 +311,18 @@ export class CommentService {
     */
     await Comment.deleteMany({ event: eventId }).exec();
   }
+
+  async getAverageRatingForEvent(eventId: Types.ObjectId): Promise<number> {
+    const comments = await Comment.find({ event: eventId }).exec();
+    if (!comments || comments.length === 0) {
+      return 0; // If no comments found, return 0 as the average rating
+    }
+
+    const totalStars = comments.reduce(
+      (acc, comment) => acc + comment.stars,
+      0
+    );
+    const averageRating = totalStars / comments.length;
+    return averageRating;
+  }
 }
