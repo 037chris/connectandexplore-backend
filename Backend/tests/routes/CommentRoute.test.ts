@@ -220,6 +220,13 @@ describe("CommentsRoute Tests", () => {
     expect(result.edited).toBeFalsy();
     expect(result.creator).toBe(user.id);
     expect(result.event).toBe(event.id);
+    // should not work if comment creator and comment poster are not matching
+    comment.creator = admin.id;
+    res = await req
+      .post("/api/comments/post")
+      .send(comment)
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
   });
 
   test("get all comments route", async () => {
@@ -252,8 +259,7 @@ describe("CommentsRoute Tests", () => {
 
   test("get comments of event route", async () => {
     await commentService.createComment(comment);
-    let res = await req
-      .get(`/api/comments/event/${event.id}`);
+    let res = await req.get(`/api/comments/event/${event.id}`);
     expect(res.status).toBe(200);
     res = await req
       .get(`/api/comments/event/${event.id}`)

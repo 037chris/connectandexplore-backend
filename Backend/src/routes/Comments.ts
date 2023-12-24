@@ -103,9 +103,9 @@ commentsRouter.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    if (req.role !== "u") {
+    if (req.role === "u" && req.body.creator !== req.userId) {
       res.status(403);
-      next(new Error("Only users are authorized to create comments!"));
+      next(new Error("Not authorized to post comment."));
     }
     try {
       const commentData = matchedData(req) as CommentResource;
