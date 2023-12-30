@@ -157,7 +157,7 @@ t.status(200).send(a):(t.status(403),r(new Error("Unauthorized for this resource
  *             example:
  *               error: Only users are authorized to create comments!
  */
-u.post("/post",n.requiresAuthentication,(0,s.body)("title").isString().isLength({min:1,max:100}),(0,s.body)("stars").isInt().custom((e=>e>=1&&e<=5)),(0,s.body)("content").isString().isLength({min:0,max:1e3}),(0,s.body)("creator").isMongoId(),(0,s.body)("edited").optional().isBoolean(),(0,s.body)("event").isMongoId(),(async(e,t,r)=>{const a=(0,s.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});"u"===e.role&&e.body.creator!==e.userId&&(t.status(403),r(new Error("Not authorized to post comment.")));try{const r=(0,s.matchedData)(e),a=await l.createComment(r);t.status(201).send(a)}catch(e){t.status(400),r(e)}})),
+u.post("/post",n.requiresAuthentication,(0,s.body)("title").isString().isLength({min:1,max:100}),(0,s.body)("stars").isInt().custom((e=>e>=1&&e<=5)),(0,s.body)("content").isString().isLength({min:0,max:1e3}),(0,s.body)("creator").isMongoId(),(0,s.body)("edited").optional().isBoolean(),(0,s.body)("event").isMongoId(),(async(e,t,r)=>{const a=(0,s.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});if("u"===e.role&&e.body.creator!==e.userId)return t.status(403),r(new Error("Not authorized to post comment."));try{const r=(0,s.matchedData)(e),a=await l.createComment(r);t.status(201).send(a)}catch(e){t.status(400),r(e)}})),
 /**
  * @swagger
  * /api/comments/{id}:
