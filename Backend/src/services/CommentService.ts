@@ -311,11 +311,16 @@ export class CommentService {
     */
     await Comment.deleteMany({ event: eventId }).exec();
   }
-
+  /**
+   * used to calculate the average rate for Event.
+   * If no comments found, return 0 as the average rating
+   * @param eventId identifies Event
+   * @returns the Average rate of Event as a Number
+   */
   async getAverageRatingForEvent(eventId: Types.ObjectId): Promise<number> {
     const comments = await Comment.find({ event: eventId }).exec();
     if (!comments || comments.length === 0) {
-      return 0; // If no comments found, return 0 as the average rating
+      return 0;
     }
 
     const totalStars = comments.reduce(
