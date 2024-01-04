@@ -49,8 +49,8 @@ io.on("connection", (socket) => {
     const { chatID, username } = data;
     socket.join(chatID);
     socket.username = username;
-    const chat = await chatService.getChat(chatID);
-    console.log(chat);
+    //const chat = await chatService.getChat(chatID);
+    //console.log(chat);
     console.log(`(${chatID}): ${username} joined`);
   });
 

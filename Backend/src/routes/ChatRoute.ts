@@ -9,14 +9,14 @@ const chatService = new ChatService();
 
 ChatRouter.get(
   "/:id",
-  //requiresAuthentication,
+  requiresAuthentication,
   param("id").isMongoId(),
   async (req, res, next) => {
     try {
       const chatID = req.params.id;
       const chat = await chatService.getChat(chatID);
-      //res.status(200).json({ chat });
-      res.sendFile(__dirname + "/index.html");
+      res.status(200).json({ chat });
+      //testing res.sendFile(__dirname + "/index.html");
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
