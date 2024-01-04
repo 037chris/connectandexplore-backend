@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Test</title>
+</head>
+<body>
+  <input id="username" placeholder="Username" autocomplete="off" />
+  <button id="joinButton">Join</button>
+
+  <ul id="messages"></ul>
+  <form id="form" action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    $(function () {
+      var socket = io();
+      var username = '';
+      var lastIndex = window.location.pathname.lastIndexOf('/');
+      var chatID = window.location.pathname.substring(lastIndex + 1);
+
+      $('#joinButton').click(function() {
+        username = $('#username').val();
+        socket.emit('join chat', { chatID: chatID, username: username });
+      });
+
+      $('form').submit(function(){
+        socket.emit('new message', { chatID: chatID, message: $('#m').val() });
+        $('#m').val('');
+        return false;
+      });
+
+      socket.on('new message', function(data){
+        $('#messages').append($('<li>').text(`${data.username}: ${data.message}`));
+      });
+    });
+  </script>
+</body>
+</html>

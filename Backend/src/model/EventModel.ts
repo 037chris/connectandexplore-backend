@@ -28,6 +28,11 @@ export interface ICategory {
   name: string;
   description: string;
 }
+
+export interface IChat {
+  messages: { user: Types.ObjectId; message: String }[];
+}
+
 /**
  * Adressen werden später in das EventSchema eingefügt und als teil eines Users in mongoDB gespeichert
  */
@@ -45,8 +50,15 @@ const categorySchema = new Schema<ICategory>({
   description: { type: String },
 });
 
+const chatSchema = new Schema<IChat>({
+  messages: [
+    { user: { type: Schema.Types.ObjectId, ref: "User" }, message: String },
+  ],
+});
+
 type EventModel = Model<IEvent, {}>;
 type CategoryModel = Model<ICategory, {}>;
+type ChatModel = Model<IChat, {}>;
 
 const eventSchema = new Schema<IEvent>({
   name: { type: String, required: true },
@@ -80,3 +92,4 @@ export const Categoty = model<ICategory, CategoryModel>(
   "Category",
   categorySchema
 );
+export const Chat = model<IChat, ChatModel>("Chat", chatSchema);
