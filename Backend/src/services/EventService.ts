@@ -30,6 +30,10 @@ export class EventService {
         chat: chat.id,
         participants: [creatorID],
       });
+
+      chat.event = event._id;
+      await chat.save();
+
       return {
         id: event.id,
         name: event.name,
@@ -372,6 +376,7 @@ export class EventService {
       ) {
         throw new Error("Invalid authorization");
       }
+      await Chat.deleteOne({ _id: event.chat }).exec();
       const result = await Event.deleteOne({ _id: eventID }).exec();
       if (result.deletedCount === 1) {
         await commentService.deleteCommentsOfevent(eventID);

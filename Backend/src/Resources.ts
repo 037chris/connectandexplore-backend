@@ -130,5 +130,6 @@ export type MessageResource = {
 
 export type ChatResource = {
   id?: string;
+  event: string;
   messages: MessageResource[];
 }

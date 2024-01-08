@@ -1,5 +1,4 @@
 import { Model, Schema, Types, model } from "mongoose";
-import { IAddress, addressSchema } from "./UserModel";
 
 export interface IEAddress {
   street: String;
@@ -30,6 +29,7 @@ export interface ICategory {
 }
 
 export interface IChat {
+  event: Types.ObjectId;
   messages: { user: Types.ObjectId; message: String }[];
 }
 
@@ -51,6 +51,7 @@ const categorySchema = new Schema<ICategory>({
 });
 
 const chatSchema = new Schema<IChat>({
+  event: { type: Schema.Types.ObjectId, ref: "Event" },
   messages: [
     { user: { type: Schema.Types.ObjectId, ref: "User" }, message: String },
   ],

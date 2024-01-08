@@ -35,8 +35,10 @@ app.use(function (req, res, next) {
 });
 
 export const server = https.createServer({ key, cert }, app);
-const chatService = new ChatService();
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {cors: {
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST'],}
+},);
 
 io.on("connection", (socket) => {
   console.log("socket connected");
@@ -49,8 +51,6 @@ io.on("connection", (socket) => {
     const { chatID, username } = data;
     socket.join(chatID);
     socket.username = username;
-    //const chat = await chatService.getChat(chatID);
-    //console.log(chat);
     console.log(`(${chatID}): ${username} joined`);
   });
 

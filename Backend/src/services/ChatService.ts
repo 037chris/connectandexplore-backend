@@ -1,5 +1,5 @@
-import { ChatResource, MessageResource } from "../Resources";
-import { Chat } from "../model/EventModel";
+import { ChatResource } from "../Resources";
+import { Event, Chat } from "../model/EventModel";
 import { User } from "../model/UserModel";
 
 export class ChatService {
@@ -8,6 +8,8 @@ export class ChatService {
     const chat = await Chat.findById(chatID).exec();
     if (!chat) throw new Error("Chat not found");
     return {
+      id: chat.id,
+      event: chat.event.toString(),
       messages: chat.messages.map((message) => ({
         user: message.user.toString(),
         message: message.message.toString(),
@@ -25,11 +27,17 @@ export class ChatService {
     if (!chat) throw new Error("Chat not found");
     const user = await User.findById(userID).exec();
     if(!user) throw new Error("User not found");
+    const event = await Event.findById(chat.event).exec();
+    if(!event) throw new Error("Event not found");
+    if (!event.participants.includes(user._id)) {
+      throw new Error("User is not participating in the event");
+    }
 
     chat.messages.push({ user: user._id, message: message });
     const newChat = await chat.save();
-
     return {
+      id: newChat.id,
+      event: newChat.event.toString(),
       messages: newChat.messages.map((message) => ({
         user: message.user.toString(),
         message: message.message.toString(),
