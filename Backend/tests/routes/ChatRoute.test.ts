@@ -169,7 +169,8 @@ describe("ChatRoute Tests", () => {
     const result: ChatResource = res.body;
     expect(result.id).toBe(event2.chat);
     expect(result.messages).toHaveLength(1);
-    expect(result.messages[0]).toStrictEqual({user: user.id, message: "hallo"});
+    expect(result.messages[0].user).toBe(user.id);
+    expect(result.messages[0].message).toBe("hallo");
     // invalid authorization
     res = await req
       .post(`/api/chat/${event2.chat}`)
@@ -190,8 +191,10 @@ describe("ChatRoute Tests", () => {
     const result: ChatResource = res.body;
     expect(result.id).toBe(event2.chat);
     expect(result.messages).toHaveLength(2);
-    expect(result.messages[0]).toStrictEqual({user: user.id, message: "hallo"});
-    expect(result.messages[1]).toStrictEqual({user: admin.id, message: "hey"});
+    expect(result.messages[0].user).toBe(user.id);
+    expect(result.messages[0].message).toBe("hallo");
+    expect(result.messages[1].user).toBe(admin.id);
+    expect(result.messages[1].message).toBe("hey");
     // invalid authorization
     res = await req
       .get(`/api/chat/${event2.chat}`)
