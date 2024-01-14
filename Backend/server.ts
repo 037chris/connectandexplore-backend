@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const cors = require("cors");
@@ -15,9 +15,7 @@ import loginRouter from "./src/routes/login";
 import EventRouter from "./src/routes/EventRoute";
 import createTestData from "./src/utils/createTestData";
 import commentsRouter from "./src/routes/Comments";
-import socketIO from "socket.io";
 import ChatRouter from "./src/routes/ChatRoute";
-import { ChatService } from "./src/services/ChatService";
 
 const app: Express = express();
 const port = process.env.PORT || 443;
@@ -47,20 +45,13 @@ io.on("connection", (socket) => {
     console.log("socket disconnected")
   });
 
-  socket.on("join chat", async (data) => {
-    const { chatID, username } = data;
-    socket.join(chatID);
-    socket.username = username;
-    console.log(`(${chatID}): ${username} joined`);
+  socket.on("join_room", ({ roomId }) => {
+    socket.join(roomId);
   });
 
-  socket.on("new message", (data) => {
-    const { chatID, message } = data;
-    console.log(`(${chatID}): ${socket.username}> ${message}`);
-    io.to(chatID).emit("new message", {
-      username: socket.username,
-      message: message,
-    });
+  socket.on("send_message", ({user, message, roomId}) => {
+    console.log(`(${roomId})> ${user}: ${message}`);
+    socket.to(roomId).emit("receive_message", {user, message});
   });
 });
 
