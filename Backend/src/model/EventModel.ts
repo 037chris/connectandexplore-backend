@@ -30,7 +30,7 @@ export interface ICategory {
 
 export interface IChat {
   event: Types.ObjectId;
-  messages: { user: Types.ObjectId; message: String }[];
+  messages: { user: Types.ObjectId; message: String, time: Date }[];
 }
 
 /**
@@ -53,7 +53,7 @@ const categorySchema = new Schema<ICategory>({
 const chatSchema = new Schema<IChat>({
   event: { type: Schema.Types.ObjectId, ref: "Event" },
   messages: [
-    { user: { type: Schema.Types.ObjectId, ref: "User" }, message: String },
+    { user: { type: Schema.Types.ObjectId, ref: "User" }, message: String, time: Date }
   ],
 });
 

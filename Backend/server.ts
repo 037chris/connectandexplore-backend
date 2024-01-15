@@ -39,19 +39,19 @@ const io = require("socket.io")(server, {cors: {
 },);
 
 io.on("connection", (socket) => {
-  console.log("socket connected");
+  //console.log("socket connected");
 
   socket.on("disconnect", () => {
-    console.log("socket disconnected")
+    //console.log("socket disconnected")
   });
 
   socket.on("join_room", ({ roomId }) => {
     socket.join(roomId);
   });
 
-  socket.on("send_message", ({user, message, roomId}) => {
-    console.log(`(${roomId})> ${user}: ${message}`);
-    socket.to(roomId).emit("receive_message", {user, message});
+  socket.on("send_message", ({user, message, roomId, time}) => {
+    //console.log(`(${roomId})> (${time}) ${user}: ${message}`);
+    socket.to(roomId).emit("receive_message", {user, message, time});
   });
 });
 

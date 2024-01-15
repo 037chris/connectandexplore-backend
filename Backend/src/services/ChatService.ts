@@ -1,6 +1,7 @@
 import { ChatResource } from "../Resources";
 import { Event, Chat } from "../model/EventModel";
 import { User } from "../model/UserModel";
+import { dateToString, dateToStringWithTime } from "./ServiceHelper";
 
 export class ChatService {
   async getChat(chatID: string): Promise<ChatResource> {
@@ -17,6 +18,7 @@ export class ChatService {
             user: message.user.toString(),
             username: `${user.name.first} ${user.name.last}`,
             message: message.message.toString(),
+            time: dateToStringWithTime(message.time)
           };
         })
       ),
@@ -39,7 +41,7 @@ export class ChatService {
       throw new Error("User is not participating in the event");
     }
 
-    chat.messages.push({ user: user._id, message: message });
+    chat.messages.push({ user: user._id, message: message, time: new Date() });
     const newChat = await chat.save();
     return {
       id: newChat.id,
@@ -51,6 +53,7 @@ export class ChatService {
             user: message.user.toString(),
             username: `${user.name.first} ${user.name.last}`,
             message: message.message.toString(),
+            time: dateToStringWithTime(message.time)
           };
         })
       ),

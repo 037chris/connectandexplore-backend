@@ -127,6 +127,7 @@ export type MessageResource = {
   user: string;
   username?: string;
   message: string;
+  time?: string;
 }
 
 export type ChatResource = {
