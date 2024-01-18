@@ -2,9 +2,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
-import * as dotenv from "dotenv";
-dotenv.config();
-const uploadPath: string = process.env.UPLOAD_PATH || "uploads";
+
 //Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
 
 const storage = multer.diskStorage({
@@ -52,7 +50,8 @@ function getUploadFolderPath(fieldName: string): string {
 
 export function deleteProfilePicture(filePath: string): void {
   try {
-    const fullPath = path.join(__dirname, "../../Backend", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    const fullPath = path.join(filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    console.log("fullPath:", fullPath);
     fs.unlinkSync(fullPath);
   } catch (error) {
     throw error;
@@ -60,14 +59,18 @@ export function deleteProfilePicture(filePath: string): void {
 }
 
 export function deleteEventThumbnail(filePath: string): void {
-  /** 
   try {
-    const fullPath = path.join(__dirname, "../../Backend", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    const fullPath = path.join(
+      __dirname,
+      "../../Backend",
+      "uploads/",
+      filePath
+    ); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    console.log("fullpath image:", fullPath);
     fs.unlinkSync(fullPath);
   } catch (error) {
     throw error;
   }
-  */
 }
 
 // file size : 10 MB limit

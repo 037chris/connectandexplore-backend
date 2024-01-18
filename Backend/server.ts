@@ -33,15 +33,14 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
-// Health check endpoint
-app.get("/health", (req, res) => {
-  res.status(200).send("Health Check: OK");
-});
+
 app.use("/api/users", UserRoute);
 app.use("/api", UsersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/events", EventRouter);
-app.use("/api/comments", commentsRouter)
+app.use("/api/comments", commentsRouter);
+app.use("/images/users", express.static("uploads/users"));
+app.use("/images/events", express.static("uploads/events"));
 swaggerDocs(app, +port);
 app.use((req, res, next) => {
   res.status(404).json("Not Found");

@@ -123,7 +123,7 @@ UserRouter.post(
         return res.status(400).json({ errors: errors.array() });
       } else {
         if (req.file) {
-          req.body.profilePicture = `/uploads/users/${req.file.filename}`;
+          req.body.profilePicture = `/${req.file.filename}`;
         }
         const newUser = await userService.registerUser(req.body);
         return res.status(201).json(newUser);
@@ -305,7 +305,7 @@ UserRouter.put(
       const user: userResource = await userService.getUser(userid);
       try {
         if (req.file) {
-          req.body.profilePicture = `/uploads/${req.file.filename}`;
+          req.body.profilePicture = `/${req.file.filename}`;
           if (user.profilePicture) {
             deleteProfilePicture(user.profilePicture);
           }

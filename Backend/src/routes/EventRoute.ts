@@ -76,108 +76,99 @@ EventRouter.get(
 
 /**
  * @swagger
- * paths:
- *  /api/events/create:
- *    post:
- *     summary: Create a new event
- *     description: Register a new event with event data and an optional event pictures.
+ * /api/events/create:
+ *   post:
+ *     summary: Create a new event.
+ *     description: Endpoint to create a new event.
  *     tags:
- *       - Event
+ *       - "Event"
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *              type: object
- *              properties:
- *                name:
- *                  type: string
- *                  example: "Test Event"
- *                price:
- *                  type: number
- *                  example: 0
- *                description:
- *                  type: string
- *                  example: "Test Event description"
- *                date:
- *                  type: string
- *                  format: date
- *                  example: "2000-01-01"
- *                address[street]:
- *                  type: string
- *                  example: "123 Test Street"
- *                address[houseNumber]:
- *                  type: string
- *                  example: "1"
- *                address[apartmentNumber]:
- *                  type: string
- *                  example: "123"
- *                address[postalCode]:
- *                  type: string
- *                  example: "12345"
- *                address[city]:
- *                  type: string
- *                  example: "Berlin"
- *                address[stateOrRegion]:
- *                  type: string
- *                  example: "Berlin"
- *                address[country]:
- *                  type: string
- *                  example: "DE"
- *                thumbnail:
- *                  type: string
- *                  example: []
- *                  format: binary
- *                hashtags:
- *                  type: array
- *                  items:
- *                    type: string
- *                  example: ["sport", "freizeit"]
- *                category:
- *                  type: array
- *                  items:
- *                    type: object
- *                    properties:
- *                      name:
- *                        type: string
- *                        example: "Hobbys"
- *                      description:
- *                        type: string
- *                        example: "persönliche Interessen, Freizeit"
- *              required:
- *                - name
- *                - price
- *                - description
- *                - date
- *                - name[first]
- *                - name[last]
- *                - address[street]
- *                - address[houseNumber]
- *                - address[postalCode]
- *                - address[city]
- *                - address[country]
- *                - category
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the event.
+ *                 example: Test Event
+ *               price:
+ *                 type: number
+ *                 description: Price of the event.
+ *                 example: 10
+ *               description:
+ *                 type: string
+ *                 description: Description of the event.
+ *                 example: This is a test event description.
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Date of the event.
+ *                 example: "2024-01-01T12:00:00Z"
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                     description: Street address.
+ *                     example: 123 Test Street
+ *                   houseNumber:
+ *                     type: string
+ *                     description: House number.
+ *                     example: 1A
+ *                   postalCode:
+ *                     type: string
+ *                     description: Postal code.
+ *                     example: "12345"
+ *                   city:
+ *                     type: string
+ *                     description: City.
+ *                     example: Test City
+ *                   country:
+ *                     type: string
+ *                     description: Country.
+ *                     example: Test Country
+ *               thumbnail:
+ *                 type: string
+ *                 format: binary
+ *                 description: Event thumbnail file (image).
+ *               hashtags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Array of event hashtags (optional).
+ *                 example: ["test", "event"]
+ *               category:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       description: Category name.
+ *                       example: Test Category
+ *                     description:
+ *                       type: string
+ *                       description: Category description.
+ *                       example: This is a test category.
+ *                 description: Array of event categories.
+ *                 example: [{ "name": "Test Category", "description": "This is a test category." }]
  *     responses:
- *       201:
- *         description: Event created successfully
+ *       '201':
+ *         description: Event created successfully.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/IEvent'
- *       400:
- *         description: Bad request, validation error
- *         content:
- *           application/json:
- *             example:
- *               error: Bad request, validation error
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             example:
- *               error: Creating new event failed
+ *       '400':
+ *         description: Bad request. Invalid input parameters.
+ *       '401':
+ *         description: Unauthorized. Missing or invalid authentication token.
+ *       '500':
+ *         description: Internal server error. Failed to create an event.
  */
 
 EventRouter.post(
@@ -213,25 +204,26 @@ EventRouter.post(
       .optional()
       .isString()
       .withMessage("Invalid Apartment number."),
-    body("thumbnail").optional().isString(),
-    body("hashtags").optional().isArray(),
-    body("category")
-      .isArray()
-      .notEmpty()
-      .withMessage("Categories are required."),
+    //body("hashtags").optional().isArray(),
+    //body("category").isArray().notEmpty().withMessage("Categories are required."),
     //body("chat").isString().notEmpty(),
   ],
   async (req, res) => {
     try {
       const errors = validationResult(req);
+      console.log("Errors:", errors);
+      console.log("Req :", req);
       if (!errors.isEmpty()) {
+        console.log("Req with errors");
         if (req.file) {
           // Delete the file
           deleteEventThumbnail(req.file.path);
         }
         return res.status(400).json({ errors: errors.array() });
       } else {
+        console.log("Req without errors");
         if (req.file) {
+          console.log("req.file", req.file);
           req.body.thumbnail = `/uploads/events/${req.file.filename}`;
         }
         const newEvent = await eventService.createEvent(req.body, req.userId);

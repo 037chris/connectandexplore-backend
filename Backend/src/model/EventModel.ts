@@ -1,5 +1,4 @@
 import { Model, Schema, Types, model } from "mongoose";
-import { IAddress, addressSchema } from "./UserModel";
 
 export interface IEAddress {
   street: String;

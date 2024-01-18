@@ -8,9 +8,7 @@ const i=a(r(185)),n=r(725);let s;t.connect=async()=>{s=await n.MongoMemoryServer
 /***/505:
 /***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=a(r(993)),m=a(r(617)),p=(r(685),a(r(811))),h=a(r(79)),y=a(r(562)),f=a(r(11)),g=a(r(996)),w=a(r(653)),v=a(r(109)),b=(0,i.default)(),E=process.env.PORT||443;
 /* Routes */
-b.use("*",o()),b.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),b.use(n.json()),b.use(i.default.urlencoded({extended:!0})),b.use(i.default.static(__dirname)),
-// Health check endpoint
-b.get("/health",((e,t)=>{t.status(200).send("Health Check: OK")})),b.use("/api/users",h.default),b.use("/api",y.default),b.use("/api/login",f.default),b.use("/api/events",g.default),b.use("/api/comments",v.default),(0,p.default)(b,+E),b.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
+b.use("*",o()),b.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),b.use(n.json()),b.use(i.default.urlencoded({extended:!0})),b.use(i.default.static(__dirname)),b.use("/api/users",h.default),b.use("/api",y.default),b.use("/api/login",f.default),b.use("/api/events",g.default),b.use("/api/comments",v.default),b.use("/images/users",i.default.static("uploads/users")),b.use("/images/events",i.default.static("uploads/events")),(0,p.default)(b,+E),b.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
 // Create admin user after connecting to the database
 await(0,l.default)(),await(0,w.default)(),m.default.createServer({key:d,cert:c},b).listen(E,(()=>{console.log("Listening on port ",E)}))})).catch((e=>{console.error("Failed to connect to the database:",e)})),t.default=b},
 /***/439:
@@ -348,112 +346,103 @@ c.get("/search",s.optionalAuthentication,[(0,o.query)("query").isString().notEmp
 const r=e.query.query,a=await u.searchEvents(r);if(0===a.events.length)return t.status(204).json({message:"No events found matching the query."});t.status(200).send(a)}catch(e){t.status(404),r(e)}})),
 /**
  * @swagger
- * paths:
- *  /api/events/create:
- *    post:
- *     summary: Create a new event
- *     description: Register a new event with event data and an optional event pictures.
+ * /api/events/create:
+ *   post:
+ *     summary: Create a new event.
+ *     description: Endpoint to create a new event.
  *     tags:
- *       - Event
+ *       - "Event"
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *              type: object
- *              properties:
- *                name:
- *                  type: string
- *                  example: "Test Event"
- *                price:
- *                  type: number
- *                  example: 0
- *                description:
- *                  type: string
- *                  example: "Test Event description"
- *                date:
- *                  type: string
- *                  format: date
- *                  example: "2000-01-01"
- *                address[street]:
- *                  type: string
- *                  example: "123 Test Street"
- *                address[houseNumber]:
- *                  type: string
- *                  example: "1"
- *                address[apartmentNumber]:
- *                  type: string
- *                  example: "123"
- *                address[postalCode]:
- *                  type: string
- *                  example: "12345"
- *                address[city]:
- *                  type: string
- *                  example: "Berlin"
- *                address[stateOrRegion]:
- *                  type: string
- *                  example: "Berlin"
- *                address[country]:
- *                  type: string
- *                  example: "DE"
- *                thumbnail:
- *                  type: string
- *                  example: []
- *                  format: binary
- *                hashtags:
- *                  type: array
- *                  items:
- *                    type: string
- *                  example: ["sport", "freizeit"]
- *                category:
- *                  type: array
- *                  items:
- *                    type: object
- *                    properties:
- *                      name:
- *                        type: string
- *                        example: "Hobbys"
- *                      description:
- *                        type: string
- *                        example: "persönliche Interessen, Freizeit"
- *              required:
- *                - name
- *                - price
- *                - description
- *                - date
- *                - name[first]
- *                - name[last]
- *                - address[street]
- *                - address[houseNumber]
- *                - address[postalCode]
- *                - address[city]
- *                - address[country]
- *                - category
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the event.
+ *                 example: Test Event
+ *               price:
+ *                 type: number
+ *                 description: Price of the event.
+ *                 example: 10
+ *               description:
+ *                 type: string
+ *                 description: Description of the event.
+ *                 example: This is a test event description.
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Date of the event.
+ *                 example: "2024-01-01T12:00:00Z"
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                     description: Street address.
+ *                     example: 123 Test Street
+ *                   houseNumber:
+ *                     type: string
+ *                     description: House number.
+ *                     example: 1A
+ *                   postalCode:
+ *                     type: string
+ *                     description: Postal code.
+ *                     example: "12345"
+ *                   city:
+ *                     type: string
+ *                     description: City.
+ *                     example: Test City
+ *                   country:
+ *                     type: string
+ *                     description: Country.
+ *                     example: Test Country
+ *               thumbnail:
+ *                 type: string
+ *                 format: binary
+ *                 description: Event thumbnail file (image).
+ *               hashtags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Array of event hashtags (optional).
+ *                 example: ["test", "event"]
+ *               category:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       description: Category name.
+ *                       example: Test Category
+ *                     description:
+ *                       type: string
+ *                       description: Category description.
+ *                       example: This is a test category.
+ *                 description: Array of event categories.
+ *                 example: [{ "name": "Test Category", "description": "This is a test category." }]
  *     responses:
- *       201:
- *         description: Event created successfully
+ *       '201':
+ *         description: Event created successfully.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/IEvent'
- *       400:
- *         description: Bad request, validation error
- *         content:
- *           application/json:
- *             example:
- *               error: Bad request, validation error
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             example:
- *               error: Creating new event failed
+ *       '400':
+ *         description: Bad request. Invalid input parameters.
+ *       '401':
+ *         description: Unauthorized. Missing or invalid authentication token.
+ *       '500':
+ *         description: Internal server error. Failed to create an event.
  */
 c.post("/create",s.requiresAuthentication,d.upload.single("thumbnail"),[(0,o.body)("name").isString().notEmpty().withMessage("Event name is required."),
 //body("creator").isString().notEmpty(),
-(0,o.body)("price").isNumeric().notEmpty(),(0,o.body)("description").isString().notEmpty().withMessage("Description is required."),(0,o.body)("date")/* .isDate() */.notEmpty(),(0,o.body)("address.street").notEmpty().withMessage("Street address is required."),(0,o.body)("address.houseNumber").notEmpty().withMessage("House number is required."),(0,o.body)("address.postalCode").notEmpty().withMessage("Postal code is required."),(0,o.body)("address.city").notEmpty().withMessage("City is required."),(0,o.body)("address.country").notEmpty().withMessage("Country is required."),(0,o.body)("address.stateOrRegion").optional().isString().withMessage("Invalid State or Region."),(0,o.body)("address.apartmentNumber").optional().isString().withMessage("Invalid Apartment number."),(0,o.body)("thumbnail").optional().isString(),(0,o.body)("hashtags").optional().isArray(),(0,o.body)("category").isArray().notEmpty().withMessage("Categories are required.")],(async(e,t)=>{try{const r=(0,o.validationResult)(e);if(r.isEmpty()){e.file&&(e.body.thumbnail=`/uploads/events/${e.file.filename}`);const r=await u.createEvent(e.body,e.userId);return t.status(201).send(r)}return e.file&&
+(0,o.body)("price").isNumeric().notEmpty(),(0,o.body)("description").isString().notEmpty().withMessage("Description is required."),(0,o.body)("date")/* .isDate() */.notEmpty(),(0,o.body)("address.street").notEmpty().withMessage("Street address is required."),(0,o.body)("address.houseNumber").notEmpty().withMessage("House number is required."),(0,o.body)("address.postalCode").notEmpty().withMessage("Postal code is required."),(0,o.body)("address.city").notEmpty().withMessage("City is required."),(0,o.body)("address.country").notEmpty().withMessage("Country is required."),(0,o.body)("address.stateOrRegion").optional().isString().withMessage("Invalid State or Region."),(0,o.body)("address.apartmentNumber").optional().isString().withMessage("Invalid Apartment number.")],(async(e,t)=>{try{const r=(0,o.validationResult)(e);if(console.log("Errors:",r),console.log("Req :",e),r.isEmpty()){console.log("Req without errors"),e.file&&(console.log("req.file",e.file),e.body.thumbnail=`/uploads/events/${e.file.filename}`);const r=await u.createEvent(e.body,e.userId);return t.status(201).send(r)}return console.log("Req with errors"),e.file&&
 // Delete the file
 (0,d.deleteEventThumbnail)(e.file.path),t.status(400).json({errors:r.array()})}catch(e){return t.status(500).json({Error:"Event creation failed"})}})),
 /**
@@ -844,7 +833,7 @@ c.get("/",s.optionalAuthentication,(async(e,t,r)=>{try{const e=await u.getAllEve
  *             example:
  *               error: Registration failed
  */
-u.post("/register",o.upload.single("profilePicture"),[(0,n.body)("email").isEmail(),(0,n.body)("name.first").isString().isLength({min:3,max:100}).withMessage("First name is required."),(0,n.body)("name.last").isString().isLength({min:3,max:100}).withMessage("Last name is required."),(0,n.body)("password").isStrongPassword(),(0,n.body)("isAdministrator").optional().isBoolean(),(0,n.body)("address.postalCode").notEmpty().withMessage("Postal code is required."),(0,n.body)("address.city").notEmpty().withMessage("City is required."),(0,n.body)("profilePicture").optional().isString(),(0,n.body)("birthDate").isDate(),(0,n.body)("gender").isString().notEmpty(),(0,n.body)("socialMediaUrls.facebook").optional().isString(),(0,n.body)("socialMediaUrls.instagram").optional().isString()],(async(e,t)=>{try{const r=(0,n.validationResult)(e);if(r.isEmpty()){e.file&&(e.body.profilePicture=`/uploads/users/${e.file.filename}`);const r=await l.registerUser(e.body);return t.status(201).json(r)}return e.file&&
+u.post("/register",o.upload.single("profilePicture"),[(0,n.body)("email").isEmail(),(0,n.body)("name.first").isString().isLength({min:3,max:100}).withMessage("First name is required."),(0,n.body)("name.last").isString().isLength({min:3,max:100}).withMessage("Last name is required."),(0,n.body)("password").isStrongPassword(),(0,n.body)("isAdministrator").optional().isBoolean(),(0,n.body)("address.postalCode").notEmpty().withMessage("Postal code is required."),(0,n.body)("address.city").notEmpty().withMessage("City is required."),(0,n.body)("profilePicture").optional().isString(),(0,n.body)("birthDate").isDate(),(0,n.body)("gender").isString().notEmpty(),(0,n.body)("socialMediaUrls.facebook").optional().isString(),(0,n.body)("socialMediaUrls.instagram").optional().isString()],(async(e,t)=>{try{const r=(0,n.validationResult)(e);if(r.isEmpty()){e.file&&(e.body.profilePicture=`/${e.file.filename}`);const r=await l.registerUser(e.body);return t.status(201).json(r)}return e.file&&
 // Delete the file
 (0,o.deleteProfilePicture)(e.file.path),t.status(400).json({errors:r.array()})}catch(e){return"User already exists"===e.message?t.status(409).json({Error:"User already exists"}):t.status(500).json({Error:"Registration failed"})}})),
 /**
@@ -974,7 +963,7 @@ u.get("/:userid",c.requiresAuthentication,(0,n.param)("userid").isMongoId(),(asy
  */
 u.put("/:userid",c.requiresAuthentication,o.upload.single("profilePicture"),[(0,n.param)("userid").isMongoId()],d.validate,(async(e,t,r)=>{const a=(0,n.validationResult)(e);if(!a.isEmpty())return e.file&&
 // Delete the file
-(0,o.deleteProfilePicture)(e.file.path),t.status(400).json({errors:a.array()});const i=e.params.userid;if("a"===e.role||i===e.userId){const r=await l.getUser(i);try{e.file&&(e.body.profilePicture=`/uploads/${e.file.filename}`,r.profilePicture&&(0,o.deleteProfilePicture)(r.profilePicture))}catch(r){(0,o.deleteProfilePicture)(e.body.profilePicture),t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}}
+(0,o.deleteProfilePicture)(e.file.path),t.status(400).json({errors:a.array()});const i=e.params.userid;if("a"===e.role||i===e.userId){const r=await l.getUser(i);try{e.file&&(e.body.profilePicture=`/${e.file.filename}`,r.profilePicture&&(0,o.deleteProfilePicture)(r.profilePicture))}catch(r){(0,o.deleteProfilePicture)(e.body.profilePicture),t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}}
 //req.body.name = JSON.parse(req.body.name);
 const s=e.body;//matchedData(req) as userResource;
 if(s.id=i,"a"===e.role)try{const e=await l.updateUserWithAdmin(s);t.status(200).send(e)}catch(e){t.status(404),r(e)}else if(e.userId!==i)t.status(403),r(new Error("Invalid authorization, can not update user."));else try{let r;e.body.oldPassword&&(r=e.body.oldPassword);const a=await l.updateUserWithPw(s,r);t.status(200).send(a)}catch(e){t.status(403),r(new Error("Invalid authorization, probably invalid password."))}})),
@@ -1209,8 +1198,13 @@ await i.Comment.deleteMany({creator:e}).exec()}
         
         await Comment.deleteMany({ event:event._id }).exec();
         */
-await i.Comment.deleteMany({event:e}).exec()}async getAverageRatingForEvent(e){const t=await i.Comment.find({event:e}).exec();if(!t||0===t.length)return 0;// If no comments found, return 0 as the average rating
-return t.reduce(((e,t)=>e+t.stars),0)/t.length}}}
+await i.Comment.deleteMany({event:e}).exec()}
+/**
+     * used to calculate the average rate for Event.
+     * If no comments found, return 0 as the average rating
+     * @param eventId identifies Event
+     * @returns the Average rate of Event as a Number
+     */async getAverageRatingForEvent(e){const t=await i.Comment.find({event:e}).exec();if(!t||0===t.length)return 0;return t.reduce(((e,t)=>e+t.stars),0)/t.length}}}
 /***/,
 /***/682:
 /***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.EventService=void 0;const a=r(185),i=r(924),n=r(95),s=new(r(282).CommentService);class o{
@@ -1313,27 +1307,18 @@ try{return await a.User.create(e)}catch(e){throw new Error("Registration failed"
 /***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0});const a=r(95);t.default=async()=>{let e={email:"admin.team@connectandexplore.com",name:{first:"admin",last:"team"},password:"k.9MSn#JJh+§3F3a",isAdministrator:!0,address:{postalCode:"12345",city:"Berlin"},birthDate:new Date,gender:"male",isActive:!0,socialMediaUrls:{facebook:"facebook.com",instagram:"instagram.com"}};try{await a.User.create(e)}catch(e){console.error("Error creating admin user:",e)}}}
 /***/,
 /***/0:
-/***/function(e,t,r){var a=this&&this.__createBinding||(Object.create?function(e,t,r,a){void 0===a&&(a=r);var i=Object.getOwnPropertyDescriptor(t,r);i&&!("get"in i?!t.__esModule:i.writable||i.configurable)||(i={enumerable:!0,get:function(){return t[r]}}),Object.defineProperty(e,a,i)}:function(e,t,r,a){void 0===a&&(a=r),e[a]=t[r]}),i=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)"default"!==r&&Object.prototype.hasOwnProperty.call(e,r)&&a(t,e,r);return i(t,e),t},s=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.upload=t.deleteEventThumbnail=t.deleteProfilePicture=void 0;const o=s(r(738)),d=s(r(17)),c=s(r(231)),u=r(828);n(r(142)).config();process.env.UPLOAD_PATH;
-//Copyright of script: https://medium.com/@bviveksingh96/uploading-images-files-with-multer-in-node-js-f942e9319600
-const l=o.default.diskStorage({destination:function(e,t,r){const a=
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.upload=t.deleteEventThumbnail=t.deleteProfilePicture=void 0;const i=a(r(738)),n=a(r(17)),s=a(r(231)),o=r(828),d=i.default.diskStorage({destination:function(e,t,r){const a=
 // This function is created with chatgpt
 function(e){
 //const uploadPath = process.env.UPLOAD_PATH || "uploads"; // Get upload path from .env file or use default 'uploads'
-const t="uploads",r=d.default.join(__dirname,"../../Backend");// Assuming 'FileUpload.ts' is in the 'utils' directory
-return"profilePicture"===e?d.default.join(r,t,"users"):"thumbnail"===e?d.default.join(r,t,"events"):d.default.join(r,t)}(t.fieldname);
+const t="uploads",r=n.default.join(__dirname,"../../Backend");// Assuming 'FileUpload.ts' is in the 'utils' directory
+return"profilePicture"===e?n.default.join(r,t,"users"):"thumbnail"===e?n.default.join(r,t,"events"):n.default.join(r,t)}(t.fieldname);
 // Check if the folder exists, create it if it doesn't
-c.default.existsSync(a)||c.default.mkdirSync(a,{recursive:!0}),r(null,a)},filename:function(e,t,r){r(null,`${(0,u.v4)()}-${t.originalname}`)}});t.deleteProfilePicture=function(e){try{const t=d.default.join(__dirname,"../../Backend",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
-c.default.unlinkSync(t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){
-/**
-    try {
-      const fullPath = path.join(__dirname, "../../Backend", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
-      fs.unlinkSync(fullPath);
-    } catch (error) {
-      throw error;
-    }
-    */},
+s.default.existsSync(a)||s.default.mkdirSync(a,{recursive:!0}),r(null,a)},filename:function(e,t,r){r(null,`${(0,o.v4)()}-${t.originalname}`)}});t.deleteProfilePicture=function(e){try{const t=n.default.join(e);// Assuming 'FileUpload.ts' is in the 'utils' directory
+console.log("fullPath:",t),s.default.unlinkSync(t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){try{const t=n.default.join(__dirname,"../../Backend","uploads/",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
+console.log("fullpath image:",t),s.default.unlinkSync(t)}catch(e){throw e}},
 // file size : 10 MB limit
-t.upload=(0,o.default)({storage:l,fileFilter:(e,t,r)=>{"image/jpg"===t.mimetype||"image/jpeg"===t.mimetype||"image/png"===t.mimetype?r(null,!0):r(new Error("Image uploaded is not of type jpg/jpeg or png"),!1)},limits:{fileSize:10485760}})},
+t.upload=(0,i.default)({storage:d,fileFilter:(e,t,r)=>{"image/jpg"===t.mimetype||"image/jpeg"===t.mimetype||"image/png"===t.mimetype?r(null,!0):r(new Error("Image uploaded is not of type jpg/jpeg or png"),!1)},limits:{fileSize:10485760}})},
 /***/448:
 /***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.validate=void 0;const a=r(553),i=(e,t)=>(r,a,i)=>
 // Check if the field exists in the request body and has a value
