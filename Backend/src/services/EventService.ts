@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { eventResource, eventsResource, usersResource } from "../Resources";
-import { Event } from "../model/EventModel";
+import { Chat, Event } from "../model/EventModel";
 import { User } from "../model/UserModel";
 import { CommentService } from "../../src/services/CommentService";
 
@@ -16,6 +16,7 @@ export class EventService {
   ): Promise<eventResource> {
     try {
       const creator = await User.findById(creatorID);
+      const chat = await Chat.create({ messages: [] });
       const event = await Event.create({
         name: eventResource.name,
         creator: creator.id,
@@ -26,9 +27,13 @@ export class EventService {
         thumbnail: eventResource.thumbnail,
         hashtags: eventResource.hashtags,
         category: eventResource.category,
-        chat: new Types.ObjectId(),
+        chat: chat.id,
         participants: [creatorID],
       });
+
+      chat.event = event._id;
+      await chat.save();
+
       return {
         id: event.id,
         name: event.name,
@@ -371,6 +376,7 @@ export class EventService {
       ) {
         throw new Error("Invalid authorization");
       }
+      await Chat.deleteOne({ _id: event.chat }).exec();
       const result = await Event.deleteOne({ _id: eventID }).exec();
       if (result.deletedCount === 1) {
         await commentService.deleteCommentsOfevent(eventID);

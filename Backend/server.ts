@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const cors = require("cors");
@@ -15,6 +15,8 @@ import loginRouter from "./src/routes/login";
 import EventRouter from "./src/routes/EventRoute";
 import createTestData from "./src/utils/createTestData";
 import commentsRouter from "./src/routes/Comments";
+import ChatRouter from "./src/routes/ChatRoute";
+
 const app: Express = express();
 const port = process.env.PORT || 443;
 /* Routes */
@@ -30,6 +32,31 @@ app.use(function (req, res, next) {
   next();
 });
 
+export const server = https.createServer({ key, cert }, app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  //console.log("socket connected");
+
+  socket.on("disconnect", () => {
+    //console.log("socket disconnected")
+  });
+
+  socket.on("join_room", ({ roomId }) => {
+    socket.join(roomId);
+  });
+
+  socket.on("send_message", ({ user, message, roomId, time }) => {
+    //console.log(`(${roomId})> (${time}) ${user}: ${message}`);
+    socket.to(roomId).emit("receive_message", { user, message, time });
+  });
+});
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
@@ -39,6 +66,7 @@ app.use("/api", UsersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/events", EventRouter);
 app.use("/api/comments", commentsRouter);
+app.use("/api/chat", ChatRouter);
 app.use("/images/users", express.static("uploads/users"));
 app.use("/images/events", express.static("uploads/events"));
 swaggerDocs(app, +port);
@@ -51,7 +79,7 @@ connect()
     // Create admin user after connecting to the database
     await createAdminUser();
     await createTestData();
-    let server = https.createServer({ key, cert }, app);
+    //let server = https.createServer({ key, cert }, app);
     //let server = http.createServer(app);
     if (process.env.NODE_ENV !== "test") {
       server.listen(port, () => {

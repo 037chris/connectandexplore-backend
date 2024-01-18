@@ -122,3 +122,16 @@ export type CommentWithRatingsResource = {
 export type CommentsWithRatingsResource = {
   comments: CommentWithRatingsResource[];
 };
+
+export type MessageResource = {
+  user: string;
+  username?: string;
+  message: string;
+  time?: string;
+}
+
+export type ChatResource = {
+  id?: string;
+  event: string;
+  messages: MessageResource[];
+}

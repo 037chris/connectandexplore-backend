@@ -32,7 +32,7 @@ export async function verifyPasswordAndCreateJWT(
     throw new Error("TTL not set");
   }
 
-  const exp = timeInSec + parseInt(ttl);
+  const exp = timeInSec + (24 * 60 * 60);
   const role = user.isAdministrator ? "a" : "u";
 
   const payload: JwtPayload = {
