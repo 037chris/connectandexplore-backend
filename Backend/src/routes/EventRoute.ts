@@ -178,7 +178,7 @@ EventRouter.post(
   [
     body("name").isString().notEmpty().withMessage("Event name is required."),
     //body("creator").isString().notEmpty(),
-    body("price").isNumeric().notEmpty(),
+    // body("price").isNumeric().notEmpty(),
     body("description")
       .isString()
       .notEmpty()
@@ -211,21 +211,25 @@ EventRouter.post(
   async (req, res) => {
     try {
       const errors = validationResult(req);
-      console.log("Errors:", errors);
-      console.log("Req :", req);
       if (!errors.isEmpty()) {
-        console.log("Req with errors");
         if (req.file) {
           // Delete the file
+          console.log("errors:", errors);
           deleteEventThumbnail(req.file.path);
         }
         return res.status(400).json({ errors: errors.array() });
       } else {
-        console.log("Req without errors");
         if (req.file) {
           console.log("req.file", req.file);
-          req.body.thumbnail = `/uploads/events/${req.file.filename}`;
+          req.body.thumbnail = `/${req.file.filename}`;
+          console.log("Event bild uploaded");
         }
+
+        req.body.category = JSON.parse(req.body.category);
+        req.body.hashtags = JSON.parse(req.body.hashtags);
+        req.body.price = Number(req.body.price);
+        req.body.address = JSON.parse(req.body.address);
+        console.log("Event data ", req.body);
         const newEvent = await eventService.createEvent(req.body, req.userId);
         return res.status(201).send(newEvent);
       }

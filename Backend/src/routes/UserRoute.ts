@@ -125,6 +125,7 @@ UserRouter.post(
         if (req.file) {
           req.body.profilePicture = `/${req.file.filename}`;
         }
+        console.log("Req body user registration:", req.body);
         const newUser = await userService.registerUser(req.body);
         return res.status(201).json(newUser);
       }
@@ -290,7 +291,7 @@ UserRouter.put(
   requiresAuthentication,
   upload.single("profilePicture"),
   [param("userid").isMongoId()],
-  validate,
+  // validate,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -339,7 +340,7 @@ UserRouter.put(
           if (req.body.oldPassword) {
             oldPw = req.body.oldPassword;
           }
-
+          console.log("oldPw:", oldPw);
           const updatedUser = await userService.updateUserWithPw(
             userResource,
             oldPw

@@ -107,57 +107,39 @@ export class UserService {
     if (!userResource.id) {
       throw new Error("User id is missing, cannot update User.");
     }
+
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
         `No user with id: ${userResource.id} found, cannot update`
       );
     }
-    if (userResource.name) user.name = userResource.name;
-    if (userResource.email) {
-      userResource.email = userResource.email;
-      if (userResource.email !== user.email) {
-        const c = await User.count({ email: userResource.email }).exec();
-        if (c > 0) {
-          throw new Error(`Duplicate email`);
+
+    for (const property in userResource) {
+      if (userResource.hasOwnProperty(property)) {
+        if (property === "oldPassword") {
+          continue;
+        }
+
+        if (property === "name") {
+          user.name.first = userResource.name.first;
+          user.name.last = userResource.name.last;
+        } else {
+          user[property] = userResource[property];
+        }
+        if (property === "address") {
+          user.address.postalCode = userResource.address.postalCode;
+          user.address.city = userResource.address.city;
+        } else {
+          user[property] = userResource[property];
         }
       }
-      user.email = userResource.email;
     }
-    if (userResource.password) user.password = userResource.password;
-    if (userResource.isAdministrator)
-      user.isAdministrator = userResource.isAdministrator;
-    if (userResource.address) user.address = userResource.address;
-    if (userResource.birthDate) user.birthDate = userResource.birthDate;
-    if (userResource.gender) user.gender = userResource.gender;
-    if (userResource.profilePicture)
-      user.profilePicture = userResource.profilePicture;
-    if (userResource.socialMediaUrls)
-      user.socialMediaUrls = userResource.socialMediaUrls;
-    if (userResource.isActive) user.isActive = userResource.isActive;
+
     const savedUser = await user.save();
-    return {
-      id: savedUser.id,
-      name: savedUser.name,
-      email: savedUser.email,
-      address: savedUser.address,
-      isAdministrator: savedUser.isAdministrator,
-      birthDate: savedUser.birthDate,
-      gender: savedUser.gender,
-      socialMediaUrls: savedUser.socialMediaUrls,
-      isActive: savedUser.isActive,
-      profilePicture: savedUser.profilePicture,
-    };
+    return savedUser;
   }
 
-  /**
-   * only admins can change isAdministrator:
-   * authorization to change isAdministrator is done in userRouter ->
-   * isAdministratorfield = null if user in req is not an admin
-   * @param userResource
-   * @param oldPw
-   * @returns userResource
-   */
   async updateUserWithPw(
     userResource: userResource,
     oldPw?: string
@@ -165,51 +147,36 @@ export class UserService {
     if (!userResource.id) {
       throw new Error("User id is missing, cannot update User.");
     }
+
     const user = await User.findById(userResource.id).exec();
     if (!user) {
       throw new Error(
         `No user with id: ${userResource.id} found, cannot update`
       );
     }
+    console.log("user:", user);
     if (oldPw) {
+      console.log("oldPw");
       const res = await user.isCorrectPassword(oldPw);
       if (!res) {
-        throw new Error("invalid oldPassword, can not update User!");
+        throw new Error("Invalid oldPassword, cannot update User!");
       }
-      if (userResource.password) user.password = userResource.password;
     }
-    if (userResource.name?.first) user.name.first = userResource.name.first;
-    if (userResource.name?.last) user.name.last = userResource.name.last;
-    if (userResource.email) {
-      userResource.email = userResource.email;
-      if (userResource.email !== user.email) {
-        const c = await User.count({ email: userResource.email }).exec();
-        if (c > 0) {
-          throw new Error(`Duplicate email`);
-        }
+    console.log("userResource:", userResource);
+    for (const property in userResource) {
+      console.log("property:", property);
+      if (property === "oldPassword") continue;
+      if (property === "Password") {
+        console.log("userResource.password:", userResource[property]);
+        user.password = userResource[property];
+        console.log("user.password:", user.password);
+      } else {
+        user[property] = userResource[property];
       }
-      user.email = userResource.email;
     }
-    if (userResource.address) user.address = userResource.address;
-    if (userResource.birthDate) user.birthDate = userResource.birthDate;
-    if (userResource.gender) user.gender = userResource.gender;
-    if (userResource.profilePicture)
-      user.profilePicture = userResource.profilePicture;
-    if (userResource.socialMediaUrls)
-      user.socialMediaUrls = userResource.socialMediaUrls;
+
     const savedUser = await user.save();
-    return {
-      id: savedUser.id,
-      name: savedUser.name,
-      email: savedUser.email,
-      address: savedUser.address,
-      isAdministrator: savedUser.isAdministrator,
-      birthDate: savedUser.birthDate,
-      gender: savedUser.gender,
-      socialMediaUrls: savedUser.socialMediaUrls,
-      isActive: user.isActive,
-      profilePicture: savedUser.profilePicture,
-    };
+    return savedUser;
   }
 
   /**

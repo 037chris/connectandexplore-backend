@@ -51,6 +51,7 @@ export class EventService {
         ),
       };
     } catch (err) {
+      console.log(err);
       throw new Error("Event creation failed");
     }
   }
@@ -108,7 +109,7 @@ export class EventService {
           category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
-            participantId.toString(),
+            participantId.toString()
           ),
         })),
       };
@@ -138,7 +139,7 @@ export class EventService {
           category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
-            participantId.toString(),
+            participantId.toString()
           ),
         })),
       };
@@ -175,7 +176,7 @@ export class EventService {
           category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
-            participantId.toString(),
+            participantId.toString()
           ),
         })),
       };
@@ -227,7 +228,7 @@ export class EventService {
           category: event.category,
           chat: event.chat.toString(),
           participants: event.participants.map((participantId) =>
-            participantId.toString(),
+            participantId.toString()
           ),
         })),
       };
@@ -267,7 +268,7 @@ export class EventService {
    */
   async getParticipants(
     eventID: string,
-    creatorID: string,
+    creatorID: string
   ): Promise<usersResource> {
     try {
       const event = await Event.findById(eventID).exec();
