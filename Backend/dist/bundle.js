@@ -6,17 +6,17 @@
 // Copyright: This script is taken from: https://codesandbox.io/s/typescript-forked-8vscow?file=/src/db.ts
 const i=a(r(185)),n=r(725);let s;t.connect=async()=>{s=await n.MongoMemoryServer.create();const e=s.getUri();await i.default.connect(e,{dbName:"ConnectAndExplore"}).then((e=>console.log("connected...."))).catch((e=>console.log(`Cannot connect => ${e}`)))};t.closeDatabase=async()=>{await i.default.connection.dropDatabase(),await i.default.connection.close(),await s.stop()};t.clearDatabase=async()=>{const e=i.default.connection.collections;for(const t in e){const r=e[t];await r.deleteMany({})}}},
 /***/505:
-/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.server=void 0;const i=a(r(860)),n=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=a(r(993)),m=a(r(617)),p=(r(685),a(r(811))),h=a(r(79)),g=a(r(562)),f=a(r(11)),y=a(r(996)),w=a(r(653)),v=a(r(109)),b=a(r(952)),E=(0,i.default)(),S=process.env.PORT||443;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.server=void 0;const i=a(r(860)),n=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=a(r(993)),m=a(r(617)),p=(r(685),a(r(811))),h=a(r(79)),g=a(r(562)),f=a(r(11)),y=a(r(996)),w=a(r(653)),v=a(r(109)),b=a(r(952)),E=a(r(62)),S=(0,i.default)(),I=process.env.PORT||443;
 /* Routes */
-E.use("*",o()),E.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),t.server=m.default.createServer({key:d,cert:c},E);r(69)(t.server,{cors:{origin:"http://localhost:3000",methods:["GET","POST"]}}).on("connection",(e=>{
+S.use("*",o()),S.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),t.server=m.default.createServer({key:d,cert:c},S);r(69)(t.server,{cors:{origin:"http://localhost:3000",methods:["GET","POST"]}}).on("connection",(e=>{
 //console.log("socket connected");
 e.on("disconnect",(()=>{})),e.on("join_room",(({roomId:t})=>{e.join(t)})),e.on("send_message",(({user:t,message:r,roomId:a,time:i})=>{
 //console.log(`(${roomId})> (${time}) ${user}: ${message}`);
-e.to(a).emit("receive_message",{user:t,message:r,time:i})}))})),E.use(n.json()),E.use(i.default.urlencoded({extended:!0})),E.use(i.default.static(__dirname)),
+e.to(a).emit("receive_message",{user:t,message:r,time:i})}))})),S.use(n.json()),S.use(i.default.urlencoded({extended:!0})),S.use(i.default.static(__dirname)),
 // Health check endpoint
-E.get("/health",((e,t)=>{t.status(200).send("Health Check: OK")})),E.use("/api/users",h.default),E.use("/api",g.default),E.use("/api/login",f.default),E.use("/api/events",y.default),E.use("/api/comments",v.default),E.use("/api/chat",b.default),(0,p.default)(E,+S),E.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
+S.get("/health",((e,t)=>{t.status(200).send("Health Check: OK")})),S.use("/api/users",h.default),S.use("/api",g.default),S.use("/api/login",f.default),S.use("/api/events",y.default),S.use("/api/comments",v.default),S.use("/api/chat",b.default),S.use("/api/rating",E.default),(0,p.default)(S,+I),S.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
 // Create admin user after connecting to the database
-await(0,l.default)(),await(0,w.default)(),t.server.listen(S,(()=>{console.log("Listening on port ",S)}))})).catch((e=>{console.error("Failed to connect to the database:",e)})),t.default=E},
+await(0,l.default)(),await(0,w.default)(),t.server.listen(I,(()=>{console.log("Listening on port ",I)}))})).catch((e=>{console.error("Failed to connect to the database:",e)})),t.default=S},
 /***/439:
 /***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Comment=void 0;const a=r(185),i=new a.Schema({title:{type:String,required:!0},stars:{type:Number,required:!0,validate:{validator:e=>e>=1&&e<=5,message:"Stars must be between 0 and 5."}},content:{type:String,required:!0},edited:{type:Boolean,default:!1},creator:{type:a.Schema.Types.ObjectId,ref:"User",required:!0},event:{type:a.Schema.Types.ObjectId,ref:"Event",required:!0}},{timestamps:!0});t.Comment=(0,a.model)("Comment",i)}
 /***/,
@@ -776,6 +776,8 @@ c.get("/creator/:userid",s.requiresAuthentication,(0,o.param)("userid").isMongoI
  *         description: Not found
  */
 c.get("/",s.optionalAuthentication,(async(e,t,r)=>{try{const e=await u.getAllEvents();if(0===e.events.length)return t.status(204).json({message:"No events found."});t.status(200).send(e)}catch(e){t.status(404),r(e)}})),t.default=c},
+/***/62:
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(468),s=r(553),o=r(467),d=r(980),c=i.default.Router(),u=new d.RatingService;c.post("/rating",n.requiresAuthentication,(0,s.body)("comment").isMongoId(),(0,s.body)("creator").isMongoId(),(0,s.body)("ratingType").isIn([o.RatingType.Helpful,o.RatingType.Reported]).withMessage("invalid ratingtype."),(async(e,t,r)=>{const a=(0,s.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});const i=(0,s.matchedData)(e);i.creator!==e.userId&&(t.status(403),r(new Error("unauthorized.")));try{const e=await u.createRating(i);t.status(201).send(e)}catch(e){t.status(400),r(e)}})),t.default=c},
 /***/79:
 /***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const i=a(r(860)),n=r(553),s=r(105),o=r(0),d=r(448),c=r(468),u=i.default.Router(),l=new s.UserService;
 /**

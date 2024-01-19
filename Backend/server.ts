@@ -16,6 +16,7 @@ import EventRouter from "./src/routes/EventRoute";
 import createTestData from "./src/utils/createTestData";
 import commentsRouter from "./src/routes/Comments";
 import ChatRouter from "./src/routes/ChatRoute";
+import RatingRouter from "./src/routes/RatingRoute";
 
 const app: Express = express();
 const port = process.env.PORT || 443;
@@ -68,6 +69,7 @@ app.use("/api/login", loginRouter);
 app.use("/api/events", EventRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/chat", ChatRouter);
+app.use("/api/rating", RatingRouter)
 swaggerDocs(app, +port);
 app.use((req, res, next) => {
   res.status(404).json("Not Found");
