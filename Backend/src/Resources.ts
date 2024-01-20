@@ -51,6 +51,10 @@ export type eventResource = {
   id?: string;
   name: string;
   creator?: string;
+  creatorName?: {
+    first: string;
+    last: string;
+  };
   description: string;
   price: number;
   date: Date;

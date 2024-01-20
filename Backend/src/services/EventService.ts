@@ -38,6 +38,7 @@ export class EventService {
         id: event.id,
         name: event.name,
         creator: event.creator.toString(),
+        creatorName: creator.name,
         description: event.description,
         price: event.price,
         date: event.date,
@@ -65,10 +66,15 @@ export class EventService {
       if (!event) {
         throw new Error("Event not found");
       }
+      const creator = await User.findById(event.creator).exec();
+      if (!creator) {
+        throw new Error("Creator of Event does not exist.");
+      }
       return {
         id: event.id,
         name: event.name,
         creator: event.creator.toString(),
+        creatorName: creator.name,
         description: event.description,
         price: event.price,
         date: event.date,
