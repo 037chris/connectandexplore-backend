@@ -171,7 +171,9 @@ export class UserService {
         user.password = userResource[property];
         console.log("user.password:", user.password);
       } else {
-        user[property] = userResource[property];
+        if (property === "deletePicture") {
+          user.profilePicture = "";
+        } else user[property] = userResource[property];
       }
     }
 

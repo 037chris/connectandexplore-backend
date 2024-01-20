@@ -304,6 +304,7 @@ UserRouter.put(
     const userid = req.params.userid;
     if (req.role === "a" || userid === req.userId) {
       const user: userResource = await userService.getUser(userid);
+
       try {
         if (req.file) {
           req.body.profilePicture = `/${req.file.filename}`;
@@ -335,6 +336,28 @@ UserRouter.put(
         res.status(403);
         next(new Error("Invalid authorization, can not update user."));
       } else {
+        // To delete Profile picture in settings page
+        try {
+          console.log("req.body.deletePicture:", req.body.deletePicture);
+          if (req.body.deletePicture === "true") {
+            console.log("req.body.deletePicture: True");
+            if (userResource.profilePicture) {
+              deleteProfilePicture(userResource.profilePicture);
+
+              let oldPw!: string;
+              const updatedUser = await userService.updateUserWithPw(
+                userResource,
+                oldPw
+              );
+              res.status(200).send(updatedUser);
+            }
+          }
+        } catch (err) {
+          res.status(404).json({
+            Error: "Can not delete Profile picture - no such file or directory",
+          });
+        }
+
         try {
           let oldPw!: string;
           if (req.body.oldPassword) {
