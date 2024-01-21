@@ -11,7 +11,7 @@ import { UserService } from "../services/UserService";
 import { upload, deleteProfilePicture } from "../utils/FileUpload";
 import { validate } from "../utils/Helpers";
 import { requiresAuthentication } from "./authentication";
-import { userResource } from "../Resources";
+import { userResource, userResourceNA } from "../Resources";
 const UserRouter = express.Router();
 const userService = new UserService();
 
@@ -205,6 +205,70 @@ UserRouter.get(
         res.status(404);
         next(err);
       }
+    }
+  }
+);
+/**
+ * @swagger
+ * /api/users/user/{userid}:
+ *   get:
+ *     summary: "Get User without admin"
+ *     deprecated: false
+ *     description: "Retrieve a user by ID"
+ *     tags:
+ *       - "User"
+ *     parameters:
+ *       - name: "userid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the user to retrieve"
+ *     responses:
+ *       "200":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization, cannot get User."
+ *       "404":
+ *         description: "Not Found - Invalid userID"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "No user with this ID exists."
+ *     security:
+ *       - bearerAuth: []
+ */
+UserRouter.get(
+  "/user/:userid",
+  param("userid").isMongoId(),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const userid = req.params.userid;
+    try {
+      const user: userResourceNA = await userService.getUserInfo(userid);
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(404);
+      next(err);
     }
   }
 );

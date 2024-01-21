@@ -6,13 +6,13 @@
 // Copyright: This script is taken from: https://codesandbox.io/s/typescript-forked-8vscow?file=/src/db.ts
 const n=a(r(185)),i=r(725);let s;t.connect=async()=>{s=await i.MongoMemoryServer.create();const e=s.getUri();await n.default.connect(e,{dbName:"ConnectAndExplore"}).then((e=>console.log("connected...."))).catch((e=>console.log(`Cannot connect => ${e}`)))};t.closeDatabase=async()=>{await n.default.connection.dropDatabase(),await n.default.connection.close(),await s.stop()};t.clearDatabase=async()=>{const e=n.default.connection.collections;for(const t in e){const r=e[t];await r.deleteMany({})}}},
 /***/505:
-/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.server=void 0;const n=a(r(860)),i=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=a(r(993)),m=a(r(617)),p=(r(685),a(r(811))),g=a(r(79)),h=a(r(562)),y=a(r(11)),f=a(r(996)),w=a(r(653)),v=a(r(109)),b=a(r(952)),E=a(r(62)),S=(0,n.default)(),I=process.env.PORT||443;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0}),t.server=void 0;const n=a(r(860)),i=r(986),s=r(231),o=r(582),d=s.readFileSync("./certificates/key.pem"),c=s.readFileSync("./certificates/cert.pem"),u=r(14),l=a(r(993)),m=a(r(617)),p=(r(685),a(r(811))),g=a(r(79)),y=a(r(562)),h=a(r(11)),f=a(r(996)),w=a(r(653)),v=a(r(109)),b=a(r(952)),E=a(r(62)),S=(0,n.default)(),I=process.env.PORT||443;
 /* Routes */
 S.use("*",o()),S.use((function(e,t,r){t.header("Access-Control-Allow-Origin","*"),t.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept"),t.header("Access-Control-Expose-Headers","Authorization"),r()})),t.server=m.default.createServer({key:d,cert:c},S);r(69)(t.server,{cors:{origin:"http://localhost:3000",methods:["GET","POST"]}}).on("connection",(e=>{
 //console.log("socket connected");
 e.on("disconnect",(()=>{})),e.on("join_room",(({roomId:t})=>{e.join(t)})),e.on("send_message",(({user:t,message:r,roomId:a,time:n})=>{
 //console.log(`(${roomId})> (${time}) ${user}: ${message}`);
-e.to(a).emit("receive_message",{user:t,message:r,time:n})}))})),S.use(i.json()),S.use(n.default.urlencoded({extended:!0})),S.use(n.default.static(__dirname)),S.use("/api/users",g.default),S.use("/api",h.default),S.use("/api/login",y.default),S.use("/api/events",f.default),S.use("/api/comments",v.default),S.use("/api/chat",b.default),S.use("/images/users",n.default.static("uploads/users")),S.use("/images/events",n.default.static("uploads/events")),S.use("/api/rating",E.default),(0,p.default)(S,+I),S.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
+e.to(a).emit("receive_message",{user:t,message:r,time:n})}))})),S.use(i.json()),S.use(n.default.urlencoded({extended:!0})),S.use(n.default.static(__dirname)),S.use("/api/users",g.default),S.use("/api",y.default),S.use("/api/login",h.default),S.use("/api/events",f.default),S.use("/api/comments",v.default),S.use("/api/chat",b.default),S.use("/images/users",n.default.static("uploads/users")),S.use("/images/events",n.default.static("uploads/events")),S.use("/api/rating",E.default),(0,p.default)(S,+I),S.use(((e,t,r)=>{t.status(404).json("Not Found")})),(0,u.connect)().then((async()=>{
 // Create admin user after connecting to the database
 await(0,l.default)(),await(0,w.default)(),t.server.listen(I,(()=>{console.log("Listening on port ",I)}))})).catch((e=>{console.error("Failed to connect to the database:",e)})),t.default=S},
 /***/439:
@@ -449,7 +449,7 @@ const r=e.query.query,a=await u.searchEvents(r);if(0===a.events.length)return t.
 c.post("/create",s.requiresAuthentication,d.upload.single("thumbnail"),[(0,o.body)("name").isString().notEmpty().withMessage("Event name is required."),
 //body("creator").isString().notEmpty(),
 // body("price").isNumeric().notEmpty(),
-(0,o.body)("description").isString().notEmpty().withMessage("Description is required."),(0,o.body)("date")/* .isDate() */.notEmpty(),(0,o.body)("address.street").notEmpty().withMessage("Street address is required."),(0,o.body)("address.houseNumber").notEmpty().withMessage("House number is required."),(0,o.body)("address.postalCode").notEmpty().withMessage("Postal code is required."),(0,o.body)("address.city").notEmpty().withMessage("City is required."),(0,o.body)("address.country").notEmpty().withMessage("Country is required."),(0,o.body)("address.stateOrRegion").optional().isString().withMessage("Invalid State or Region."),(0,o.body)("address.apartmentNumber").optional().isString().withMessage("Invalid Apartment number.")],(async(e,t)=>{try{const r=(0,o.validationResult)(e);if(r.isEmpty()){e.file&&(console.log("req.file",e.file),e.body.thumbnail=`/${e.file.filename}`,console.log("Event bild uploaded")),e.body.category=JSON.parse(e.body.category),e.body.hashtags=JSON.parse(e.body.hashtags),e.body.price=Number(e.body.price),e.body.address=JSON.parse(e.body.address),console.log("Event data ",e.body);const r=await u.createEvent(e.body,e.userId);return t.status(201).send(r)}return e.file&&(
+(0,o.body)("description").isString().notEmpty().withMessage("Description is required."),(0,o.body)("date")/* .isDate() */.notEmpty(),(0,o.body)("address.street").notEmpty().withMessage("Street address is required."),(0,o.body)("address.houseNumber").notEmpty().withMessage("House number is required."),(0,o.body)("address.postalCode").notEmpty().withMessage("Postal code is required."),(0,o.body)("address.city").notEmpty().withMessage("City is required."),(0,o.body)("address.country").notEmpty().withMessage("Country is required."),(0,o.body)("address.stateOrRegion").optional().isString().withMessage("Invalid State or Region."),(0,o.body)("address.apartmentNumber").optional().isString().withMessage("Invalid Apartment number.")],(async(e,t)=>{try{const r=(0,o.validationResult)(e);if(r.isEmpty()){e.file&&(console.log("req.file",e.file),e.body.thumbnail=`/${e.file.filename}`,console.log("Event bild uploaded")),e.body.category=JSON.parse(e.body.category),e.body.hashtags=JSON.parse(e.body.hashtags),e.body.price=Number(e.body.price),e.body.address=JSON.parse(e.body.address),console.log("Event data ",e.body);const r=await u.createEvent(e.body,e.userId);return console.log("Created Event:",r),t.status(201).send(r)}return e.file&&(
 // Delete the file
 console.log("errors:",r),(0,d.deleteEventThumbnail)(e.file.path)),t.status(400).json({errors:r.array()})}catch(e){return t.status(500).json({Error:"Event creation failed"})}})),
 /**
@@ -654,9 +654,9 @@ c.get("/:eventid/participants",s.requiresAuthentication,(0,o.param)("eventid").i
  *       500:
  *         description: "Internal server error"
  */
-c.get("/:eventid",s.optionalAuthentication,(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});try{const r=await u.getEvent(e.params.eventid);t.status(200).send(r)}catch(e){t.status(404),r(e)}})),c.put("/:eventid",s.requiresAuthentication,d.upload.single("thumbnail"),(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return e.file&&
+c.get("/:eventid",s.optionalAuthentication,(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});try{const r=await u.getEvent(e.params.eventid);t.status(200).send(r)}catch(e){t.status(404),r(e)}})),c.put("/:eventid",s.requiresAuthentication,d.upload.single("thumbnail"),(0,o.param)("eventid").isMongoId(),(async(e,t,r)=>{const a=(0,o.validationResult)(e);if(!a.isEmpty())return e.file&&(
 // Delete the file
-(0,d.deleteEventThumbnail)(e.file.path),t.status(400).json({errors:a.array()});try{const r=await u.getEvent(e.params.eventid);e.file&&(e.body.thumbnail=`/uploads/${e.file.filename}`,r.thumbnail&&(0,d.deleteEventThumbnail)(r.thumbnail));const a=e.body,n=await u.updateEvent(e.params.eventid,a,e.userId);t.status(200).send(n)}catch(a){(0,d.deleteEventThumbnail)(e.body.thumbnail),t.status(404),r(a)}})),
+console.log("errors:",a),(0,d.deleteEventThumbnail)(e.file.path)),t.status(400).json({errors:a.array()});try{const r=await u.getEvent(e.params.eventid);e.file&&(e.body.thumbnail=`/${e.file.filename}`,r.thumbnail&&(0,d.deleteEventThumbnail)(r.thumbnail),console.log("Event bild uploaded")),e.body.category&&(e.body.category=JSON.parse(e.body.category)),e.body.hashtags&&(e.body.hashtags=JSON.parse(e.body.hashtags)),e.body.price&&(e.body.price=Number(e.body.price)),e.body.address&&(e.body.address=JSON.parse(e.body.address)),console.log("Event data ",e.body);const a=e.body,n=await u.updateEvent(e.params.eventid,a,e.userId);t.status(200).send(n)}catch(a){(0,d.deleteEventThumbnail)(e.body.thumbnail),t.status(404),r(a)}})),
 /**
  * @swagger
  * /api/events/{eventid}:
@@ -894,6 +894,53 @@ c.post("/register",o.upload.single("profilePicture"),[(0,i.body)("email").isEmai
 c.get("/:userid",d.requiresAuthentication,(0,i.param)("userid").isMongoId(),(async(e,t,r)=>{const a=(0,i.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});const n=e.params.userid;if("a"!==e.role&&n!==e.userId)t.status(403),r(new Error("Invalid authorization, can not get User."));else try{const e=await u.getUser(n);t.status(200).json(e)}catch(e){t.status(404),r(e)}})),
 /**
  * @swagger
+ * /api/users/user/{userid}:
+ *   get:
+ *     summary: "Get User without admin"
+ *     deprecated: false
+ *     description: "Retrieve a user by ID"
+ *     tags:
+ *       - "User"
+ *     parameters:
+ *       - name: "userid"
+ *         in: "path"
+ *         required: true
+ *         type: "string"
+ *         description: "The ID of the user to retrieve"
+ *     responses:
+ *       "200":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization, cannot get User."
+ *       "404":
+ *         description: "Not Found - Invalid userID"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "No user with this ID exists."
+ *     security:
+ *       - bearerAuth: []
+ */
+c.get("/user/:userid",(0,i.param)("userid").isMongoId(),(async(e,t,r)=>{const a=(0,i.validationResult)(e);if(!a.isEmpty())return t.status(400).json({errors:a.array()});const n=e.params.userid;try{const e=await u.getUserInfo(n);t.status(200).json(e)}catch(e){t.status(404),r(e)}})),
+/**
+ * @swagger
  * /api/users/{userid}:
  *   put:
  *     summary: Update user details
@@ -1028,7 +1075,7 @@ try{if(console.log("req.body.deletePicture:",e.body.deletePicture),"true"===e.bo
  */
 c.delete("/:userid",d.requiresAuthentication,(0,i.param)("userid").isMongoId(),(async(e,t,r)=>{const a=e.params.userid;try{if("a"===e.role){const e=await u.getUser(a),r=await u.deleteUser(a,!1);try{e.profilePicture&&(0,o.deleteProfilePicture)(e.profilePicture)}catch(e){t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}t.status(204).send(r)}else if(e.userId===a){const e=await u.getUser(a),r=await u.deleteUser(a,!0);try{e.profilePicture&&(0,o.deleteProfilePicture)(e.profilePicture)}catch(e){t.status(404).json({Error:"Can not delete Profile picture - no such file or directory"})}t.status(204).send(r)}else t.send(403),r(new Error("Invalid authorization, can not delete user."))}catch(e){t.send(404),r(new Error("Probably invalid userid, can not delete user."))}})),t.default=c},
 /***/562:
-/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const n=a(r(860)),i=r(105),s=r(468),o=n.default.Router(),d=new i.UserService;
+/***/function(e,t,r){var a=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(t,"__esModule",{value:!0});const n=a(r(860)),i=r(105),s=n.default.Router(),o=new i.UserService;
 /**
  * @swagger
  * /api/users/:
@@ -1069,7 +1116,63 @@ c.delete("/:userid",d.requiresAuthentication,(0,i.param)("userid").isMongoId(),(
  *     security:
  *       - bearerAuth: []
  */
-o.get("/users",s.requiresAuthentication,(async(e,t,r)=>{if("a"!==e.role)t.status(403),r(new Error("Invalid authorization"));else try{const e=await d.getUsers();t.status(200).send(e)}catch(e){t.status(404),r(e)}})),t.default=o},
+/**
+UsersRouter.get("/users", requiresAuthentication, async (req, res, next) => {
+  if (req.role !== "a") {
+    res.status(403);
+    next(new Error("Invalid authorization"));
+  } else {
+    try {
+      const users: usersResource = await userService.getUsers();
+      res.status(200).send(users);
+    } catch (err) {
+      res.status(404);
+      next(err);
+    }
+  }
+});
+ */
+/**
+ * @swagger
+ * /api/users/:
+ *   get:
+ *     summary: "Get Users not Admin"
+ *     deprecated: false
+ *     description: "Retrieve all users"
+ *     tags:
+ *       - "User"
+ *     responses:
+ *       "200":
+ *         description: "OK"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties: {}
+ *       "403":
+ *         description: "Forbidden - Invalid authorization"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Invalid authorization."
+ *       "404":
+ *         description: "Not Found - Users not found"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 error:
+ *                   type: "string"
+ *                   example: "Users not found."
+ *     security:
+ *       - bearerAuth: []
+ */
+s.get("/users",(async(e,t,r)=>{try{const e=await o.getUsersNotAdmin();t.status(200).send(e)}catch(e){t.status(404),r(e)}})),t.default=s},
 /***/468:
 /***/(e,t,r)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.optionalAuthentication=t.requiresAuthentication=void 0;const a=r(829);
 /**
@@ -1290,7 +1393,7 @@ function(e){var t;if(!e)throw new Error("No JWT-string");const r=process.env.JWT
 // Check if the user already exists in the database
 const{email:t}=e;if(await a.User.findOne({email:t}))throw new Error("User already exists");
 // Create a new user
-try{return await a.User.create(e)}catch(e){throw new Error("Registration failed")}}async getUsers(){return{users:(await a.User.find({}).exec()).map((e=>({id:e.id,name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls,isActive:e.isActive})))}}async getUser(e){if(!e)throw new Error("Can not get user, userID is invalid");const t=await a.User.findOne({_id:e,isActive:!0}).exec();if(!t)throw new Error(`No user with id: ${e} exists.`);return{id:t.id,name:t.name,email:t.email,isAdministrator:t.isAdministrator,address:t.address,profilePicture:t.profilePicture,birthDate:t.birthDate,gender:t.gender,socialMediaUrls:t.socialMediaUrls,isActive:t.isActive}}
+try{return await a.User.create(e)}catch(e){throw new Error("Registration failed")}}async getUsers(){return{users:(await a.User.find({}).exec()).map((e=>({id:e.id,name:e.name,email:e.email,isAdministrator:e.isAdministrator,address:e.address,profilePicture:e.profilePicture,birthDate:e.birthDate,gender:e.gender,socialMediaUrls:e.socialMediaUrls,isActive:e.isActive})))}}async getUsersNotAdmin(){return{users:(await a.User.find({}).exec()).map((e=>({id:e.id,name:e.name,profilePicture:e.profilePicture,isActive:e.isActive})))}}async getUser(e){if(!e)throw new Error("Can not get user, userID is invalid");const t=await a.User.findOne({_id:e,isActive:!0}).exec();if(!t)throw new Error(`No user with id: ${e} exists.`);return{id:t.id,name:t.name,email:t.email,isAdministrator:t.isAdministrator,address:t.address,profilePicture:t.profilePicture,birthDate:t.birthDate,gender:t.gender,socialMediaUrls:t.socialMediaUrls,isActive:t.isActive}}async getUserInfo(e){if(!e)throw new Error("Can not get user, userID is invalid");const t=await a.User.findOne({_id:e}).exec();if(!t)throw new Error(`No user with id: ${e} exists.`);return{id:t.id,name:t.name,profilePicture:t.profilePicture,isActive:t.isActive}}
 /**
      * used to prefill db with standard admin user. Therefore this servicemethod does not need an endpoint.
      * @param userResource
@@ -1323,8 +1426,8 @@ const t="uploads",r=i.default.join(__dirname,"../../Backend");// Assuming 'FileU
 return"profilePicture"===e?i.default.join(r,t,"users"):"thumbnail"===e?i.default.join(r,t,"events"):i.default.join(r,t)}(t.fieldname);
 // Check if the folder exists, create it if it doesn't
 s.default.existsSync(a)||s.default.mkdirSync(a,{recursive:!0}),r(null,a)},filename:function(e,t,r){r(null,`${(0,o.v4)()}-${t.originalname}`)}});t.deleteProfilePicture=function(e){try{const t=i.default.join(__dirname,"../../Backend","uploads/users",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
-console.log("fullPath:",t),s.default.unlinkSync(t),console.log("file deleted",t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){try{const t=i.default.join(e);// Assuming 'FileUpload.ts' is in the 'utils' directory
-console.log("fullpath image:",t),s.default.unlinkSync(t)}catch(e){throw e}},
+console.log("fullPath:",t),s.default.unlinkSync(t),console.log("file deleted",t)}catch(e){throw e}},t.deleteEventThumbnail=function(e){try{const t=i.default.join(__dirname,"../../Backend","uploads/events",e);// Assuming 'FileUpload.ts' is in the 'utils' directory
+console.log("fullpath image Event:",t),s.default.unlinkSync(t)}catch(e){throw e}},
 // file size : 10 MB limit
 t.upload=(0,n.default)({storage:d,fileFilter:(e,t,r)=>{"image/jpg"===t.mimetype||"image/jpeg"===t.mimetype||"image/png"===t.mimetype?r(null,!0):r(new Error("Image uploaded is not of type jpg/jpeg or png"),!1)},limits:{fileSize:10485760}})},
 /***/653:

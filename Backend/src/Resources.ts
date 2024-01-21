@@ -20,11 +20,21 @@ export type userResource = {
   isActive: boolean;
   oldPassword?: string;
 };
-
+export type userResourceNA = {
+  id?: string;
+  name: {
+    first: string;
+    last: string;
+  };
+  profilePicture?: string;
+  isActive: boolean;
+};
 export type usersResource = {
   users: userResource[];
 };
-
+export type usersResourceNA = {
+  users: userResourceNA[];
+};
 export type addressResource = {
   id?: string;
   postalCode: String;
@@ -132,10 +142,10 @@ export type MessageResource = {
   username?: string;
   message: string;
   time?: string;
-}
+};
 
 export type ChatResource = {
   id?: string;
   event: string;
   messages: MessageResource[];
-}
+};

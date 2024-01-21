@@ -231,6 +231,7 @@ EventRouter.post(
         req.body.address = JSON.parse(req.body.address);
         console.log("Event data ", req.body);
         const newEvent = await eventService.createEvent(req.body, req.userId);
+        console.log("Created Event:", newEvent);
         return res.status(201).send(newEvent);
       }
     } catch (err) {
@@ -537,6 +538,7 @@ EventRouter.put(
     if (!errors.isEmpty()) {
       if (req.file) {
         // Delete the file
+        console.log("errors:", errors);
         deleteEventThumbnail(req.file.path);
       }
       return res.status(400).json({ errors: errors.array() });
@@ -544,9 +546,16 @@ EventRouter.put(
     try {
       const event = await eventService.getEvent(req.params.eventid);
       if (req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
+        req.body.thumbnail = `/${req.file.filename}`;
         if (event.thumbnail) deleteEventThumbnail(event.thumbnail);
+        console.log("Event bild uploaded");
       }
+      if (req.body.category) req.body.category = JSON.parse(req.body.category);
+      if (req.body.hashtags) req.body.hashtags = JSON.parse(req.body.hashtags);
+      if (req.body.price) req.body.price = Number(req.body.price);
+      if (req.body.address) req.body.address = JSON.parse(req.body.address);
+
+      console.log("Event data ", req.body);
       const eventResource = req.body as eventResource;
       const updatedEvent = await eventService.updateEvent(
         req.params.eventid,

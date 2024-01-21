@@ -66,8 +66,13 @@ export function deleteProfilePicture(filePath: string): void {
 
 export function deleteEventThumbnail(filePath: string): void {
   try {
-    const fullPath = path.join(filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
-    console.log("fullpath image:", fullPath);
+    const fullPath = path.join(
+      __dirname,
+      "../../Backend",
+      "uploads/events",
+      filePath
+    ); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    console.log("fullpath image Event:", fullPath);
     fs.unlinkSync(fullPath);
   } catch (error) {
     throw error;

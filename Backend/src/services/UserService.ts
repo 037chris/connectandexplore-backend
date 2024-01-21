@@ -1,5 +1,10 @@
 import { User } from "../model/UserModel";
-import { usersResource, userResource } from "../Resources";
+import {
+  usersResource,
+  userResource,
+  usersResourceNA,
+  userResourceNA,
+} from "../Resources";
 import { CommentService } from "../../src/services/CommentService";
 
 const commentService: CommentService = new CommentService();
@@ -43,6 +48,18 @@ export class UserService {
     };
     return usersResource;
   }
+  async getUsersNotAdmin(): Promise<usersResourceNA> {
+    const users = await User.find({}).exec();
+    const usersResource: usersResourceNA = {
+      users: users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        profilePicture: user.profilePicture,
+        isActive: user.isActive,
+      })),
+    };
+    return usersResource;
+  }
 
   async getUser(userID: string): Promise<userResource> {
     if (!userID) {
@@ -65,7 +82,21 @@ export class UserService {
       isActive: user.isActive,
     };
   }
-
+  async getUserInfo(userID: string): Promise<userResourceNA> {
+    if (!userID) {
+      throw new Error("Can not get user, userID is invalid");
+    }
+    const user = await User.findOne({ _id: userID }).exec();
+    if (!user) {
+      throw new Error(`No user with id: ${userID} exists.`);
+    }
+    return {
+      id: user.id,
+      name: user.name,
+      profilePicture: user.profilePicture,
+      isActive: user.isActive,
+    };
+  }
   /**
    * used to prefill db with standard admin user. Therefore this servicemethod does not need an endpoint.
    * @param userResource
