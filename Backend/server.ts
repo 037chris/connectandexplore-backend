@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 export const server = https.createServer({ key, cert }, app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    //origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
