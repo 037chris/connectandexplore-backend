@@ -443,7 +443,7 @@ commentsRouter.get(
       const averageRating =
         await commentService.getAverageRatingForEvent(eventId);
 
-      res.status(200).json({ averageRating });
+      res.status(200).json(averageRating);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
