@@ -19,7 +19,7 @@ import ChatRouter from "./src/routes/ChatRoute";
 import RatingRouter from "./src/routes/RatingRoute";
 
 const app: Express = express();
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 5000;
 /* Routes */
 app.use("*", cors());
 
@@ -32,8 +32,14 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Expose-Headers", "Authorization");
   next();
 });
+export let server: any;
 
-export const server = https.createServer({ key, cert }, app);
+if (port === "443") {
+  server = http.createServer(app);
+} else {
+  server = https.createServer({ key, cert }, app);
+}
+
 const io = require("socket.io")(server, {
   cors: {
     //origin: "http://localhost:3000",

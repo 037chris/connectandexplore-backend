@@ -12,13 +12,11 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: "tcp://docker:2375" # dind with TLS disabled
   CONTAINER_TEST_IMAGE: $CI_REGISTRY:$CI_COMMIT_REF_SLUG
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY:latest
 
 stages:
   - build
   - test
   - release
-  - deploy
 
 build-stage:
   stage: build
@@ -41,6 +39,6 @@ test-stage:
 release-stage:
   stage: release
   script:
-    - docker build --pull -t $CONTAINER_RELEASE_IMAGE -f Dockerfile.prod .
-    - docker push $CONTAINER_RELEASE_IMAGE
-    #- docker run $CONTAINER_RELEASE_IMAGE
+    - docker login -u $CI_USERNAME_DOCKERHUB -p $CI_PASSWORD_DOCKERHUB
+    - docker build --pull -t $CI_IMAGE_DOCKERHUB -f Dockerfile.prod .
+    - docker push $CI_IMAGE_DOCKERHUB
