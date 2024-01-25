@@ -61,14 +61,9 @@ export function deleteProfilePicture(filePath: string): void {
       // for deployment
       pathFolderUsers = "/app";
     } else {
-      pathFolderUsers = "../../Backend";
+      pathFolderUsers = path.join(__dirname, "../../Backend");
     }
-    const fullPath = path.join(
-      __dirname,
-      pathFolderUsers,
-      "uploads/users",
-      filePath
-    ); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    const fullPath = path.join(pathFolderUsers, "uploads/users", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
     console.log("fullPath:", fullPath);
     fs.unlinkSync(fullPath);
     console.log("file deleted", fullPath);
@@ -84,14 +79,9 @@ export function deleteEventThumbnail(filePath: string): void {
       // for deployment
       pathFolderEvents = "/app";
     } else {
-      pathFolderEvents = "../../Backend";
+      pathFolderEvents = path.join(__dirname, "../../Backend");
     }
-    const fullPath = path.join(
-      __dirname,
-      pathFolderEvents,
-      "uploads/events",
-      filePath
-    ); // Assuming 'FileUpload.ts' is in the 'utils' directory
+    const fullPath = path.join(pathFolderEvents, "uploads/events", filePath); // Assuming 'FileUpload.ts' is in the 'utils' directory
     console.log("fullpath image Event:", fullPath);
     fs.unlinkSync(fullPath);
   } catch (error) {
