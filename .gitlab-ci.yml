@@ -34,7 +34,7 @@ test-stage:
         docker run $CONTAINER_TEST_IMAGE && break ||
         retry=$((retry-1))
         sleep 5  # Introduce a delay between retries, e.g., 5 seconds
-      done
+
 
 release-stage:
   stage: release
