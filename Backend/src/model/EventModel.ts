@@ -30,7 +30,7 @@ export interface ICategory {
 
 export interface IChat {
   event: Types.ObjectId;
-  messages: { user: Types.ObjectId; message: String, time: Date }[];
+  messages: { user: Types.ObjectId; message: String; time: Date }[];
 }
 
 /**
@@ -53,7 +53,11 @@ const categorySchema = new Schema<ICategory>({
 const chatSchema = new Schema<IChat>({
   event: { type: Schema.Types.ObjectId, ref: "Event" },
   messages: [
-    { user: { type: Schema.Types.ObjectId, ref: "User" }, message: String, time: Date }
+    {
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      message: String,
+      time: Date,
+    },
   ],
 });
 
@@ -74,19 +78,6 @@ const eventSchema = new Schema<IEvent>({
   chat: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
   participants: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
 });
-
-/* 
-Zu implementieren?:
-Middleware-Methode, die sicherstellt, dass nach Bearbeitung eines Events, alle Teilnehmer benachrichtigt werden
-
-eventSchema.post('updateOne', async function (result, next) {
-    try {
-        //Funktion zur Benachrichtigung aller Teilnehmer
-    } catch (error) {
-        //throw new Error()
-    }
-    next();
-}); */
 
 export const Event = model<IEvent, EventModel>("Event", eventSchema);
 export const Categoty = model<ICategory, CategoryModel>(

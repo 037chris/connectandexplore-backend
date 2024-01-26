@@ -10,7 +10,7 @@ dotenv.config();
  */
 export async function verifyPasswordAndCreateJWT(
   email: string,
-  password: string,
+  password: string
 ): Promise<string | undefined> {
   const users = await User.find({ email: email, isActive: true }).exec();
   if (!users || users.length != 1) {
@@ -32,7 +32,7 @@ export async function verifyPasswordAndCreateJWT(
     throw new Error("TTL not set");
   }
 
-  const exp = timeInSec + (24 * 60 * 60);
+  const exp = timeInSec + 24 * 60 * 60;
   const role = user.isAdministrator ? "a" : "u";
 
   const payload: JwtPayload = {

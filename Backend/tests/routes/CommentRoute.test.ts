@@ -1,6 +1,5 @@
 import request from "supertest";
-//import { req } from "../jest.setup";
-import { connect, closeDatabase, clearDatabase } from "../../database/db";
+import { connect, clearDatabase } from "../../database/db";
 import {
   CommentResource,
   CommentsResource,
@@ -53,25 +52,6 @@ const u: userResource = {
   },
 };
 
-const u1: userResource = {
-  email: "Don@joe.com",
-  name: {
-    first: "Don",
-    last: "Joe",
-  },
-  password: "12abcAB!",
-  isAdministrator: true,
-  address: a,
-  birthDate: new Date(),
-  gender: "male",
-  isActive: true,
-  profilePicture: "picture1",
-  socialMediaUrls: {
-    facebook: "facebook",
-    instagram: "instagram",
-  },
-};
-
 const u2: userResource = {
   email: "test@mail.com",
   name: {
@@ -84,20 +64,6 @@ const u2: userResource = {
   birthDate: new Date(),
   gender: "female",
   isActive: true,
-};
-
-const u3: userResource = {
-  email: "inactive@mail.com",
-  name: {
-    first: "in",
-    last: "active",
-  },
-  password: "12abcAB!",
-  isAdministrator: false,
-  address: a,
-  birthDate: new Date(),
-  gender: "female",
-  isActive: false,
 };
 
 const JaneData: userResource = {
@@ -152,7 +118,6 @@ const e2: eventResource = {
 const userService: UserService = new UserService();
 const eventService: EventService = new EventService();
 const commentService: CommentService = new CommentService();
-const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
 let admin: userResource;
 let AdminToken: string;
 let jane: userResource;

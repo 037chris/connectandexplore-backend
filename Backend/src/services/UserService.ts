@@ -185,22 +185,16 @@ export class UserService {
         `No user with id: ${userResource.id} found, cannot update`
       );
     }
-    console.log("user:", user);
     if (oldPw) {
-      console.log("oldPw");
       const res = await user.isCorrectPassword(oldPw);
       if (!res) {
         throw new Error("Invalid oldPassword, cannot update User!");
       }
     }
-    console.log("userResource:", userResource);
     for (const property in userResource) {
-      console.log("property:", property);
       if (property === "oldPassword") continue;
       if (property === "Password") {
-        console.log("userResource.password:", userResource[property]);
         user.password = userResource[property];
-        console.log("user.password:", user.password);
       } else {
         if (property === "deletePicture") {
           user.profilePicture = "";

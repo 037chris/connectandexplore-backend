@@ -10,7 +10,6 @@ import { User } from "../../src/model/UserModel";
 import { Comment } from "../../src/model/CommentModel";
 import { CommentService } from "../../src/services/CommentService";
 import { EventService } from "../../src/services/EventService";
-import { dateToString } from "../../src/services/ServiceHelper";
 
 const a: addressEResource = {
   street: "Street",
@@ -80,20 +79,6 @@ const u2: userResource = {
   birthDate: new Date(),
   gender: "female",
   isActive: true,
-};
-
-const u3: userResource = {
-  email: "inactive@mail.com",
-  name: {
-    first: "in",
-    last: "active",
-  },
-  password: "12abcAB!",
-  isAdministrator: false,
-  address: a,
-  birthDate: new Date(),
-  gender: "female",
-  isActive: false,
 };
 
 const e: eventResource = {
@@ -379,7 +364,7 @@ describe("CommentService Tests", () => {
       edited: true,
       creator: user1.id,
       event: event1.id,
-      createdAt: "01.01.2001"
+      createdAt: "01.01.2001",
     };
     const comment2 = await commentService.updateComment(c2);
     expect(comment2.createdAt).not.toBe(c2.createdAt);

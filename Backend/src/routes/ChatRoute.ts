@@ -12,7 +12,7 @@ ChatRouter.get(
   "/:id",
   requiresAuthentication,
   param("id").isMongoId(),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       const chat = await chatService.getChat(req.params.id);
       const event = await Event.findById(chat.event).exec();
@@ -31,7 +31,7 @@ ChatRouter.post(
   requiresAuthentication,
   param("id").isMongoId(),
   body("message").isString().notEmpty(),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       const chat = await chatService.sendMessage(
         req.params.id,

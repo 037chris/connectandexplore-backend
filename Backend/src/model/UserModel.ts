@@ -1,4 +1,4 @@
-import mongoose, { Model, model, Schema, Query } from "mongoose";
+import { Model, model, Schema, Query } from "mongoose";
 import bcrypt from "bcryptjs";
 
 export interface IUser {

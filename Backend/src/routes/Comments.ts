@@ -437,7 +437,7 @@ commentsRouter.delete(
 commentsRouter.get(
   "/event/:id/average-rating",
   param("id").isMongoId(),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       const eventId = req.params.id;
       const averageRating =

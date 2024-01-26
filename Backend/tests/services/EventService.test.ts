@@ -81,20 +81,6 @@ const u2: userResource = {
   isActive: true,
 };
 
-const u3: userResource = {
-  email: "inactive@mail.com",
-  name: {
-    first: "in",
-    last: "active",
-  },
-  password: "12abcAB!",
-  isAdministrator: false,
-  address: a,
-  birthDate: new Date(),
-  gender: "female",
-  isActive: false,
-};
-
 const e: eventResource = {
   name: "Sample Event",
   description: "This is my first event",

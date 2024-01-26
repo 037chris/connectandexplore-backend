@@ -3,7 +3,6 @@ import { eventResource, eventsResource, usersResource } from "../Resources";
 import { Chat, Event } from "../model/EventModel";
 import { User } from "../model/UserModel";
 import { CommentService } from "../../src/services/CommentService";
-import { create } from "ts-node";
 
 const commentService: CommentService = new CommentService();
 
@@ -53,7 +52,6 @@ export class EventService {
         ),
       };
     } catch (err) {
-      console.log(err);
       throw new Error("Event creation failed");
     }
   }

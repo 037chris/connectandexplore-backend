@@ -1,15 +1,11 @@
 import express from "express";
-import fs from "fs";
 import {
   body,
-  check,
-  matchedData,
   param,
   validationResult,
 } from "express-validator";
 import { UserService } from "../services/UserService";
 import { upload, deleteProfilePicture } from "../utils/FileUpload";
-import { validate } from "../utils/Helpers";
 import { requiresAuthentication } from "./authentication";
 import { userResource, userResourceNA } from "../Resources";
 const UserRouter = express.Router();
@@ -125,7 +121,6 @@ UserRouter.post(
         if (req.file) {
           req.body.profilePicture = `/${req.file.filename}`;
         }
-        console.log("Req body user registration:", req.body);
         const newUser = await userService.registerUser(req.body);
         return res.status(201).json(newUser);
       }
@@ -402,9 +397,7 @@ UserRouter.put(
       } else {
         // To delete Profile picture in settings page
         try {
-          console.log("req.body.deletePicture:", req.body.deletePicture);
           if (req.body.deletePicture === "true") {
-            console.log("req.body.deletePicture: True");
             if (userResource.profilePicture) {
               deleteProfilePicture(userResource.profilePicture);
 
@@ -427,7 +420,6 @@ UserRouter.put(
           if (req.body.oldPassword) {
             oldPw = req.body.oldPassword;
           }
-          console.log("oldPw:", oldPw);
           const updatedUser = await userService.updateUserWithPw(
             userResource,
             oldPw

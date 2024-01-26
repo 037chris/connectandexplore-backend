@@ -1,8 +1,7 @@
 import request from "supertest";
-//import { req } from "../jest.setup";
 import { connect, clearDatabase } from "../../database/db";
 import {
-    ChatResource,
+  ChatResource,
   LoginResource,
   addressEResource,
   categoryResource,
@@ -85,17 +84,6 @@ const JaneData: userResource = {
   },
 };
 
-const e: eventResource = {
-  name: "Sample Event",
-  description: "This is my first event",
-  price: 10,
-  date: new Date(),
-  address: a,
-  thumbnail: "sampleThumbnail",
-  hashtags: ["sport", "freizeit"],
-  category: [c, c1],
-};
-
 const e1: eventResource = {
   name: "Sample Event 1",
   description: "for anyone interested",
@@ -151,11 +139,9 @@ describe("ChatRoute Tests", () => {
 
     event1 = await eventService.createEvent(e1, jane.id);
     event2 = await eventService.createEvent(e2, user.id);
-
   });
   afterEach(async () => await clearDatabase());
   afterAll(async () => {
-    //closeServer(); // Close the server after all tests
     await mongoose.connection.close(); // Perform final cleanup after all tests
   });
 
@@ -176,7 +162,7 @@ describe("ChatRoute Tests", () => {
       .post(`/api/chat/${event2.chat}`)
       .send({ message: "hallo" })
       .set("Authorization", `Bearer ${token}`);
-      expect(res.status).toBe(403);
+    expect(res.status).toBe(403);
   });
 
   test("get chat", async () => {
@@ -199,6 +185,6 @@ describe("ChatRoute Tests", () => {
     res = await req
       .get(`/api/chat/${event2.chat}`)
       .set("Authorization", `Bearer ${token}`);
-      expect(res.status).toBe(403);
+    expect(res.status).toBe(403);
   });
 });

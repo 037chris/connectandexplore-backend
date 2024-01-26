@@ -1,6 +1,5 @@
 import request from "supertest";
-//import { req } from "../jest.setup";
-import { connect, closeDatabase, clearDatabase } from "../../database/db";
+import { connect, clearDatabase } from "../../database/db";
 import {
   LoginResource,
   addressEResource,
@@ -50,25 +49,6 @@ const u: userResource = {
   },
 };
 
-const u1: userResource = {
-  email: "Don@joe.com",
-  name: {
-    first: "Don",
-    last: "Joe",
-  },
-  password: "12abcAB!",
-  isAdministrator: true,
-  address: a,
-  birthDate: new Date(),
-  gender: "male",
-  isActive: true,
-  profilePicture: "picture1",
-  socialMediaUrls: {
-    facebook: "facebook",
-    instagram: "instagram",
-  },
-};
-
 const u2: userResource = {
   email: "test@mail.com",
   name: {
@@ -81,20 +61,6 @@ const u2: userResource = {
   birthDate: new Date(),
   gender: "female",
   isActive: true,
-};
-
-const u3: userResource = {
-  email: "inactive@mail.com",
-  name: {
-    first: "in",
-    last: "active",
-  },
-  password: "12abcAB!",
-  isAdministrator: false,
-  address: a,
-  birthDate: new Date(),
-  gender: "female",
-  isActive: false,
 };
 
 const JaneData: userResource = {
@@ -428,9 +394,6 @@ describe("EventRoute Tests", () => {
   });
 
   test("get all events route", async () => {
-    const event = await eventService.createEvent(e, jane.id);
-    const event1 = await eventService.createEvent(e1, user.id);
-    const event2 = await eventService.createEvent(e2, admin.id);
     // get all events as registered user
     let res = await req
       .get(`/api/events/`)

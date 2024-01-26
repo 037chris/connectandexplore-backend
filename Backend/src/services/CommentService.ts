@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { CommentResource, CommentsResource } from "../Resources";
-import { Comment, IBaseComment, IComment } from "../model/CommentModel";
+import { Comment, IBaseComment } from "../model/CommentModel";
 import { IUser, User } from "../model/UserModel";
 import { dateToString } from "./ServiceHelper";
 import { Event, IEvent } from "../model/EventModel";

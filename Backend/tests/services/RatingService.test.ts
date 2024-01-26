@@ -8,10 +8,8 @@ import {
   userResource,
 } from "../../src/Resources";
 import { User } from "../../src/model/UserModel";
-import { Comment } from "../../src/model/CommentModel";
 import { CommentService } from "../../src/services/CommentService";
 import { EventService } from "../../src/services/EventService";
-import { dateToString } from "../../src/services/ServiceHelper";
 import { Rating, RatingType } from "../../src/model/RatingModel";
 import { RatingService } from "../../src/services/RatingService";
 
@@ -85,20 +83,6 @@ const u2: userResource = {
   isActive: true,
 };
 
-const u3: userResource = {
-  email: "inactive@mail.com",
-  name: {
-    first: "in",
-    last: "active",
-  },
-  password: "12abcAB!",
-  isAdministrator: false,
-  address: a,
-  birthDate: new Date(),
-  gender: "female",
-  isActive: false,
-};
-
 const e: eventResource = {
   name: "Sample Event",
   description: "This is my first event",
@@ -110,29 +94,9 @@ const e: eventResource = {
   category: [c, c1],
 };
 
-const e1: eventResource = {
-  name: "Sample Event 1",
-  description: "for anyone interested",
-  price: 0,
-  date: new Date(),
-  address: a,
-  category: [c],
-};
-
-const e2: eventResource = {
-  name: "Sample Event 2",
-  description: "this is my second gym party",
-  price: 100,
-  date: new Date(),
-  address: a,
-  hashtags: ["freizeit"],
-  category: [c1],
-};
-
 const eventService: EventService = new EventService();
 const commentService: CommentService = new CommentService();
 const ratingService: RatingService = new RatingService();
-const NON_EXISTING_ID = "635d2e796ea2e8c9bde5787c";
 
 describe("RatingService Tests", () => {
   beforeAll(async () => await connect());

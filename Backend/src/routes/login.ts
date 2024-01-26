@@ -74,11 +74,10 @@ loginRouter.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    //const loginResource = matchedData(req) as LoginResource;
     const resource = matchedData(req);
     const jwtstring = await verifyPasswordAndCreateJWT(
       resource.email,
-      resource.password,
+      resource.password
     );
     if (!jwtstring) {
       res.status(401);
@@ -89,7 +88,7 @@ loginRouter.post(
       token_type: "Bearer",
     };
     res.send(result);
-  },
+  }
 );
 
 export default loginRouter;

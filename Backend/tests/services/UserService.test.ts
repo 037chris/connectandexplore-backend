@@ -1,6 +1,6 @@
 import { clearDatabase, closeDatabase, connect } from "../../database/db";
 import { userResource } from "../../src/Resources";
-import { IAddress, IUser, User } from "../../src/model/UserModel";
+import { IAddress, User } from "../../src/model/UserModel";
 import { UserService } from "../../src/services/UserService";
 
 const a: IAddress = {

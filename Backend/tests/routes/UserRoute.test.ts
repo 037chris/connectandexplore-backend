@@ -1,13 +1,8 @@
 import mongoose from "mongoose";
-import { clearDatabase, closeDatabase, connect } from "../../database/db";
+import { clearDatabase, connect } from "../../database/db";
 import app from "../../server";
-//import { req } from "../jest.setup";
 import { IAddress, User } from "../../src/model/UserModel";
-import {
-  LoginResource,
-  userResource,
-  usersResource,
-} from "../../src/Resources";
+import { LoginResource, userResource } from "../../src/Resources";
 import { UserService } from "../../src/services/UserService";
 import request from "supertest";
 const a: IAddress = {
@@ -26,7 +21,6 @@ const u: userResource = {
   birthDate: new Date(),
   gender: "male",
   isActive: true,
-  //profilePicture: "picture1",
   socialMediaUrls: {
     facebook: "facebook",
     instagram: "instagram",
@@ -45,7 +39,6 @@ const JaneData: userResource = {
   birthDate: new Date(),
   gender: "male",
   isActive: true,
-  // profilePicture: "picture1",
   socialMediaUrls: {
     facebook: "facebook",
     instagram: "instagram",
@@ -64,7 +57,6 @@ describe("userRoute test", () => {
   beforeEach(async () => {
     admin = await userService.createUser(u);
     jane = await userService.createUser(JaneData);
-    //const req = request(app);
     const adminloginData = { email: "John@doe.com", password: "12abcAB!" };
     const adminRes = await req.post(`/api/login`).send(adminloginData);
     const AdminLoginResource = adminRes.body as LoginResource;
@@ -80,39 +72,7 @@ describe("userRoute test", () => {
     await mongoose.connection.close(); // Perform final cleanup after all tests
   });
 
-  /* test("getUsers", async () => {
-    //const req = request(app);
-    const response = await req
-      .get("/api/users")
-      .set("Authorization", `Bearer ${AdminToken}`);
-    expect(response.statusCode).toBe(200);
-    const users: usersResource = response.body;
-    expect(users.users.length).toBe(3);
-    let userPos: number;
-    if (users.users[0].name.first === u.name.first) {
-      userPos = 0;
-    } else if (users.users[1].name.first === u.name.first) {
-      userPos = 1;
-    } else if (users.users[2].name.first === u.name.first) {
-      userPos = 2;
-    }
-    expect(users.users[userPos].id).toBeDefined();
-    expect(users.users[userPos].name.first).toBe(u.name.first);
-    expect(users.users[userPos].name.last).toBe(u.name.last);
-    expect(users.users[userPos].email).toBe(u.email);
-    expect(users.users[userPos].password).toBeUndefined();
-    expect(users.users[userPos].address).toMatchObject(a);
-    //expect(users.users[0].birthDate).toBe(u.birthDate);
-    expect(users.users[userPos].gender).toBe(u.gender);
-    expect(users.users[userPos].isActive).toBeTruthy();
-    //expect(users.users[0].profilePicture).toBe(u.profilePicture);
-    expect(users.users[userPos].socialMediaUrls).toMatchObject(
-      u.socialMediaUrls
-    );
-  }); */
-
   test("getUsers fails on request by non-admin", async () => {
-    //const req = request(app);
     const response = await req
       .get("/api/users")
       .set("Authorization", `Bearer ${token}`);
@@ -120,7 +80,6 @@ describe("userRoute test", () => {
   });
 
   test("get User request responses with 404 on invalid userID", async () => {
-    //const req = request(app);
     const response = await req
       .get(`/api/users/${NON_EXISTING_ID}`)
       .set("Authorization", `Bearer ${AdminToken}`);
@@ -129,7 +88,6 @@ describe("userRoute test", () => {
   });
 
   test("get User request responses with 400 on undefined userID", async () => {
-    //const req = request(app);
     const response = await req
       .get(`/api/users/invalidID`)
       .set("Authorization", `Bearer ${AdminToken}`);

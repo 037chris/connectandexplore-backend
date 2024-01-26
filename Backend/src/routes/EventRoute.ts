@@ -5,13 +5,7 @@ import {
   requiresAuthentication,
 } from "./authentication";
 import { eventResource, eventsResource } from "../Resources";
-import {
-  body,
-  matchedData,
-  param,
-  query,
-  validationResult,
-} from "express-validator";
+import { body, param, query, validationResult } from "express-validator";
 import { deleteEventThumbnail, upload } from "../utils/FileUpload";
 
 const EventRouter = express.Router();
@@ -58,7 +52,6 @@ EventRouter.get(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      //console.log(query)
       const term = req.query.query as string;
       const events: eventsResource = await eventService.searchEvents(term);
       if (events.events.length === 0) {
@@ -214,24 +207,19 @@ EventRouter.post(
       if (!errors.isEmpty()) {
         if (req.file) {
           // Delete the file
-          console.log("errors:", errors);
           deleteEventThumbnail(req.file.path);
         }
         return res.status(400).json({ errors: errors.array() });
       } else {
         if (req.file) {
-          console.log("req.file", req.file);
           req.body.thumbnail = `/${req.file.filename}`;
-          console.log("Event bild uploaded");
         }
 
         req.body.category = JSON.parse(req.body.category);
         req.body.hashtags = JSON.parse(req.body.hashtags);
         req.body.price = Number(req.body.price);
         req.body.address = JSON.parse(req.body.address);
-        console.log("Event data ", req.body);
         const newEvent = await eventService.createEvent(req.body, req.userId);
-        console.log("Created Event:", newEvent);
         return res.status(201).send(newEvent);
       }
     } catch (err) {
@@ -299,7 +287,7 @@ EventRouter.post(
   "/:eventid/join",
   requiresAuthentication,
   param("eventid").isMongoId(),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       await eventService.joinEvent(req.userId, req.params.eventid);
       res.status(200).json({ message: "User joined the event successfully" });
@@ -366,7 +354,7 @@ EventRouter.delete(
   "/:eventid/cancel",
   requiresAuthentication,
   param("eventid").isMongoId(),
-  async (req, res, next) => {
+  async (req, res) => {
     try {
       await eventService.cancelEvent(req.userId, req.params.eventid);
       res.status(204).send();
@@ -538,7 +526,6 @@ EventRouter.put(
     if (!errors.isEmpty()) {
       if (req.file) {
         // Delete the file
-        console.log("errors:", errors);
         deleteEventThumbnail(req.file.path);
       }
       return res.status(400).json({ errors: errors.array() });
@@ -548,14 +535,11 @@ EventRouter.put(
       if (req.file) {
         req.body.thumbnail = `/${req.file.filename}`;
         if (event.thumbnail) deleteEventThumbnail(event.thumbnail);
-        console.log("Event bild uploaded");
       }
       if (req.body.category) req.body.category = JSON.parse(req.body.category);
       if (req.body.hashtags) req.body.hashtags = JSON.parse(req.body.hashtags);
       if (req.body.price) req.body.price = Number(req.body.price);
       if (req.body.address) req.body.address = JSON.parse(req.body.address);
-
-      console.log("Event data ", req.body);
       const eventResource = req.body as eventResource;
       const updatedEvent = await eventService.updateEvent(
         req.params.eventid,

@@ -23,7 +23,7 @@ declare global {
 export async function requiresAuthentication(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   try {
     const authorization = req.headers.authorization;
@@ -61,7 +61,7 @@ export async function requiresAuthentication(
 export async function optionalAuthentication(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const authorization = req.headers.authorization;
   if (authorization) {

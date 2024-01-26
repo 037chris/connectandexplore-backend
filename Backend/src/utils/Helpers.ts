@@ -1,11 +1,9 @@
-import { IUser } from "../model/UserModel";
 import { Request, Response, NextFunction } from "express";
-import { validationResult, body } from "express-validator";
+import { body } from "express-validator";
 
 const validateIfPresent = (field: string, validators: any) => {
   return (req: Request, res: Response, next: NextFunction) => {
     // Check if the field exists in the request body and has a value
-    // && req.body[field] !== ""
     if (req.body[field] !== undefined) {
       return validators(req, res, next);
     }
@@ -22,7 +20,6 @@ export const validate = [
   validateIfPresent("password", body("password").isStrongPassword()),
   validateIfPresent("isAdministrator", body("isAdministrator").isBoolean()),
 
-  //validateIfPresent("oldPassword", body("oldPassword").isStrongPassword()),
   validateIfPresent(
     "address.postalCode",
     body("address.postalCode")

@@ -29,7 +29,7 @@ const comentSchema = new Schema<IComment>(
     creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
     event: { type: Schema.Types.ObjectId, ref: "Event", required: true },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export const Comment = model<IComment>("Comment", comentSchema);

@@ -1,7 +1,7 @@
 import { ChatResource } from "../Resources";
 import { Event, Chat } from "../model/EventModel";
 import { User } from "../model/UserModel";
-import { dateToString, dateToStringWithTime } from "./ServiceHelper";
+import { dateToStringWithTime } from "./ServiceHelper";
 
 export class ChatService {
   async getChat(chatID: string): Promise<ChatResource> {
@@ -18,7 +18,7 @@ export class ChatService {
             user: message.user.toString(),
             username: `${user.name.first} ${user.name.last}`,
             message: message.message.toString(),
-            time: dateToStringWithTime(message.time)
+            time: dateToStringWithTime(message.time),
           };
         })
       ),
@@ -53,7 +53,7 @@ export class ChatService {
             user: message.user.toString(),
             username: `${user.name.first} ${user.name.last}`,
             message: message.message.toString(),
-            time: dateToStringWithTime(message.time)
+            time: dateToStringWithTime(message.time),
           };
         })
       ),
